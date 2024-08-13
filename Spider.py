@@ -13,7 +13,7 @@ logging.basicConfig(
 def crawl():
     runner = CrawlerRunner(get_project_settings())
     yield runner.crawl(ResourceSpider)
-    reactor.callLater(120, crawl)  # Запланировать следующий запуск через 15 минут
+    reactor.callLater(900, crawl)  # Запланировать следующий запуск через 15 минут
 
 # Запуск первого цикла
 crawl()
