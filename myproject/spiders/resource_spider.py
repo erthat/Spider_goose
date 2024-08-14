@@ -125,7 +125,6 @@ class ResourceSpider(CrawlSpider):
         self.conn.commit()
 
     def replace_unsupported_characters(self, text):
-        # Заменить неподдерживаемые символы на пробелы или другой символ
         return re.sub(r'[^\w\s]', '?', text)
 
     def close(self, reason):
