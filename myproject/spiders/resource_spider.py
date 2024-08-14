@@ -10,6 +10,7 @@ import time
 import re
 import os
 from dotenv import load_dotenv
+import emoji
 
 load_dotenv()
 class ResourceSpider(CrawlSpider):
@@ -46,8 +47,8 @@ class ResourceSpider(CrawlSpider):
                 )
                 self.resources = self.cursor.fetchall()
 
-                self.start_urls = [resource[2] for resource in self.resources]
-                self.allowed_domains = [urlparse(resource[2]).netloc for resource in self.resources]
+                self.start_urls = [resource[2].split(',')[0].strip() for resource in self.resources]
+                self.allowed_domains = [urlparse(url).netloc for url in self.start_urls]
                 top_tags = [resource[3] for resource in self.resources]
                 # Создание правил для каждого ресурса
                 self.rules = (
@@ -73,7 +74,8 @@ class ResourceSpider(CrawlSpider):
         resource_id = None
         resource_info = None
         for resource in self.resources:
-            if resource[2] in current_url:
+            first_url = resource[2].split(',')[0].strip()
+            if first_url in current_url:
                 resource_id = resource[0]
                 resource_info = resource
                 break
@@ -83,7 +85,8 @@ class ResourceSpider(CrawlSpider):
             content = ' '.join([c.strip() for c in content if c.strip()])
             text = str(content) if content else ''
             content = self.replace_unsupported_characters(text)
-            title = response.xpath(resource_info[5]).get()  # Извлекаем заголовку новости
+            title_t = response.xpath(resource_info[5]).get()
+            title = self.replace_unsupported_characters(title_t)# Извлекаем заголовку новости
             date = response.xpath('//meta[@property="article:published_time"]/@content').get()
             if not date:
                 date = response.css('meta[name="date"]::attr(content)').get()
@@ -125,7 +128,7 @@ class ResourceSpider(CrawlSpider):
         self.conn.commit()
 
     def replace_unsupported_characters(self, text):
-        return re.sub(r'[^\w\s]', '?', text)
+        return emoji.replace_emoji(text, replace='?')
 
     def close(self, reason):
         if self.cursor:
