@@ -7,6 +7,42 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
+import logging
+
+class IgnoreLinkFilter(logging.Filter):
+    def filter(self, record):
+        # Проверяем, есть ли в сообщении строка "Ignoring link"
+        return "Ignoring link" not in record.getMessage()
+
+
+# Создаем фильтр
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'ignore_link_filter': {
+            '()': IgnoreLinkFilter,
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'filters': ['ignore_link_filter'],
+        },
+    },
+    'loggers': {
+        'scrapy': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
+
+
+
 BOT_NAME = "myproject"
 
 SPIDER_MODULES = ["myproject.spiders"]
@@ -93,5 +129,12 @@ TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
 DEPTH_LIMIT = 2
 DOWNLOAD_TIMEOUT = 15
-LOG_LEVEL = 'INFO'
+CONCURRENT_REQUESTS = 16
+CONCURRENT_REQUESTS_PER_DOMAIN = 16
+# DOWNLOAD_DELAY = 0.5
+
+LOG_LEVEL = 'DEBUG'
 LOG_FORMAT = '%(levelname)s: %(message)s'
+# В settings.py
+USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+ACCEPT = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7'

@@ -6,7 +6,7 @@ from twisted.internet.defer import inlineCallbacks
 import logging
 
 logging.basicConfig(
-    level=logging.DEBUG,  # Устанавливаем уровень логирования
+    level=logging.INFO,  # Устанавливаем уровень логирования
     format='%(levelname)s: %(message)s',
 )
 @inlineCallbacks

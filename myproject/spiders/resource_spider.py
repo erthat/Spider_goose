@@ -6,11 +6,14 @@ from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
 from urllib.parse import urlparse
 import dateparser
+from dateparser import parse
 import time
-import re
+import scrapy
 import os
 from dotenv import load_dotenv
 import emoji
+from datetime import datetime
+
 
 load_dotenv()
 class ResourceSpider(CrawlSpider):
@@ -49,10 +52,11 @@ class ResourceSpider(CrawlSpider):
 
                 self.start_urls = [resource[2].split(',')[0].strip() for resource in self.resources]
                 self.allowed_domains = [urlparse(url).netloc for url in self.start_urls]
-                top_tags = [resource[3] for resource in self.resources]
+                print(self.allowed_domains)
+
                 # Создание правил для каждого ресурса
                 self.rules = (
-                    Rule(LinkExtractor(restrict_xpaths="//a"), callback='parse_links', follow=True),
+                    Rule(LinkExtractor(restrict_xpaths="//a"), callback='parse_links', follow=True, process_links=self.limit_links),
                 )
 
                 super()._compile_rules()
@@ -66,48 +70,57 @@ class ResourceSpider(CrawlSpider):
             self.rules = ()
             self._compile_rules()
 
+    def limit_links(self, links):
+        # Ограничиваем количество ссылок до, например, 10
+        return links[:100]
+
     def parse_links(self, response):
         # Получаем текущий URL
         current_url = response.url
-
+        self.cursor.execute("SELECT 1 FROM temp_items_link WHERE link = %s", (current_url,))
+        if self.cursor.fetchone() is not None:
+            print(f'ссылка существует {current_url}')
+            return
+        print(f'Проверка контента из {current_url}')
+        parsed_current_url = urlparse(current_url)
+        current_netloc = parsed_current_url.netloc.replace('www.', '')
         #Ищем RESOURCE_ID для текущего URL
         resource_id = None
         resource_info = None
         for resource in self.resources:
             first_url = resource[2].split(',')[0].strip()
-            if first_url in current_url:
+            parsed_first_url = urlparse(first_url)
+            first_netloc = parsed_first_url.netloc.replace('www.', '')
+            if first_netloc == current_netloc:
                 resource_id = resource[0]
                 resource_info = resource
                 break
 
         if resource_id:
-            content = response.xpath(resource_info[4]).getall()
-            content = ' '.join([c.strip() for c in content if c.strip()])
-            text = str(content) if content else ''
-            content = self.replace_unsupported_characters(text)
             title_t = response.xpath(resource_info[5]).get()
-            title = self.replace_unsupported_characters(title_t)# Извлекаем заголовку новости
-            date = response.xpath('//meta[@property="article:published_time"]/@content').get()
-            if not date:
-                date = response.css('meta[name="date"]::attr(content)').get()
-                if not date:
-                    date = response.xpath(resource_info[6]).get()
-                    date = str(date) if date else ''
-                    if not date:
-                        self.logger.warning(f"Контент отсутствует для {date}")
-                        return
-            date = dateparser.parse(date)
-            nd_date = int(time.mktime(date.timetuple()))
-            not_date = date.strftime('%Y-%m-%d')
-            s_date = int(time.time())
-
-            self.cursor.execute("SELECT 1 FROM temp_items_link WHERE link = %s", (current_url,))
-            if self.cursor.fetchone() is not None:
+            if not title_t:
+                self.logger.warning(f"Заголовок отсутствует для {current_url}")
                 return
-
+            content = response.xpath(resource_info[4]).getall()
             if not content:
                 self.logger.warning(f"Контент отсутствует для {current_url}")
                 return
+            title = self.replace_unsupported_characters(title_t)
+            content = ' '.join([c.strip() for c in content if c.strip()])
+            content = self.replace_unsupported_characters(content)
+            date = response.xpath(resource_info[6]).get()
+            date = str(date) if date else ''
+            date = parse(date)
+            if not date:
+                date = response.xpath('//meta[@property="article:published_time"]/@content').get()
+                date = str(date) if date else ''
+                date = parse(date)
+                if not date:
+                    self.logger.warning(f"Дата отсутствует для {date}")
+                    return
+            nd_date = int(time.mktime(date.timetuple()))
+            not_date = date.strftime('%Y-%m-%d')
+            s_date = int(time.time())
 
 
             self.store_news(resource_id, title, current_url, nd_date, content, s_date, not_date)
@@ -128,6 +141,8 @@ class ResourceSpider(CrawlSpider):
         self.conn.commit()
 
     def replace_unsupported_characters(self, text):
+
+        text = str(text) if text else ''
         return emoji.replace_emoji(text, replace='?')
 
     def close(self, reason):
