@@ -15,6 +15,9 @@ from dotenv import load_dotenv
 import emoji
 from datetime import datetime
 import re
+from lxml.html import fromstring
+import bs4
+
 
 
 load_dotenv()
@@ -108,8 +111,7 @@ class ResourceSpider(CrawlSpider):
                 self.logger.warning(f"Контент отсутствует для {current_url}")
                 return
             title = self.replace_unsupported_characters(title_t)
-            content = ' '.join([c.strip() for c in content if c.strip()])
-            content = self.replace_unsupported_characters(content)
+            content = self.clean_text(content)
             date = response.xpath(resource_info[6]).get()
             date = str(date) if date else ''
             if re.search(r'-го|г\.|жылдың', date):
@@ -124,12 +126,13 @@ class ResourceSpider(CrawlSpider):
                 if not date:
                     self.logger.warning(f"Дата отсутствует для {date}")
                     return
+            n_date = date
             nd_date = int(time.mktime(date.timetuple()))
             not_date = date.strftime('%Y-%m-%d')
             s_date = int(time.time())
 
 
-            self.store_news(resource_id, title, current_url, nd_date, content, s_date, not_date)
+            self.store_news(resource_id, title, current_url, nd_date, content, n_date, s_date, not_date)
             self.store_link(current_url)
 
     def store_link(self, current_url):  # сохраняем ссылки в бд
@@ -139,18 +142,60 @@ class ResourceSpider(CrawlSpider):
                             )
         self.conn.commit()
 
-    def store_news(self, resource_id, title, current_url, nd_date, content, s_date, not_date):
+    def store_news(self, resource_id, title, current_url, nd_date, content, n_date, s_date, not_date):
         status = 'NULL'
         self.cursor.execute(
-            "INSERT INTO temp_items (res_id, title, link, nd_date, content, s_date, not_date, status) VALUES (%s,%s, %s, %s, %s, %s, %s, %s)",
-            (resource_id, title, current_url, nd_date, content, s_date, not_date, status)
+            "INSERT INTO temp_items (res_id, title, link, nd_date, content, n_date, s_date, not_date, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+            (resource_id, title, current_url, nd_date, content, n_date, s_date, not_date, status)
                             )
         self.conn.commit()
 
     def replace_unsupported_characters(self, text):
-
         text = str(text) if text else ''
         return emoji.replace_emoji(text, replace='?')
+
+    def clean_text(self, parsed_fields: list[str]) -> str | int:
+        """Function that removes junk html tags and performs some text normalization
+        Very similar to what Sphinx Search does in current configuration.
+        """
+
+        if not parsed_fields:
+            return ""
+        content = " ".join(parsed_fields)
+        content = content.replace("'", '"').strip()
+        KEYWORD_SELECTORS = ["//@alt", "//@title", "//@content", "//@data-body", "//@body"]
+        keywords = {
+            k for selector in KEYWORD_SELECTORS for k in fromstring(content).xpath(selector)
+        }
+
+        resp = bs4.BeautifulSoup(content, features="html.parser")
+
+        for el in resp.findAll("script"):
+            el.decompose()
+
+        for el in resp.findAll("style"):
+            el.decompose()
+
+        for el in resp.findAll("img"):
+            el.decompose()
+
+        for comment in resp.findAll(string=True):
+            if isinstance(comment, bs4.element.Comment):
+                comment.extract()
+        try:
+            content = " ".join(resp.findAll(string=True))
+        except AttributeError:
+            content = resp.text
+
+        content = content + " " + " ".join(keywords)
+
+        content = content.replace("\N{SOFT HYPHEN}", "")
+        content = re.sub(r"\\+", r"\\", content)
+        content = re.sub(r"\\n|_", " ", content)
+
+        content = re.sub(r"\s+", " ", content)
+        content = emoji.demojize(content)
+        return content
 
     def close(self, reason):
         if self.cursor:

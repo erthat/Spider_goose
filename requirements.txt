@@ -3,3 +3,5 @@ scrapy
 dateparser
 python-dotenv
 emoji
+beautifulsoup4
+lxml
