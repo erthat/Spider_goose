@@ -140,9 +140,10 @@ class ResourceSpider(CrawlSpider):
         self.conn.commit()
 
     def store_news(self, resource_id, title, current_url, nd_date, content, s_date, not_date):
+        status = 'NULL'
         self.cursor.execute(
-            "INSERT INTO temp_items (res_id, title, link, nd_date, content, s_date, not_date) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-            (resource_id, title, current_url, nd_date, content, s_date, not_date,)
+            "INSERT INTO temp_items (res_id, title, link, nd_date, content, s_date, not_date, status) VALUES (%s,%s, %s, %s, %s, %s, %s, %s)",
+            (resource_id, title, current_url, nd_date, content, s_date, not_date, status)
                             )
         self.conn.commit()
 
