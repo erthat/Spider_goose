@@ -13,6 +13,7 @@ import os
 from dotenv import load_dotenv
 import emoji
 from datetime import datetime
+import re
 
 
 load_dotenv()
@@ -51,7 +52,7 @@ class ResourceSpider(CrawlSpider):
                 self.resources = self.cursor.fetchall()
 
                 self.start_urls = [resource[2].split(',')[0].strip() for resource in self.resources]
-                self.allowed_domains = [urlparse(url).netloc for url in self.start_urls]
+                self.allowed_domains = [urlparse(url).netloc.replace('www.', '') for url in self.start_urls]
                 print(self.allowed_domains)
 
                 # Создание правил для каждого ресурса
@@ -72,7 +73,7 @@ class ResourceSpider(CrawlSpider):
 
     def limit_links(self, links):
         # Ограничиваем количество ссылок до, например, 10
-        return links[:100]
+        return links[:5000]
 
     def parse_links(self, response):
         # Получаем текущий URL
@@ -97,7 +98,7 @@ class ResourceSpider(CrawlSpider):
                 break
 
         if resource_id:
-            title_t = response.xpath(resource_info[5]).get()
+            title_t = response.xpath(f'normalize-space({resource_info[5]})').get()
             if not title_t:
                 self.logger.warning(f"Заголовок отсутствует для {current_url}")
                 return
@@ -110,6 +111,10 @@ class ResourceSpider(CrawlSpider):
             content = self.replace_unsupported_characters(content)
             date = response.xpath(resource_info[6]).get()
             date = str(date) if date else ''
+            if re.search(r'-го|г\.|жылдың', date):
+                date = date.replace('-го', '').replace(' г.', '').replace('жылдың', '')
+            else:
+                date = date
             date = parse(date)
             if not date:
                 date = response.xpath('//meta[@property="article:published_time"]/@content').get()
