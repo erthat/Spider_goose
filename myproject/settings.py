@@ -7,39 +7,6 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-import logging
-#
-# class IgnoreLinkFilter(logging.Filter):
-#     def filter(self, record):
-#         # Проверяем, есть ли в сообщении строка "Ignoring link"
-#         return "Ignoring link" not in record.getMessage()
-#
-#
-# # Создаем фильтр
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'filters': {
-#         'ignore_link_filter': {
-#             '()': IgnoreLinkFilter,
-#         },
-#     },
-#     'handlers': {
-#         'console': {
-#             'level': 'DEBUG',
-#             'class': 'logging.StreamHandler',
-#             'filters': ['ignore_link_filter'],
-#         },
-#     },
-#     'loggers': {
-#         'scrapy': {
-#             'handlers': ['console'],
-#             'level': 'DEBUG',
-#             'propagate': True,
-#         },
-#     },
-# }
-
 
 
 

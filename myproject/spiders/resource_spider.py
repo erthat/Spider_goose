@@ -1,5 +1,6 @@
 from twisted.internet import asyncioreactor
 asyncioreactor.install()
+
 import mysql.connector
 from mysql.connector import Error
 from scrapy.spiders import CrawlSpider, Rule
