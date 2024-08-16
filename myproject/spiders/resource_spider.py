@@ -158,7 +158,6 @@ class ResourceSpider(CrawlSpider):
         """Function that removes junk html tags and performs some text normalization
         Very similar to what Sphinx Search does in current configuration.
         """
-
         if not parsed_fields:
             return ""
         content = " ".join(parsed_fields)
