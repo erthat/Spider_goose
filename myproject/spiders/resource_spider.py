@@ -28,6 +28,8 @@ class ResourceSpider(CrawlSpider):
         super(ResourceSpider, self).__init__(*args, **kwargs)
         self.conn_1 = None
         self.cursor_1 = None
+        self.conn_2 = None
+        self.cursor_2 = None
         self.start_urls = []
         try:
             self.conn_1 = mysql.connector.connect(
@@ -53,6 +55,7 @@ class ResourceSpider(CrawlSpider):
             if self.conn_1.is_connected() and self.conn_2.is_connected():
                 self.cursor_1 = self.conn_1.cursor()
                 self.cursor_2 = self.conn_2.cursor()
+                print('Есть подключение к БД')
 
                 # Загрузка ресурсов из базы данных
                 self.cursor_1.execute(
@@ -80,6 +83,7 @@ class ResourceSpider(CrawlSpider):
 
         except Error as e:
             self.log(f"Error connecting to MySQL: {e}")
+            print('Нет подключение к БД')
             # Переключаемся на временный паук
             self.name = "temporary_spider"
             self.start_urls = ["http://example.com"]
@@ -93,8 +97,8 @@ class ResourceSpider(CrawlSpider):
     def parse_links(self, response):
         # Получаем текущий URL
         current_url = response.url
-        self.cursor_2.execute("SELECT 1 FROM temp_items_link WHERE link = %s", (current_url,))
-        if self.cursor_2.fetchone() is not None:
+        self.cursor_1.execute("SELECT 1 FROM temp_items_link WHERE link = %s", (current_url,))
+        if self.cursor_1.fetchone() is not None:
             print(f'ссылка существует {current_url}')
             return
         print(f'Проверка контента из {current_url}')
@@ -118,25 +122,21 @@ class ResourceSpider(CrawlSpider):
                 self.logger.warning(f"Заголовок отсутствует для {current_url}")
                 return
             content = response.xpath(resource_info[4]).getall()
-            if not content:
+            content = self.clean_text(content)
+            if not content or all(item.isspace() for item in content):
                 self.logger.warning(f"Контент отсутствует для {current_url}")
                 return
             title = self.replace_unsupported_characters(title_t)
-            content = self.clean_text(content)
             date = response.xpath(resource_info[6]).get()
             date = str(date) if date else ''
             if re.search(r'-го|г\.|жылдың', date):
                 date = date.replace('-го', '').replace(' г.', '').replace('жылдың', '')
             else:
                 date = date
-            date = parse(date)
+            date = parse(date, languages=['ru'])
             if not date:
-                date = response.xpath('//meta[@property="article:published_time"]/@content').get()
-                date = str(date) if date else ''
-                date = parse(date)
-                if not date:
-                    self.logger.warning(f"Дата отсутствует для {date}")
-                    return
+                self.logger.warning(f"Дата отсутствует для {current_url}")
+                return
             n_date = date
             nd_date = int(time.mktime(date.timetuple()))
             not_date = date.strftime('%Y-%m-%d')
@@ -147,19 +147,19 @@ class ResourceSpider(CrawlSpider):
             self.store_link(current_url)
 
     def store_link(self, current_url):  # сохраняем ссылки в бд
-        self.cursor_2.execute(
+        self.cursor_1.execute(
             "INSERT INTO temp_items_link (link) VALUES (%s)",
             (current_url,)
                             )
-        self.conn_2.commit()
+        self.conn_1.commit()
 
     def store_news(self, resource_id, title, current_url, nd_date, content, n_date, s_date, not_date):
         status = 'NULL'
-        self.cursor_2.execute(
+        self.cursor_1.execute(
             "INSERT INTO temp_items (res_id, title, link, nd_date, content, n_date, s_date, not_date, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
             (resource_id, title, current_url, nd_date, content, n_date, s_date, not_date, status)
                             )
-        self.conn_2.commit()
+        self.conn_1.commit()
 
     def replace_unsupported_characters(self, text):
         text = str(text) if text else ''

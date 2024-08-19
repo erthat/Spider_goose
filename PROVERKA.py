@@ -18,6 +18,20 @@ def connect_to_mysql():
         )
         if conn.is_connected():
             print("Successfully connected to MySQL database")
+            cursor = conn.cursor()
+            cursor.execute(
+                "SELECT RESOURCE_ID, RESOURCE_NAME, RESOURCE_URL, top_tag, bottom_tag, title_cut, date_cut "
+                "FROM resource "
+                "WHERE status = %s AND bottom_tag IS NOT NULL AND bottom_tag <> '' "
+                "AND title_cut IS NOT NULL AND title_cut <> '' "
+                "AND date_cut IS NOT NULL AND date_cut <> ''"
+                "AND RESOURCE_STATUS = %s",
+                ('spider_scrapy', 'WORK'))
+            resources = cursor.fetchall()
+            for resource in resources:
+                resource_url = resource[2]  # RESOURCE_URL находится на 3-й позиции (индекс 2)
+                first_url = resource_url.split(',')[0].strip()  # Разделяем по запятым и берем первую ссылку
+                print(first_url)
 
     except Error as e:
         print(f"Error: {e}")
