@@ -26,25 +26,36 @@ class ResourceSpider(CrawlSpider):
 
     def __init__(self, *args, **kwargs):
         super(ResourceSpider, self).__init__(*args, **kwargs)
-        self.conn = None
-        self.cursor = None
+        self.conn_1 = None
+        self.cursor_1 = None
         self.start_urls = []
         try:
-        # Подключение к базе данных для докера smi_gui-main-mariadb-server-1
-            self.conn = mysql.connector.connect(
-                host=os.getenv("DB_HOST"),
-                user=os.getenv("DB_USER"),
-                password=os.getenv("DB_PASSWORD"),
-                database=os.getenv("DB_DATABASE"),
+            self.conn_1 = mysql.connector.connect(
+                host=os.getenv("DB_HOST_1"),
+                user=os.getenv("DB_USER_1"),
+                password=os.getenv("DB_PASSWORD_1"),
+                database=os.getenv("DB_DATABASE_1"),
+                port=os.getenv("DB_PORT_1"),
                 charset='utf8mb4',
                 collation='utf8mb4_general_ci'
 
             )
-            if self.conn.is_connected():
-                self.cursor = self.conn.cursor()
+            self.conn_2 = mysql.connector.connect(
+                host=os.getenv("DB_HOST_2"),
+                user=os.getenv("DB_USER_2"),
+                password=os.getenv("DB_PASSWORD_2"),
+                database=os.getenv("DB_DATABASE_2"),
+                port=os.getenv("DB_PORT_2"),
+                charset='utf8mb4',
+                collation='utf8mb4_general_ci'
+
+            )
+            if self.conn_1.is_connected() and self.conn_2.is_connected():
+                self.cursor_1 = self.conn_1.cursor()
+                self.cursor_2 = self.conn_2.cursor()
 
                 # Загрузка ресурсов из базы данных
-                self.cursor.execute(
+                self.cursor_1.execute(
                     "SELECT RESOURCE_ID, RESOURCE_NAME, RESOURCE_URL, top_tag, bottom_tag, title_cut, date_cut "
                     "FROM resource "
                     "WHERE status = %s AND bottom_tag IS NOT NULL AND bottom_tag <> '' "
@@ -53,7 +64,7 @@ class ResourceSpider(CrawlSpider):
                     "AND RESOURCE_STATUS = %s",
                     ('spider_scrapy', 'WORK')
                 )
-                self.resources = self.cursor.fetchall()
+                self.resources = self.cursor_1.fetchall()
 
                 self.start_urls = [resource[2].split(',')[0].strip() for resource in self.resources]
                 self.allowed_domains = [urlparse(url).netloc.replace('www.', '') for url in self.start_urls]
@@ -61,7 +72,7 @@ class ResourceSpider(CrawlSpider):
 
                 # Создание правил для каждого ресурса
                 self.rules = (
-                    Rule(LinkExtractor(restrict_xpaths="//a"), callback='parse_links', follow=True, process_links=self.limit_links),
+                    Rule(LinkExtractor(restrict_xpaths="//a"), callback='parse_links', follow=True, process_links=self.limit_links,),
                 )
 
                 super()._compile_rules()
@@ -82,8 +93,8 @@ class ResourceSpider(CrawlSpider):
     def parse_links(self, response):
         # Получаем текущий URL
         current_url = response.url
-        self.cursor.execute("SELECT 1 FROM temp_items_link WHERE link = %s", (current_url,))
-        if self.cursor.fetchone() is not None:
+        self.cursor_2.execute("SELECT 1 FROM temp_items_link WHERE link = %s", (current_url,))
+        if self.cursor_2.fetchone() is not None:
             print(f'ссылка существует {current_url}')
             return
         print(f'Проверка контента из {current_url}')
@@ -136,19 +147,19 @@ class ResourceSpider(CrawlSpider):
             self.store_link(current_url)
 
     def store_link(self, current_url):  # сохраняем ссылки в бд
-        self.cursor.execute(
+        self.cursor_2.execute(
             "INSERT INTO temp_items_link (link) VALUES (%s)",
             (current_url,)
                             )
-        self.conn.commit()
+        self.conn_2.commit()
 
     def store_news(self, resource_id, title, current_url, nd_date, content, n_date, s_date, not_date):
         status = 'NULL'
-        self.cursor.execute(
+        self.cursor_2.execute(
             "INSERT INTO temp_items (res_id, title, link, nd_date, content, n_date, s_date, not_date, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
             (resource_id, title, current_url, nd_date, content, n_date, s_date, not_date, status)
                             )
-        self.conn.commit()
+        self.conn_2.commit()
 
     def replace_unsupported_characters(self, text):
         text = str(text) if text else ''
@@ -197,7 +208,25 @@ class ResourceSpider(CrawlSpider):
         return content
 
     def close(self, reason):
-        if self.cursor:
-            self.cursor.close()
-        if self.conn and self.conn.is_connected():
-            self.conn.close()
+        if self.cursor_1:
+            self.cursor_1.close()
+            self.cursor_1 = None  # Установка в None для предотвращения повторного закрытия
+
+        if self.conn_1:
+            try:
+                if self.conn_1.is_connected():
+                    self.conn_1.close()
+            except Exception as e:
+                self.logger.error(f"Error closing connection conn_1: {e}")
+            finally:
+                self.conn_1 = None  # Установка в None для предотвращения повторного закрытия
+
+        if self.conn_2:
+            try:
+                if self.conn_2.is_connected():
+                    self.conn_2.close()
+            except Exception as e:
+                self.logger.error(f"Error closing connection conn_2: {e}")
+            finally:
+                self.conn_2 = None  # Установка в None для предотвращения повторного закрытия
+
