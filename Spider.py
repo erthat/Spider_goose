@@ -8,7 +8,7 @@ import logging
 logging.basicConfig(
     level=logging.INFO,  # Устанавливаем уровень логирования
     format='%(levelname)s: %(message)s',
-
+#проверка гит
 )
 @inlineCallbacks
 def crawl():
