@@ -10,6 +10,7 @@ logging.basicConfig(
     format='%(levelname)s: %(message)s',
 #проверка гит
 )
+
 @inlineCallbacks
 def crawl():
     runner = CrawlerRunner(get_project_settings())

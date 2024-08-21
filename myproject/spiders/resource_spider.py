@@ -1,3 +1,5 @@
+import logging
+
 from twisted.internet import asyncioreactor
 asyncioreactor.install()
 
@@ -55,7 +57,7 @@ class ResourceSpider(CrawlSpider):
             if self.conn_1.is_connected() and self.conn_2.is_connected():
                 self.cursor_1 = self.conn_1.cursor()
                 self.cursor_2 = self.conn_2.cursor()
-                print('Есть подключение к БД')
+                logging.info('Есть подключение к БД')
 
                 # Загрузка ссылки на ресурсы из базы данных
                 self.cursor_1.execute(
@@ -71,7 +73,7 @@ class ResourceSpider(CrawlSpider):
 
                 self.start_urls = [resource[2].split(',')[0].strip() for resource in self.resources]
                 self.allowed_domains = [urlparse(url).netloc.replace('www.', '') for url in self.start_urls]
-                print(self.allowed_domains)
+                logging.info(self.allowed_domains)
 
                 # Создание правил для каждого ресурса
                 self.rules = (
@@ -83,7 +85,7 @@ class ResourceSpider(CrawlSpider):
 
         except Error as e:
             self.log(f"Error connecting to MySQL: {e}")
-            print('Нет подключение к БД')
+            logging.info('Нет подключение к БД')
             # Переключаемся на временный паук чтобы закрыть паука и запустить через 30 мин
             self.name = "temporary_spider"
             self.start_urls = ["http://example.com"]
@@ -99,9 +101,9 @@ class ResourceSpider(CrawlSpider):
         current_url = response.url
         self.cursor_2.execute("SELECT 1 FROM temp_items_link WHERE link = %s", (current_url,))
         if self.cursor_2.fetchone() is not None:
-            print(f'ссылка существует {current_url}')
+            logging.info(f'ссылка существует {current_url}')
             return
-        print(f'Проверка контента из {current_url}')
+        logging.info(f'Проверка контента из {current_url}')
         parsed_current_url = urlparse(current_url)
         current_netloc = parsed_current_url.netloc.replace('www.', '')
         #Ищем RESOURCE_ID для текущего URL
