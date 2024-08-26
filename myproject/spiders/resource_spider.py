@@ -33,6 +33,7 @@ class ResourceSpider(CrawlSpider):
         self.conn_2 = None
         self.cursor_2 = None
         self.start_urls = []
+
         try:    #подключение к таблице resource
             self.conn_1 = mysql.connector.connect(
                 host=os.getenv("DB_HOST_1"),
@@ -106,6 +107,7 @@ class ResourceSpider(CrawlSpider):
         logging.info(f'Проверка контента из {current_url}')
         parsed_current_url = urlparse(current_url)
         current_netloc = parsed_current_url.netloc.replace('www.', '')
+        # print(current_url)
         #Ищем RESOURCE_ID для текущего URL
         resource_id = None
         resource_info = None
@@ -113,6 +115,7 @@ class ResourceSpider(CrawlSpider):
             first_url = resource[2].split(',')[0].strip()
             parsed_first_url = urlparse(first_url)
             first_netloc = parsed_first_url.netloc.replace('www.', '')
+            # print(first_netloc)
             if first_netloc == current_netloc:
                 resource_id = resource[0]
                 resource_info = resource
@@ -143,7 +146,8 @@ class ResourceSpider(CrawlSpider):
             self.store_news(resource_id, title, current_url, nd_date, content, n_date, s_date, not_date)
             self.store_link(current_url)
 
-    def store_link(self, current_url):  # сохраняем ссылки в таблицу temp_items_link
+    def store_link(self, current_url):
+        logging.info(f'Новость добавлен в базу {current_url}') # сохраняем ссылки в таблицу temp_items_link
         self.cursor_2.execute(
             "INSERT INTO temp_items_link (link) VALUES (%s)",
             (current_url,)
