@@ -78,7 +78,7 @@ class ResourceSpider(CrawlSpider):
 
                 # Создание правил для каждого ресурса
                 self.rules = (
-                    Rule(LinkExtractor(restrict_xpaths="//a"), callback='parse_links', follow=True, process_links=self.limit_links,),
+                    Rule(LinkExtractor(restrict_xpaths="//a"), callback='parse_links', follow=True),
                 )
 
                 super()._compile_rules()
@@ -93,18 +93,18 @@ class ResourceSpider(CrawlSpider):
             self.rules = ()
             self._compile_rules()
 
-    def limit_links(self, links):
-        # Ограничиваем количество ссылок до, например, 100000
-        return links[:100000]
 
     def parse_links(self, response):
         # Получаем текущий URL
         current_url = response.url
+        if any(current_url.endswith(ext) for ext in ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx']):
+            logging.info(f'Пропускаем неподходящий файл: {current_url}')
+            return
         self.cursor_2.execute("SELECT 1 FROM temp_items_link WHERE link = %s", (current_url,))
         if self.cursor_2.fetchone() is not None:
             logging.info(f'ссылка существует {current_url}')
             return
-        logging.info(f'Проверка контента из {current_url}')
+        # logging.info(f'Проверка контента из {current_url}')
         parsed_current_url = urlparse(current_url)
         current_netloc = parsed_current_url.netloc.replace('www.', '')
         # print(current_url)
@@ -124,18 +124,18 @@ class ResourceSpider(CrawlSpider):
         if resource_id:
             title_t = response.xpath(f'normalize-space({resource_info[5]})').get() #получение заголовок новостей
             if not title_t:
-                self.logger.warning(f"Заголовок отсутствует для {current_url}")
+                self.logger.info(f"Заголовок отсутствует для {current_url}")
                 return
             content = response.xpath(resource_info[4]).getall() #получение контента новостей
             content = self.clean_text(content)
             if not content or all(item.isspace() for item in content):
-                self.logger.warning(f"Контент отсутствует для {current_url}")
+                self.logger.info(f"Контент отсутствует для {current_url}")
                 return
             title = self.replace_unsupported_characters(title_t)
             date = response.xpath(resource_info[6]).get()  #получение даты новостей
             date = self.parse_date(date)
             if not date:
-                self.logger.warning(f"Дата отсутствует для {current_url}")
+                self.logger.info(f"Дата отсутствует для {current_url}")
                 return
             n_date = date #дата публикаций новостей
             nd_date = int(time.mktime(date.timetuple())) #дата публикаций новостей UNIX формате
@@ -147,7 +147,7 @@ class ResourceSpider(CrawlSpider):
             self.store_link(current_url)
 
     def store_link(self, current_url):
-        logging.info(f'Новость добавлен в базу {current_url}') # сохраняем ссылки в таблицу temp_items_link
+        logging.warning(f'Новость добавлен в базу {current_url}') # сохраняем ссылки в таблицу temp_items_link
         self.cursor_2.execute(
             "INSERT INTO temp_items_link (link) VALUES (%s)",
             (current_url,)
@@ -217,7 +217,7 @@ class ResourceSpider(CrawlSpider):
 
         date_str = str(date_str) if date_str else ''
         if re.search(r'-го|г\.|жылдың|Published ', date_str):
-            date_str = re.sub(r'[-го|г\.|жылдың|Published|,]', '', date_str)
+            date_str = re.sub(r'-го|г\.|жылдың|Published|,', '', date_str)
         else:
             date_str = date_str
         # Проверка формата даты и парсинг
