@@ -44,7 +44,10 @@ class ResourceSpider(CrawlSpider):
                 database=os.getenv("DB_DATABASE_1"),
                 port=os.getenv("DB_PORT_1"),
                 charset='utf8mb4',
-                collation='utf8mb4_general_ci'
+                collation='utf8mb4_general_ci',
+                connection_timeout=300,
+                autocommit=True
+
 
             ) #подключение к таблице temp_items и temp_items_link
             self.conn_2 = mysql.connector.connect(
@@ -54,7 +57,11 @@ class ResourceSpider(CrawlSpider):
                 database=os.getenv("DB_DATABASE_2"),
                 port=os.getenv("DB_PORT_2"),
                 charset='utf8mb4',
-                collation='utf8mb4_general_ci'
+                collation='utf8mb4_general_ci',
+                connection_timeout=300,
+                autocommit=True
+
+
 
             )
             self.conn_3 = mysql.connector.connect(
@@ -64,7 +71,10 @@ class ResourceSpider(CrawlSpider):
                 database=os.getenv("DB_DATABASE_3"),
                 port=os.getenv("DB_PORT_3"),
                 charset='utf8mb4',
-                collation='utf8mb4_general_ci'
+                collation='utf8mb4_general_ci',
+                connection_timeout=300,
+                autocommit=True
+
 
             )
             if self.conn_1.is_connected() and self.conn_2.is_connected() and self.conn_3.is_connected():
@@ -243,7 +253,7 @@ class ResourceSpider(CrawlSpider):
             else:
                 return date_t
         elif re.fullmatch(iso_date_pattern, date_str):
-            # Прямой парсинг даты в формате ISO
+                # Прямой парсинг даты в формате ISO
             return parse(date_str)
         else:
             return parse(date_str)
