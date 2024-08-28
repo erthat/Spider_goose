@@ -55,9 +55,20 @@ class ResourceSpider(CrawlSpider):
                 collation='utf8mb4_general_ci'
 
             )
-            if self.conn_1.is_connected() and self.conn_2.is_connected():
+            self.conn_3 = mysql.connector.connect(
+                host=os.getenv("DB_HOST_3"),
+                user=os.getenv("DB_USER_3"),
+                password=os.getenv("DB_PASSWORD_3"),
+                database=os.getenv("DB_DATABASE_3"),
+                port=os.getenv("DB_PORT_3"),
+                charset='utf8mb4',
+                collation='utf8mb4_general_ci'
+
+            )
+            if self.conn_1.is_connected() and self.conn_2.is_connected() and self.conn_3.is_connected():
                 self.cursor_1 = self.conn_1.cursor()
                 self.cursor_2 = self.conn_2.cursor()
+                self.cursor_3 = self.conn_3.cursor()
                 logging.info('Есть подключение к БД')
 
                 # Загрузка ссылки на ресурсы из базы данных
@@ -100,8 +111,8 @@ class ResourceSpider(CrawlSpider):
         if any(current_url.endswith(ext) for ext in ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx']):
             logging.info(f'Пропускаем неподходящий файл: {current_url}')
             return
-        self.cursor_2.execute("SELECT 1 FROM temp_items_link WHERE link = %s", (current_url,))
-        if self.cursor_2.fetchone() is not None:
+        self.cursor_3.execute("SELECT 1 FROM temp_items_link WHERE link = %s", (current_url,))
+        if self.cursor_3.fetchone() is not None:
             logging.info(f'ссылка существует {current_url}')
             return
         # logging.info(f'Проверка контента из {current_url}')
@@ -148,11 +159,11 @@ class ResourceSpider(CrawlSpider):
 
     def store_link(self, current_url):
         logging.warning(f'Новость добавлен в базу {current_url}') # сохраняем ссылки в таблицу temp_items_link
-        self.cursor_2.execute(
+        self.cursor_3.execute(
             "INSERT INTO temp_items_link (link) VALUES (%s)",
             (current_url,)
                             )
-        self.conn_2.commit()
+        self.conn_3.commit()
 
     def store_news(self, resource_id, title, current_url, nd_date, content, n_date, s_date, not_date):
         status = 'NULL'  # сохраняем ссылки в таблицу temp_items
@@ -236,25 +247,11 @@ class ResourceSpider(CrawlSpider):
             return parse(date_str)
 
     def close(self, reason):
-        if self.cursor_1:
-            self.cursor_1.close()
-            self.cursor_1 = None  # Установка в None для предотвращения повторного закрытия
+        self.cursor_1.close()
+        self.cursor_2.close()
+        self.cursor_3.close()
+        self.conn_1.close()
+        self.conn_2.close()
+        self.conn_3.close()
 
-        if self.conn_1:
-            try:
-                if self.conn_1.is_connected():
-                    self.conn_1.close()
-            except Exception as e:
-                self.logger.error(f"Error closing connection conn_1: {e}")
-            finally:
-                self.conn_1 = None  # Установка в None для предотвращения повторного закрытия
-
-        if self.conn_2:
-            try:
-                if self.conn_2.is_connected():
-                    self.conn_2.close()
-            except Exception as e:
-                self.logger.error(f"Error closing connection conn_2: {e}")
-            finally:
-                self.conn_2 = None  # Установка в None для предотвращения повторного закрытия
 
