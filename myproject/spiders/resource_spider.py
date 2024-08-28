@@ -32,6 +32,8 @@ class ResourceSpider(CrawlSpider):
         self.cursor_1 = None
         self.conn_2 = None
         self.cursor_2 = None
+        self.conn_3 = None
+        self.cursor_3 = None
         self.start_urls = []
 
         try:    #подключение к таблице resource
@@ -97,7 +99,7 @@ class ResourceSpider(CrawlSpider):
 
         except Error as e:
             self.log(f"Error connecting to MySQL: {e}")
-            logging.info('Нет подключение к БД')
+            logging.warning('Нет подключение к БД')
             # Переключаемся на временный паук чтобы закрыть паука и запустить через 30 мин
             self.name = "temporary_spider"
             self.start_urls = ["http://example.com"]
@@ -253,5 +255,6 @@ class ResourceSpider(CrawlSpider):
         self.conn_1.close()
         self.conn_2.close()
         self.conn_3.close()
+        super().close(reason)
 
 
