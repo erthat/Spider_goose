@@ -174,24 +174,7 @@ class ResourceSpider(CrawlSpider):
 
 
             self.store_news(resource_id, title, current_url, nd_date, content, n_date, s_date, not_date)
-            self.store_link(current_url)
 
-    def store_link(self, current_url):
-        # Проверка соединения перед выполнением операций
-        if not self.conn_3.is_connected():
-            try:
-                logging.warning("Соединение потеряно, пытаемся переподключиться...")
-                self.conn_3.reconnect(attempts=3, delay=5)
-                logging.info("Соединение восстановлено")
-            except mysql.connector.Error as err:
-                logging.error(f"Ошибка переподключения: {err}")
-                return  # Прекращаем выполнение, если не удалось переподключиться
-        # После успешного восстановления соединения продолжаем выполнение
-        self.cursor_3.execute(
-            "INSERT INTO temp_items_link (link) VALUES (%s)",
-            (current_url,)
-        )
-        self.conn_3.commit()
 
     def store_news(self, resource_id, title, current_url, nd_date, content, n_date, s_date, not_date):
         # Проверка соединения перед выполнением операций
@@ -219,7 +202,7 @@ class ResourceSpider(CrawlSpider):
                 (resource_id, title, current_url, nd_date, content, n_date, s_date, not_date, status)
             )
             self.conn_2.commit()
-            logging.info(f'Новость добавлена в базу: {current_url}')
+            logging.warning(f'Новость добавлена в базу: {current_url}')
         else:
             # Если ссылка уже существует
             logging.info(f'Ссылка уже существует в базе TEMP: {current_url}')
