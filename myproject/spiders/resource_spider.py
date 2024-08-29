@@ -121,7 +121,7 @@ class ResourceSpider(CrawlSpider):
         # Получаем текущий URL
         current_url = response.url
         if any(current_url.endswith(ext) for ext in ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx']):
-            logging.info(f'Пропускаем неподходящий файл: {current_url}')
+            logging.info(f'Пропускаем неподходящий ссылку: {current_url}')
             return
         self.cursor_3.execute("SELECT 1 FROM temp_items_link WHERE link = %s", (current_url,))
         if self.cursor_3.fetchone() is not None:
@@ -170,20 +170,43 @@ class ResourceSpider(CrawlSpider):
             self.store_link(current_url)
 
     def store_link(self, current_url):
-        logging.warning(f'Новость добавлен в базу {current_url}') # сохраняем ссылки в таблицу temp_items_link
+        # Проверка соединения перед выполнением операций
+        if not self.conn_3.is_connected():
+            try:
+                logging.warning("Соединение потеряно, пытаемся переподключиться...")
+                self.conn_3.reconnect(attempts=3, delay=5)
+                logging.info("Соединение восстановлено")
+            except mysql.connector.Error as err:
+                logging.error(f"Ошибка переподключения: {err}")
+                return  # Прекращаем выполнение, если не удалось переподключиться
+
+        # После успешного восстановления соединения продолжаем выполнение
+        logging.warning(f'Новость добавлена в базу: {current_url}')
         self.cursor_3.execute(
             "INSERT INTO temp_items_link (link) VALUES (%s)",
             (current_url,)
-                            )
+        )
         self.conn_3.commit()
 
     def store_news(self, resource_id, title, current_url, nd_date, content, n_date, s_date, not_date):
+        # Проверка соединения перед выполнением операций
+        if not self.conn_2.is_connected():
+            try:
+                logging.warning("Соединение с базой данных потеряно, пытаемся переподключиться...")
+                self.conn_2.reconnect(attempts=3, delay=5)
+                logging.info("Соединение восстановлено")
+            except mysql.connector.Error as err:
+                logging.error(f"Ошибка переподключения: {err}")
+                return  # Прекращаем выполнение, если не удалось переподключиться
+
+        # После успешного восстановления соединения продолжаем выполнение
         status = 'NULL'  # сохраняем ссылки в таблицу temp_items
         self.cursor_2.execute(
             "INSERT INTO temp_items (res_id, title, link, nd_date, content, n_date, s_date, not_date, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
             (resource_id, title, current_url, nd_date, content, n_date, s_date, not_date, status)
-                            )
+        )
         self.conn_2.commit()
+        logging.info(f'Новость добавлена в базу: {current_url}')
 
     def replace_unsupported_characters(self, text):
         text = str(text) if text else ''
