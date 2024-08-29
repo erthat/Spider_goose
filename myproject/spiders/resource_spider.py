@@ -1,5 +1,6 @@
 import logging
 
+import pytz
 from twisted.internet import asyncioreactor
 asyncioreactor.install()
 
@@ -98,10 +99,11 @@ class ResourceSpider(CrawlSpider):
                 self.start_urls = [resource[2].split(',')[0].strip() for resource in self.resources]
                 self.allowed_domains = [urlparse(url).netloc.replace('www.', '') for url in self.start_urls]
                 logging.info(self.allowed_domains)
+                deny = [r'kabar.kg/arkhiv-kategorii/', r'//kabar.kg/archive/', r'//bilimdiler.kz/tags/']
 
                 # Создание правил для каждого ресурса
                 self.rules = (
-                    Rule(LinkExtractor(restrict_xpaths="//a"), callback='parse_links', follow=True),
+                    Rule(LinkExtractor(restrict_xpaths="//a", deny=deny), callback='parse_links', follow=True),
                 )
 
                 super()._compile_rules()
@@ -155,11 +157,16 @@ class ResourceSpider(CrawlSpider):
                 self.logger.info(f"Контент отсутствует для {current_url}")
                 return
             title = self.replace_unsupported_characters(title_t)
-            date = response.xpath(resource_info[6]).get()  #получение даты новостей
+            date = response.xpath(resource_info[6]).get()
+            if not date:
+                self.logger.info(f"Дата отсутствует для {current_url}")
+                return
+            #получение даты новостей
             date = self.parse_date(date)
             if not date:
                 self.logger.info(f"Дата отсутствует для {current_url}")
                 return
+
             n_date = date #дата публикаций новостей
             nd_date = int(time.mktime(date.timetuple())) #дата публикаций новостей UNIX формате
             not_date = date.strftime('%Y-%m-%d') #дата публикаций новостей
@@ -179,9 +186,7 @@ class ResourceSpider(CrawlSpider):
             except mysql.connector.Error as err:
                 logging.error(f"Ошибка переподключения: {err}")
                 return  # Прекращаем выполнение, если не удалось переподключиться
-
         # После успешного восстановления соединения продолжаем выполнение
-        logging.warning(f'Новость добавлена в базу: {current_url}')
         self.cursor_3.execute(
             "INSERT INTO temp_items_link (link) VALUES (%s)",
             (current_url,)
@@ -199,14 +204,25 @@ class ResourceSpider(CrawlSpider):
                 logging.error(f"Ошибка переподключения: {err}")
                 return  # Прекращаем выполнение, если не удалось переподключиться
 
-        # После успешного восстановления соединения продолжаем выполнение
-        status = 'NULL'  # сохраняем ссылки в таблицу temp_items
+        # Проверка наличия ссылки в таблице
         self.cursor_2.execute(
-            "INSERT INTO temp_items (res_id, title, link, nd_date, content, n_date, s_date, not_date, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
-            (resource_id, title, current_url, nd_date, content, n_date, s_date, not_date, status)
+            "SELECT COUNT(*) FROM temp_items WHERE link = %s",
+            (current_url,)
         )
-        self.conn_2.commit()
-        logging.info(f'Новость добавлена в базу: {current_url}')
+        (count,) = self.cursor_2.fetchone()
+
+        if count == 0:
+            # Если ссылка не найдена, добавляем её в таблицу
+            status = ''
+            self.cursor_2.execute(
+                "INSERT INTO temp_items (res_id, title, link, nd_date, content, n_date, s_date, not_date, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                (resource_id, title, current_url, nd_date, content, n_date, s_date, not_date, status)
+            )
+            self.conn_2.commit()
+            logging.info(f'Новость добавлена в базу: {current_url}')
+        else:
+            # Если ссылка уже существует
+            logging.info(f'Ссылка уже существует в базе TEMP: {current_url}')
 
     def replace_unsupported_characters(self, text):
         text = str(text) if text else ''
@@ -255,31 +271,27 @@ class ResourceSpider(CrawlSpider):
         return content
 
     def parse_date(self, date_str):
-        # Определите формат русской даты (дд.мм.гггг)
-        russian_date_pattern = r'\d{2}\.\d{2}\.\d{4}'
-
-        # Определите формат ISO даты (гггг-мм-ддThh:mm:ss+zz:zz)
-        iso_date_pattern = r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\+\d{2}:\d{2})?'
-
         date_str = str(date_str) if date_str else ''
         if re.search(r'-го|г\.|жылдың|Published ', date_str):
             date_str = re.sub(r'-го|г\.|жылдың|Published|,', '', date_str)
         else:
             date_str = date_str
-        # Проверка формата даты и парсинг
-        if re.fullmatch(russian_date_pattern, date_str):
-            # Преобразование русской даты в стандартный формат ISO для `dateparser`
-            clean_date_str = date_str + 'T00:00:00'
-            date_t = parse(clean_date_str, languages=['ru'])# Добавляем время для совместимости
-            if not date_t:
-                return parse(date_str)
-            else:
-                return date_t
-        elif re.fullmatch(iso_date_pattern, date_str):
-                # Прямой парсинг даты в формате ISO
-            return parse(date_str)
-        else:
-            return parse(date_str)
+        languages = ['ru', 'kk', 'en']
+        DATE_ORDERS = ["YMD", "DMY", "MYD"]
+        date_formats = ['']
+        UTC = pytz.UTC
+        for date_order in DATE_ORDERS:
+            date = parse(date_str,
+                         languages=languages,
+                         date_formats=date_formats,
+                         settings={"DATE_ORDER": date_order},
+                         )
+            if date:
+                date_with_utc = date.replace(tzinfo=UTC)
+                if date_with_utc <= datetime.now().replace(tzinfo=UTC):
+                    return date_with_utc
+        return None
+
 
     def close(self, reason):
         self.cursor_1.close()
