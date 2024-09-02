@@ -86,7 +86,7 @@ class ResourceSpider(CrawlSpider):
 
                 # Загрузка ссылки на ресурсы из базы данных
                 self.cursor_1.execute(
-                    "SELECT RESOURCE_ID, RESOURCE_NAME, RESOURCE_URL, top_tag, bottom_tag, title_cut, date_cut "
+                    "SELECT RESOURCE_ID, RESOURCE_NAME, RESOURCE_URL, top_tag, bottom_tag, title_cut, date_cut, convert_date "
                     "FROM resource "
                     "WHERE status = %s AND bottom_tag IS NOT NULL AND bottom_tag <> '' "
                     "AND title_cut IS NOT NULL AND title_cut <> '' "
@@ -162,7 +162,7 @@ class ResourceSpider(CrawlSpider):
                 self.logger.info(f"Дата отсутствует для {current_url}")
                 return
             #получение даты новостей
-            date = self.parse_date(date)
+            date = self.parse_date(date, resource_info[7])
             if not date:
                 self.logger.info(f"Дата отсутствует для {current_url}")
                 return
@@ -253,11 +253,17 @@ class ResourceSpider(CrawlSpider):
         content = emoji.demojize(content)
         return content
 
-    def parse_date(self, date_str):
+    def parse_date(self, date_str, convert_date):
         date_str = str(date_str) if date_str else ''
         date_str = re.sub(r'-го|г\.|Published|\bжыл\w*|', '', date_str)
         languages = ['ru', 'kk', 'en']
-        DATE_ORDERS = ["YMD", "DMY", "MYD"]
+        if not convert_date:  # Присваиваем список по умолчанию
+            DATE_ORDERS = ["YMD", "DMY", "MYD"]
+        else:
+            if isinstance(convert_date, str): #Если переменная содержит строку (например, "YMD"), превращаем её в список
+                DATE_ORDERS = [convert_date]
+            else:
+                DATE_ORDERS = convert_date
         date_formats = ['']
         UTC = pytz.UTC
         for date_order in DATE_ORDERS:
