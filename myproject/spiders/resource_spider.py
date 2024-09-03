@@ -1,25 +1,22 @@
 import logging
-
+# from twisted.internet import asyncioreactor
+# asyncioreactor.install()
 import pytz
-from twisted.internet import asyncioreactor
-asyncioreactor.install()
-
 import mysql.connector
-from mysql.connector import Error
+from pygments.lexers.robotframework import SETTING
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
 from urllib.parse import urlparse
-import dateparser
 from dateparser import parse
 import time
-import scrapy
-import os
 from dotenv import load_dotenv
 import emoji
 from datetime import datetime
 import re
 from lxml.html import fromstring
 import bs4
+import os
+from mysql.connector import Error
 
 
 
@@ -27,9 +24,10 @@ load_dotenv()
 class ResourceSpider(CrawlSpider):
     name = 'resource_spider'
 
-    def __init__(self, *args, **kwargs):
-        super(ResourceSpider, self).__init__(*args, **kwargs)
-        self.conn_1 = None
+    def __init__(self, conn_1=None, resources=None,  spider_name=None, custom_settings=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.spider_name = spider_name or self.name
+        self.conn_1 = conn_1
         self.cursor_1 = None
         self.conn_2 = None
         self.cursor_2 = None
@@ -37,20 +35,17 @@ class ResourceSpider(CrawlSpider):
         self.cursor_3 = None
         self.start_urls = []
 
-        try:    #подключение к таблице resource
-            self.conn_1 = mysql.connector.connect(
-                host=os.getenv("DB_HOST_1"),
-                user=os.getenv("DB_USER_1"),
-                password=os.getenv("DB_PASSWORD_1"),
-                database=os.getenv("DB_DATABASE_1"),
-                port=os.getenv("DB_PORT_1"),
-                charset='utf8mb4',
-                collation='utf8mb4_general_ci',
-                connection_timeout=300,
-                autocommit=True
+        # if custom_settings:  #НАДО ДОРАБОТАТЬ
+        #     if isinstance(custom_settings, dict):
+        #         for key, value in custom_settings.items():
+        #             self.settings.set(key, value)
+        #             print(f"Custom setting applied: {key} = {value}")
+        #     else:
+        #         print("Custom settings should be a dictionary.")
+        # else:
+        #     print("No custom settings provided.")
 
-
-            ) #подключение к таблице temp_items и temp_items_link
+        try: # подключение к таблице temp_items и temp_items_link
             self.conn_2 = mysql.connector.connect(
                 host=os.getenv("DB_HOST_2"),
                 user=os.getenv("DB_USER_2"),
@@ -61,8 +56,6 @@ class ResourceSpider(CrawlSpider):
                 collation='utf8mb4_general_ci',
                 connection_timeout=300,
                 autocommit=True
-
-
 
             )
             self.conn_3 = mysql.connector.connect(
@@ -76,30 +69,18 @@ class ResourceSpider(CrawlSpider):
                 connection_timeout=300,
                 autocommit=True
 
-
             )
-            if self.conn_1.is_connected() and self.conn_2.is_connected() and self.conn_3.is_connected():
-                self.cursor_1 = self.conn_1.cursor()
+            if self.conn_2.is_connected() and self.conn_3.is_connected():
                 self.cursor_2 = self.conn_2.cursor()
                 self.cursor_3 = self.conn_3.cursor()
                 logging.info('Есть подключение к БД')
 
-                # Загрузка ссылки на ресурсы из базы данных
-                self.cursor_1.execute(
-                    "SELECT RESOURCE_ID, RESOURCE_NAME, RESOURCE_URL, top_tag, bottom_tag, title_cut, date_cut, convert_date "
-                    "FROM resource "
-                    "WHERE status = %s AND bottom_tag IS NOT NULL AND bottom_tag <> '' "
-                    "AND title_cut IS NOT NULL AND title_cut <> '' "
-                    "AND date_cut IS NOT NULL AND date_cut <> ''"
-                    "AND RESOURCE_STATUS = %s",
-                    ('spider_scrapy', 'WORK')
-                )
-                self.resources = self.cursor_1.fetchall()
-
+            if resources:
+                self.resources = resources
                 self.start_urls = [resource[2].split(',')[0].strip() for resource in self.resources]
                 self.allowed_domains = [urlparse(url).netloc.replace('www.', '') for url in self.start_urls]
-                logging.info(self.allowed_domains)
-                deny = [r'kabar.kg/arkhiv-kategorii/', r'//kabar.kg/archive/', r'//bilimdiler.kz/tags/']
+                logging.info(f'Allowed domains: {self.allowed_domains}')
+                deny = [r'kabar.kg/arkhiv-kategorii/', r'//kabar.kg/archive/', r'//bilimdiler.kz/tags/', r'kerekinfo.kz/tag/']
 
                 # Создание правил для каждого ресурса
                 self.rules = (
@@ -107,7 +88,9 @@ class ResourceSpider(CrawlSpider):
                 )
 
                 super()._compile_rules()
-
+            else:
+                self.log("No resources found, spider will close.")
+                self.crawler.engine.close_spider(self, 'Нету данных в бд ')
 
         except Error as e:
             self.log(f"Error connecting to MySQL: {e}")
@@ -117,7 +100,6 @@ class ResourceSpider(CrawlSpider):
             self.start_urls = ["http://example.com"]
             self.rules = ()
             self._compile_rules()
-
 
     def parse_links(self, response):
         # Получаем текущий URL
@@ -278,14 +260,18 @@ class ResourceSpider(CrawlSpider):
                     return date_with_utc
         return None
 
-
     def close(self, reason):
-        self.cursor_1.close()
-        self.cursor_2.close()
-        self.cursor_3.close()
-        self.conn_1.close()
-        self.conn_2.close()
-        self.conn_3.close()
-        super().close(reason)
+        if self.cursor_1:
+            self.cursor_1.close()
+        if self.cursor_2:
+            self.cursor_2.close()
+        if self.cursor_3:
+            self.cursor_3.close()
+        if self.conn_1:
+            self.conn_1.close()
+        if self.conn_2:
+            self.conn_2.close()
+        if self.conn_3:
+            self.conn_3.close()
 
 
