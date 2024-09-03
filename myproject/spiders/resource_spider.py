@@ -3,7 +3,6 @@ import logging
 # asyncioreactor.install()
 import pytz
 import mysql.connector
-from pygments.lexers.robotframework import SETTING
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
 from urllib.parse import urlparse
