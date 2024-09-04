@@ -16,7 +16,7 @@ asyncioreactor.install()
 load_dotenv()
 
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.DEBUG,
     format='%(levelname)s: %(message)s',
 )
 
@@ -74,13 +74,13 @@ def crawl():
         logging.info(f'Number of resources for Spider 4: {len(resources_spider_4)}')
         logging.info(f'Number of resources for Spider 5: {len(resources_spider_5)}')
 
-            # Запуск двух пауков с разными ресурсами
-        deferred_1 = runner.crawl(ResourceSpider, conn_1=conn_1, resources=resources_spider_1, spider_name='spider_1', custom_settings={'CONCURRENT_REQUESTS': 100})
-        deferred_2 = runner.crawl(ResourceSpider, conn_1=conn_1, resources=resources_spider_2, spider_name='spider_2', custom_settings={'CONCURRENT_REQUESTS': 100})
-        deferred_3 = runner.crawl(ResourceSpider, conn_1=conn_1, resources=resources_spider_3, spider_name='spider_2', custom_settings={'CONCURRENT_REQUESTS': 100})
-        deferred_4 = runner.crawl(ResourceSpider, conn_1=conn_1, resources=resources_spider_4, spider_name='spider_2', custom_settings={'CONCURRENT_REQUESTS': 100})
-        deferred_5 = runner.crawl(ResourceSpider, conn_1=conn_1, resources=resources_spider_5, spider_name='spider_2', custom_settings={'CONCURRENT_REQUESTS': 100})
-        # Ждем завершения обоих пауков
+            # Запуск пауков с разными ресурсами
+        deferred_1 = runner.crawl(ResourceSpider, conn_1=conn_1, resources=resources_spider_1, spider_name='spider_1')
+        deferred_2 = runner.crawl(ResourceSpider, conn_1=conn_1, resources=resources_spider_2, spider_name='spider_2')
+        deferred_3 = runner.crawl(ResourceSpider, conn_1=conn_1, resources=resources_spider_3, spider_name='spider_3')
+        deferred_4 = runner.crawl(ResourceSpider, conn_1=conn_1, resources=resources_spider_4, spider_name='spider_4')
+        deferred_5 = runner.crawl(ResourceSpider, conn_1=conn_1, resources=resources_spider_5, spider_name='spider_5', custom_settings={'CONCURRENT_REQUESTS': 100})
+        # Ждем завершения пауков
 
 
         yield DeferredList([deferred_1, deferred_2, deferred_3, deferred_4, deferred_5])

@@ -23,8 +23,10 @@ load_dotenv()
 class ResourceSpider(CrawlSpider):
     name = 'resource_spider'
 
+
     def __init__(self, conn_1=None, resources=None,  spider_name=None, custom_settings=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
         self.spider_name = spider_name or self.name
         self.conn_1 = conn_1
         self.cursor_1 = None
@@ -34,15 +36,8 @@ class ResourceSpider(CrawlSpider):
         self.cursor_3 = None
         self.start_urls = []
 
-        # if custom_settings:  #НАДО ДОРАБОТАТЬ
-        #     if isinstance(custom_settings, dict):
-        #         for key, value in custom_settings.items():
-        #             self.settings.set(key, value)
-        #             print(f"Custom setting applied: {key} = {value}")
-        #     else:
-        #         print("Custom settings should be a dictionary.")
-        # else:
-        #     print("No custom settings provided.")
+
+
 
         try: # подключение к таблице temp_items и temp_items_link
             self.conn_2 = mysql.connector.connect(
@@ -87,6 +82,7 @@ class ResourceSpider(CrawlSpider):
                 )
 
                 super()._compile_rules()
+
             else:
                 self.log("No resources found, spider will close.")
                 self.crawler.engine.close_spider(self, 'Нету данных в бд ')
@@ -110,10 +106,10 @@ class ResourceSpider(CrawlSpider):
         if self.cursor_3.fetchone() is not None:
             logging.info(f'ссылка существует {current_url}')
             return
-        # logging.info(f'Проверка контента из {current_url}')
+
         parsed_current_url = urlparse(current_url)
         current_netloc = parsed_current_url.netloc.replace('www.', '')
-        # print(current_url)
+
         #Ищем RESOURCE_ID для текущего URL
         resource_id = None
         resource_info = None
@@ -121,7 +117,7 @@ class ResourceSpider(CrawlSpider):
             first_url = resource[2].split(',')[0].strip()
             parsed_first_url = urlparse(first_url)
             first_netloc = parsed_first_url.netloc.replace('www.', '')
-            # print(first_netloc)
+
             if first_netloc == current_netloc:
                 resource_id = resource[0]
                 resource_info = resource

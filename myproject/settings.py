@@ -97,6 +97,7 @@ CONCURRENT_ITEMS = 200
 DOWNLOAD_TIMEOUT = 20
 CONCURRENT_REQUESTS = 300
 CONCURRENT_REQUESTS_PER_DOMAIN = 15
+REACTOR_THREADPOOL_MAXSIZE = 20
 # AUTOTHROTTLE_ENABLED = True
 # AUTOTHROTTLE_START_DELAY = 0.1  # начальная задержка между запросами в секундах
 # AUTOTHROTTLE_MAX_DELAY = 5  # максимальная задержка между запросами в секундах
@@ -106,12 +107,9 @@ CONCURRENT_REQUESTS_PER_DOMAIN = 15
 # В settings.py
 SCHEDULER_PRIORITY_QUEUE = "scrapy.pqueues.DownloaderAwarePriorityQueue"
 
-
-
 LOG_LEVEL = 'INFO'
 LOG_FORMAT = '%(levelname)s: %(message)s'
 # LOG_FILE = '/path/to/logfile_scrapy.log'
-# В settings.py
 # COOKIES_ENABLED = True
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
 ACCEPT = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7'
