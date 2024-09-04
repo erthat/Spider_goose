@@ -16,7 +16,7 @@ asyncioreactor.install()
 load_dotenv()
 
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=logging.INFO,
     format='%(levelname)s: %(message)s',
 )
 
