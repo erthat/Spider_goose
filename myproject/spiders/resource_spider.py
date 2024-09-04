@@ -74,7 +74,8 @@ class ResourceSpider(CrawlSpider):
                 self.start_urls = [resource[2].split(',')[0].strip() for resource in self.resources]
                 self.allowed_domains = [urlparse(url).netloc.replace('www.', '') for url in self.start_urls]
                 logging.info(f'Allowed domains: {self.allowed_domains}')
-                deny = [r'kabar.kg/arkhiv-kategorii/', r'//kabar.kg/archive/', r'//bilimdiler.kz/tags/', r'kerekinfo.kz/tag/']
+                deny = [r'kabar.kg/arkhiv-kategorii/', r'//kabar.kg/archive/', r'//bilimdiler.kz/tags/', r'kerekinfo.kz/tag/',
+                        r'abai.kz/archive/']
 
                 # Создание правил для каждого ресурса
                 self.rules = (
