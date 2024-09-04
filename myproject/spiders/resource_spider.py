@@ -75,7 +75,7 @@ class ResourceSpider(CrawlSpider):
                 self.allowed_domains = [urlparse(url).netloc.replace('www.', '') for url in self.start_urls]
                 logging.info(f'Allowed domains: {self.allowed_domains}')
                 deny = [r'kabar.kg/arkhiv-kategorii/', r'//kabar.kg/archive/', r'//bilimdiler.kz/tags/', r'kerekinfo.kz/tag/',
-                        r'abai.kz/archive/']
+                        r'abai.kz/archive/', r'//infor.kz/avto/']
 
                 # Создание правил для каждого ресурса
                 self.rules = (
@@ -233,7 +233,7 @@ class ResourceSpider(CrawlSpider):
 
     def parse_date(self, date_str, convert_date):
         date_str = str(date_str) if date_str else ''
-        date_str = re.sub(r'-го|г\.|Published|\bжыл\w*|тому|', '', date_str)
+        date_str = re.sub(r'-го|г\.|\bPublish\w*|\bжыл\w*|тому|\bавтор\w*|', '', date_str)
         languages = ['ru', 'kk', 'en']
         if not convert_date:  # Присваиваем список по умолчанию
             DATE_ORDERS = ["YMD", "DMY", "MYD"]
