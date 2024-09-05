@@ -3,6 +3,7 @@ import logging
 # asyncioreactor.install()
 import pytz
 import mysql.connector
+from mysql.connector.aio.logger import logger
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
 from urllib.parse import urlparse
@@ -16,16 +17,40 @@ from lxml.html import fromstring
 import bs4
 import os
 from mysql.connector import Error
+from logging.handlers import RotatingFileHandler
 
 
 
 load_dotenv()
 class ResourceSpider(CrawlSpider):
     name = 'resource_spider'
+    custom_settings = {
+        'LOG_ENABLED': True,
+        'LOG_STDOUT': True  # Если нужно перенаправить вывод stdout в лог
+    }
 
-
-    def __init__(self, conn_1=None, resources=None,  spider_name=None, custom_settings=None, *args, **kwargs):
+    def __init__(self, conn_1=None, resources=None,  spider_name=None, log_file=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        if log_file:
+            self.custom_settings['LOG_FILE'] = log_file
+            self.custom_settings['LOG_LEVEL'] = 'INFO'
+            self.custom_settings['LOG_STDOUT'] = True
+            handler = RotatingFileHandler(
+                log_file,  # Имя файла логов
+                mode='a',  # Режим добавления чтобы не перезаписывать сразу
+                maxBytes=5 * 1024 * 1024,  # Максимальный размер файла (в байтах), например, 5 МБ
+                backupCount=1
+                # Количество резервных копий логов (если установить 0, то старый файл будет перезаписываться)
+            )
+            logging.basicConfig(
+                level=logging.INFO,
+                format='%(asctime)s %(levelname)s: %(message)s',
+                handlers=[
+                    handler,  # Используем RotatingFileHandler
+                    logging.StreamHandler()
+                ]
+            )
 
         self.spider_name = spider_name or self.name
         self.conn_1 = conn_1
@@ -35,8 +60,6 @@ class ResourceSpider(CrawlSpider):
         self.conn_3 = None
         self.cursor_3 = None
         self.start_urls = []
-
-
 
 
         try: # подключение к таблице temp_items и temp_items_link
@@ -67,13 +90,16 @@ class ResourceSpider(CrawlSpider):
             if self.conn_2.is_connected() and self.conn_3.is_connected():
                 self.cursor_2 = self.conn_2.cursor()
                 self.cursor_3 = self.conn_3.cursor()
-                logging.info('Есть подключение к БД')
+                self.logger.info(f'Есть подключение к БД: {spider_name}')
 
             if resources:
                 self.resources = resources
                 self.start_urls = [resource[2].split(',')[0].strip() for resource in self.resources]
                 self.allowed_domains = [urlparse(url).netloc.replace('www.', '') for url in self.start_urls]
+                self.logger.info(f'Allowed domains: {self.allowed_domains}')
+                logger.info(f'Allowed domains: {self.allowed_domains}')
                 logging.info(f'Allowed domains: {self.allowed_domains}')
+                print('туту')
                 deny = [r'kabar.kg/arkhiv-kategorii/', r'//kabar.kg/archive/', r'//bilimdiler.kz/tags/', r'kerekinfo.kz/tag/',
                         r'abai.kz/archive/', r'//infor.kz/avto/']
 
@@ -90,7 +116,7 @@ class ResourceSpider(CrawlSpider):
 
         except Error as e:
             self.log(f"Error connecting to MySQL: {e}")
-            logging.warning('Нет подключение к БД')
+            self.logger.info('Нет подключение к БД')
             # Переключаемся на временный паук чтобы закрыть паука и запустить через 30 мин
             self.name = "temporary_spider"
             self.start_urls = ["http://example.com"]
@@ -101,11 +127,11 @@ class ResourceSpider(CrawlSpider):
         # Получаем текущий URL
         current_url = response.url
         if any(current_url.endswith(ext) for ext in ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx']):
-            logging.info(f'Пропускаем неподходящий ссылку: {current_url}')
+            self.logger.info(f'Пропускаем неподходящий ссылку: {current_url}')
             return
         self.cursor_3.execute("SELECT 1 FROM temp_items_link WHERE link = %s", (current_url,))
         if self.cursor_3.fetchone() is not None:
-            logging.info(f'ссылка существует {current_url}')
+            self.logger.info(f'ссылка существует {current_url}')
             return
 
         parsed_current_url = urlparse(current_url)
@@ -158,11 +184,11 @@ class ResourceSpider(CrawlSpider):
         # Проверка соединения перед выполнением операций
         if not self.conn_2.is_connected():
             try:
-                logging.warning("Соединение с базой данных потеряно, пытаемся переподключиться...")
+                self.logger.warning("Соединение с базой данных потеряно, пытаемся переподключиться...")
                 self.conn_2.reconnect(attempts=3, delay=5)
-                logging.info("Соединение восстановлено")
+                self.logger.info("Соединение восстановлено")
             except mysql.connector.Error as err:
-                logging.error(f"Ошибка переподключения: {err}")
+                self.logger.warning(f"Ошибка переподключения: {err}")
                 return  # Прекращаем выполнение, если не удалось переподключиться
 
         # Проверка наличия ссылки в таблице
@@ -180,10 +206,10 @@ class ResourceSpider(CrawlSpider):
                 (resource_id, title, current_url, nd_date, content, n_date, s_date, not_date, status)
             )
             self.conn_2.commit()
-            logging.warning(f'Новость добавлена в базу: {current_url}')
+            self.logger.warning(f'Новость добавлена в базу: {current_url}')
         else:
             # Если ссылка уже существует
-            logging.info(f'Ссылка уже существует в базе TEMP: {current_url}')
+            self.logger.info(f'Ссылка уже существует в базе TEMP: {current_url}')
 
     def replace_unsupported_characters(self, text):
         text = str(text) if text else ''

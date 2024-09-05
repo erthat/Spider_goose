@@ -11,13 +11,25 @@ from scrapy.utils.project import get_project_settings
 import mysql.connector
 import logging
 from twisted.internet.defer import inlineCallbacks, DeferredList, Deferred
+from logging.handlers import RotatingFileHandler
 
 asyncioreactor.install()
 load_dotenv()
 
+log_file = 'logi.log'
+handler = RotatingFileHandler(
+    log_file,           # Имя файла логов
+    mode='a',           # Режим добавления ('a'), чтобы не перезаписывать сразу
+    maxBytes=5*1024*1024,  # Максимальный размер файла (в байтах), например, 5 МБ
+    backupCount=1       # Количество резервных копий логов (если установить 0, то старый файл будет перезаписываться)
+)
 logging.basicConfig(
     level=logging.INFO,
-    format='%(levelname)s: %(message)s',
+    format='%(asctime)s %(levelname)s: %(message)s',
+    handlers=[
+        handler,        # Используем RotatingFileHandler
+        logging.StreamHandler()
+    ]
 )
 
 def connect_to_database():
@@ -74,13 +86,16 @@ def crawl():
         logging.info(f'Number of resources for Spider 4: {len(resources_spider_4)}')
         logging.info(f'Number of resources for Spider 5: {len(resources_spider_5)}')
 
+
             # Запуск пауков с разными ресурсами
-        deferred_1 = runner.crawl(ResourceSpider, conn_1=conn_1, resources=resources_spider_1, spider_name='spider_1')
-        deferred_2 = runner.crawl(ResourceSpider, conn_1=conn_1, resources=resources_spider_2, spider_name='spider_2')
-        deferred_3 = runner.crawl(ResourceSpider, conn_1=conn_1, resources=resources_spider_3, spider_name='spider_3')
-        deferred_4 = runner.crawl(ResourceSpider, conn_1=conn_1, resources=resources_spider_4, spider_name='spider_4')
-        deferred_5 = runner.crawl(ResourceSpider, conn_1=conn_1, resources=resources_spider_5, spider_name='spider_5', custom_settings={'CONCURRENT_REQUESTS': 100})
+        deferred_1 = runner.crawl(ResourceSpider, conn_1=conn_1, resources=resources_spider_1, spider_name='spider_1', log_file='spider_1.log')
+        deferred_2 = runner.crawl(ResourceSpider, conn_1=conn_1, resources=resources_spider_2, spider_name='spider_2', log_file='spider_2.log')
+        deferred_3 = runner.crawl(ResourceSpider, conn_1=conn_1, resources=resources_spider_3, spider_name='spider_3', log_file='spider_3.log')
+        deferred_4 = runner.crawl(ResourceSpider, conn_1=conn_1, resources=resources_spider_4, spider_name='spider_4', log_file='spider_4.log')
+        deferred_5 = runner.crawl(ResourceSpider, conn_1=conn_1, resources=resources_spider_5, spider_name='spider_5', log_file='spider_5.log')
         # Ждем завершения пауков
+
+
 
 
         yield DeferredList([deferred_1, deferred_2, deferred_3, deferred_4, deferred_5])
@@ -110,6 +125,7 @@ def load_resources(cursor):
         ('spider_scrapy', 'WORK')
     )
     return cursor.fetchall()
+
 
 # Запуск первого цикла
 if __name__ == '__main__':
