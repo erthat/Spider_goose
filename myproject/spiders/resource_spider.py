@@ -134,7 +134,7 @@ class ResourceSpider(CrawlSpider):
     def parse_links(self, response):
         # Получаем текущий URL
         current_url = response.url
-        if any(current_url.endswith(ext) for ext in ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx']):
+        if any(current_url.endswith(ext) for ext in ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx', '.JPG']):
             # self.logger.info(f'Пропускаем неподходящий ссылку: {current_url}')
             return
         self.cursor_3.execute("SELECT 1 FROM temp_items_link WHERE link = %s", (current_url,))

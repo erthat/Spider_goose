@@ -102,11 +102,11 @@ REACTOR_THREADPOOL_MAXSIZE = 20
 RETRY_ENABLED = True
 RETRY_TIMES = 3
 
-# AUTOTHROTTLE_ENABLED = True
-# AUTOTHROTTLE_START_DELAY = 0.1  # начальная задержка между запросами в секундах
-# AUTOTHROTTLE_MAX_DELAY = 5  # максимальная задержка между запросами в секундах
-# AUTOTHROTTLE_TARGET_CONCURRENCY = 2.0  # ожидаемое количество одновременных запросов к каждому серверу
-# AUTOTHROTTLE_DEBUG = True
+AUTOTHROTTLE_ENABLED = True
+AUTOTHROTTLE_START_DELAY = 0.1  # начальная задержка между запросами в секундах
+AUTOTHROTTLE_MAX_DELAY = 5  # максимальная задержка между запросами в секундах
+AUTOTHROTTLE_TARGET_CONCURRENCY = 5.0  # ожидаемое количество одновременных запросов к каждому серверу
+AUTOTHROTTLE_DEBUG = True
 # DOWNLOAD_DELAY = 10
 # В settings.py
 
