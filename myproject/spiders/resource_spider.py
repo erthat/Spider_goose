@@ -1,9 +1,9 @@
 import logging
-# from twisted.internet import asyncioreactor
-# asyncioreactor.install()
+
 import pytz
 import mysql.connector
 from mysql.connector.aio.logger import logger
+from scrapy.settings.default_settings import LOG_FILE
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
 from urllib.parse import urlparse
@@ -18,42 +18,38 @@ import bs4
 import os
 from mysql.connector import Error
 from logging.handlers import RotatingFileHandler
-
+from scrapy.utils.log import configure_logging
 
 
 load_dotenv()
 class ResourceSpider(CrawlSpider):
     name = 'resource_spider'
-    custom_settings = {
-        'LOG_ENABLED': True,
-        'LOG_STDOUT': True  # Если нужно перенаправить вывод stdout в лог
-    }
 
-    def __init__(self, conn_1=None, resources=None,  spider_name=None, log_file=None, *args, **kwargs):
+    def __init__(self, resources=None,  spider_name=None, *args, **kwargs):
+        self.spider_name = spider_name or self.name
         super().__init__(*args, **kwargs)
 
-        if log_file:
-            self.custom_settings['LOG_FILE'] = log_file
-            self.custom_settings['LOG_LEVEL'] = 'INFO'
-            self.custom_settings['LOG_STDOUT'] = True
-            handler = RotatingFileHandler(
-                log_file,  # Имя файла логов
-                mode='a',  # Режим добавления чтобы не перезаписывать сразу
-                maxBytes=5 * 1024 * 1024,  # Максимальный размер файла (в байтах), например, 5 МБ
-                backupCount=1
-                # Количество резервных копий логов (если установить 0, то старый файл будет перезаписываться)
-            )
-            logging.basicConfig(
-                level=logging.INFO,
-                format='%(asctime)s %(levelname)s: %(message)s',
-                handlers=[
-                    handler,  # Используем RotatingFileHandler
-                    logging.StreamHandler()
-                ]
-            )
+        log_file = f'logs/{spider_name}.log'
+        handler = RotatingFileHandler(
+            log_file, maxBytes= 15 * 1024 * 1024, backupCount=1
+        )
+        formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
+        handler.setFormatter(formatter)
 
-        self.spider_name = spider_name or self.name
-        self.conn_1 = conn_1
+        console_handler = logging.StreamHandler()
+        console_handler.setFormatter(formatter)
+
+        # Создаем логгер с именем паука
+        self.custom_logger = logging.getLogger(spider_name)
+        self.custom_logger.setLevel(logging.INFO)
+        self.custom_logger.addHandler(handler)
+        self.custom_logger.addHandler(console_handler)
+
+        self.setup_scrapy_logging(spider_name, handler, console_handler)
+
+        # Передача ресурсов
+        self.resources = resources
+
         self.cursor_1 = None
         self.conn_2 = None
         self.cursor_2 = None
@@ -90,18 +86,15 @@ class ResourceSpider(CrawlSpider):
             if self.conn_2.is_connected() and self.conn_3.is_connected():
                 self.cursor_2 = self.conn_2.cursor()
                 self.cursor_3 = self.conn_3.cursor()
-                self.logger.info(f'Есть подключение к БД: {spider_name}')
+                self.custom_logger.info(f'Есть подключение к БД: {spider_name}')
 
             if resources:
                 self.resources = resources
                 self.start_urls = [resource[2].split(',')[0].strip() for resource in self.resources]
                 self.allowed_domains = [urlparse(url).netloc.replace('www.', '') for url in self.start_urls]
-                self.logger.info(f'Allowed domains: {self.allowed_domains}')
-                logger.info(f'Allowed domains: {self.allowed_domains}')
-                logging.info(f'Allowed domains: {self.allowed_domains}')
-                print('туту')
-                deny = [r'kabar.kg/arkhiv-kategorii/', r'//kabar.kg/archive/', r'//bilimdiler.kz/tags/', r'kerekinfo.kz/tag/',
-                        r'abai.kz/archive/', r'//infor.kz/avto/']
+                self.custom_logger.info(f'Allowed domains: {self.allowed_domains}')
+                deny = [r'//kabar.kg/arkhiv-kategorii/', r'//kabar.kg/archive/', r'//bilimdiler.kz/tags/', r'//kerekinfo.kz/tag/',
+                        r'//abai.kz/archive/', r'//infor.kz/avto/', r'//shop.kz/catalog/', r'//shop.kz/offers/']
 
                 # Создание правил для каждого ресурса
                 self.rules = (
@@ -112,26 +105,41 @@ class ResourceSpider(CrawlSpider):
 
             else:
                 self.log("No resources found, spider will close.")
-                self.crawler.engine.close_spider(self, 'Нету данных в бд ')
+                self.crawler.engine.close_spider(self, f'Нету данных в бд {spider_name}')
+
 
         except Error as e:
             self.log(f"Error connecting to MySQL: {e}")
-            self.logger.info('Нет подключение к БД')
+            self.custom_logger.info('Нет подключение к БД')
             # Переключаемся на временный паук чтобы закрыть паука и запустить через 30 мин
             self.name = "temporary_spider"
             self.start_urls = ["http://example.com"]
             self.rules = ()
             self._compile_rules()
 
+    def setup_scrapy_logging(self, spider_name, handler, console_handler):
+        """
+        Настраиваем Scrapy логгер для перенаправления всех сообщений в файл паука.
+        """
+        # Отключаем глобальное конфигурирование логирования Scrapy
+        configure_logging(install_root_handler=False)
+
+        # Перенаправляем стандартные логи Scrapy в наш кастомный логгер
+        scrapy_logger = logging.getLogger('scrapy')
+        scrapy_logger.propagate = False
+        scrapy_logger.setLevel(logging.INFO)
+        scrapy_logger.addHandler(handler)
+        scrapy_logger.addHandler(console_handler)
+
     def parse_links(self, response):
         # Получаем текущий URL
         current_url = response.url
         if any(current_url.endswith(ext) for ext in ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx']):
-            self.logger.info(f'Пропускаем неподходящий ссылку: {current_url}')
+            # self.logger.info(f'Пропускаем неподходящий ссылку: {current_url}')
             return
         self.cursor_3.execute("SELECT 1 FROM temp_items_link WHERE link = %s", (current_url,))
         if self.cursor_3.fetchone() is not None:
-            self.logger.info(f'ссылка существует {current_url}')
+            self.custom_logger.info(f'ссылка существует {current_url}')
             return
 
         parsed_current_url = urlparse(current_url)
@@ -153,22 +161,22 @@ class ResourceSpider(CrawlSpider):
         if resource_id:
             title_t = response.xpath(f'normalize-space({resource_info[5]})').get() #получение заголовок новостей
             if not title_t:
-                self.logger.info(f"Заголовок отсутствует для {current_url}")
+                self.custom_logger.info(f"Заголовок отсутствует для {current_url}")
                 return
             content = response.xpath(resource_info[4]).getall() #получение контента новостей
             content = self.clean_text(content)
             if not content or all(item.isspace() for item in content):
-                self.logger.info(f"Контент отсутствует для {current_url}")
+                self.custom_logger.info(f"Контент отсутствует для {current_url}")
                 return
             title = self.replace_unsupported_characters(title_t)
             date = response.xpath(resource_info[6]).get()
             if not date:
-                self.logger.info(f"Дата отсутствует для {current_url}")
+                self.custom_logger.info(f"Дата отсутствует для {current_url}")
                 return
             #получение даты новостей
             date = self.parse_date(date, resource_info[7])
             if not date:
-                self.logger.info(f"Дата отсутствует для {current_url}")
+                self.custom_logger.info(f"Дата отсутствует для {current_url}")
                 return
 
             n_date = date #дата публикаций новостей
@@ -184,11 +192,11 @@ class ResourceSpider(CrawlSpider):
         # Проверка соединения перед выполнением операций
         if not self.conn_2.is_connected():
             try:
-                self.logger.warning("Соединение с базой данных потеряно, пытаемся переподключиться...")
+                self.custom_logger.warning("Соединение с базой данных потеряно, пытаемся переподключиться...")
                 self.conn_2.reconnect(attempts=3, delay=5)
-                self.logger.info("Соединение восстановлено")
+                self.custom_logger.info("Соединение восстановлено")
             except mysql.connector.Error as err:
-                self.logger.warning(f"Ошибка переподключения: {err}")
+                self.custom_logger.warning(f"Ошибка переподключения: {err}")
                 return  # Прекращаем выполнение, если не удалось переподключиться
 
         # Проверка наличия ссылки в таблице
@@ -206,10 +214,10 @@ class ResourceSpider(CrawlSpider):
                 (resource_id, title, current_url, nd_date, content, n_date, s_date, not_date, status)
             )
             self.conn_2.commit()
-            self.logger.warning(f'Новость добавлена в базу: {current_url}')
+            self.custom_logger.warning(f'Новость добавлена в базу: {current_url}')
         else:
             # Если ссылка уже существует
-            self.logger.info(f'Ссылка уже существует в базе TEMP: {current_url}')
+            self.custom_logger.info(f'Ссылка уже существует в базе TEMP: {current_url}')
 
     def replace_unsupported_characters(self, text):
         text = str(text) if text else ''
@@ -283,14 +291,10 @@ class ResourceSpider(CrawlSpider):
         return None
 
     def close(self, reason):
-        if self.cursor_1:
-            self.cursor_1.close()
         if self.cursor_2:
             self.cursor_2.close()
         if self.cursor_3:
             self.cursor_3.close()
-        if self.conn_1:
-            self.conn_1.close()
         if self.conn_2:
             self.conn_2.close()
         if self.conn_3:

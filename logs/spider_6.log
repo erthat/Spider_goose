@@ -1,0 +1,167 @@
+2024-09-09 09:53:36,056 INFO: Есть подключение к БД: spider_6
+2024-09-09 09:53:36,057 INFO: Allowed domains: ['weproject.media', 'infotimes.kz', 'al-bclegion.kz', 'kazbilim.kz', 'kaz-waste.kz', 'kostacademy.kz', 'alashaqparat.kz', 'fstrk.kz', 'kazbar.org.kz', 'kazservice.kz', 'ke.kz', 'k-company.kz', 'ef-ca.kz', 'ank.kz', 'gp21.kz', 'ayu.edu.kz', 'kustanay.kz', 'fpl.kz', 'aulieatanews.kz', 'astana.citypass.kz', 'ecogosfond.kz', 'ecogosfond.kz', 'malim.kz', 'jurnalist.kz', 'asiainfo.kz']
+2024-09-09 09:53:36,057 INFO: Enabled addons:
+[]
+2024-09-09 09:53:36,058 INFO: Telnet Password: 8b676fb6821f9b1a
+2024-09-09 09:53:36,058 INFO: Enabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.memusage.MemoryUsage',
+ 'scrapy.extensions.logstats.LogStats']
+2024-09-09 09:53:36,059 INFO: Overridden settings:
+{'BOT_NAME': 'myproject',
+ 'CONCURRENT_ITEMS': 50,
+ 'CONCURRENT_REQUESTS': 50,
+ 'CONCURRENT_REQUESTS_PER_DOMAIN': 10,
+ 'DEPTH_LIMIT': 2,
+ 'DOWNLOAD_TIMEOUT': 20,
+ 'FEED_EXPORT_ENCODING': 'utf-8',
+ 'LOG_LEVEL': 'INFO',
+ 'NEWSPIDER_MODULE': 'myproject.spiders',
+ 'REACTOR_THREADPOOL_MAXSIZE': 20,
+ 'REQUEST_FINGERPRINTER_IMPLEMENTATION': '2.7',
+ 'RETRY_TIMES': 3,
+ 'SCHEDULER_PRIORITY_QUEUE': 'scrapy.pqueues.DownloaderAwarePriorityQueue',
+ 'SPIDER_MODULES': ['myproject.spiders'],
+ 'USER_AGENT': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+               '(KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
+2024-09-09 09:53:36,060 INFO: Enabled downloader middlewares:
+['scrapy.downloadermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.cookies.CookiesMiddleware',
+ 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats']
+2024-09-09 09:53:36,061 INFO: Enabled spider middlewares:
+['scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware']
+2024-09-09 09:53:36,061 INFO: Enabled item pipelines:
+[]
+2024-09-09 09:53:36,061 INFO: Spider opened
+2024-09-09 09:53:36,062 INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
+2024-09-09 09:53:36,064 INFO: Telnet console listening on 127.0.0.1:6029
+2024-09-09 09:53:37,591 INFO: Ссылка уже существует в базе TEMP: http://al-bclegion.kz/news/?id=1956
+2024-09-09 09:53:37,777 INFO: Дата отсутствует для http://al-bclegion.kz/news/
+2024-09-09 09:53:38,047 INFO: Дата отсутствует для http://al-bclegion.kz/news/index.html
+2024-09-09 09:53:38,095 INFO: Заголовок отсутствует для http://infotimes.kz/ru/
+2024-09-09 09:53:38,639 INFO: Заголовок отсутствует для http://al-bclegion.kz/
+2024-09-09 09:53:38,771 INFO: Контент отсутствует для http://infotimes.kz/ru/category/%d0%ba%d1%83%d0%bb%d1%8c%d1%82%d1%83%d1%80%d0%b0/
+2024-09-09 09:53:39,029 INFO: Контент отсутствует для https://kostacademy.kz/news?page=10
+2024-09-09 09:53:39,232 WARNING: Новость добавлена в базу: http://infotimes.kz/ru/%d0%bf%d1%80%d0%be%d1%88%d0%b5%d0%bb-%d1%84%d0%be%d1%80%d1%83%d0%bc-%d0%b0%d0%bb%d1%8c%d1%8f%d0%bd%d1%81%d0%b0-%d0%b2%d1%8b%d0%bf%d1%83%d1%81%d0%ba%d0%bd%d0%b8%d0%ba%d0%be%d0%b2-%d0%bf%d1%80%d0%b5/
+2024-09-09 09:53:39,303 INFO: Заголовок отсутствует для https://weproject.media/sitemap/
+2024-09-09 09:53:39,401 INFO: Контент отсутствует для https://kostacademy.kz/news?page=8
+2024-09-09 09:53:39,632 INFO: Контент отсутствует для http://infotimes.kz/ru/category/lifestyle/
+2024-09-09 09:53:39,971 INFO: Дата отсутствует для https://k-company.kz/ru/news/pg/33/
+2024-09-09 09:53:40,039 WARNING: Новость добавлена в базу: http://infotimes.kz/ru/%d0%bc%d0%be%d0%b6%d0%bd%d0%be-%d0%bb%d0%b8-%d0%b1%d1%8e%d0%b4%d0%b6%d0%b5%d1%82%d0%bd%d0%b8%d0%ba%d1%83-%d0%be%d1%82%d0%b4%d0%be%d1%85%d0%bd%d1%83%d1%82%d1%8c-%d0%b2-%d0%ba%d0%b0%d0%b7%d0%b0%d1%85/
+2024-09-09 09:53:40,564 INFO: Ссылка уже существует в базе TEMP: https://kostacademy.kz/news/24555
+2024-09-09 09:53:40,916 INFO: Контент отсутствует для http://infotimes.kz/ru/category/vozmojnosti/
+2024-09-09 09:53:40,985 INFO: Дата отсутствует для https://k-company.kz/ru/news/pg/9/
+2024-09-09 09:53:41,703 WARNING: Новость добавлена в базу: http://infotimes.kz/ru/%d1%87%d0%b5%d1%80%d0%b5%d0%b7-%d1%88%d0%b0%d1%85%d0%bc%d0%b0%d1%82%d1%8b-%d0%be%d0%b1%d0%be-%d0%b2%d1%81%d0%b5%d0%bc/
+2024-09-09 09:53:42,072 INFO: Заголовок отсутствует для https://ke.kz/ru/press-center/news/
+2024-09-09 09:53:42,246 INFO: Контент отсутствует для https://fstrk.kz/
+2024-09-09 09:53:42,400 WARNING: Новость добавлена в базу: http://infotimes.kz/ru/%d0%ba%d0%b8%d1%82%d0%b0%d0%b9-%d0%bf%d1%80%d0%be%d0%b4%d0%be%d0%bb%d0%b6%d0%b0%d0%b5%d1%82-%d0%b2%d1%81%d0%b5%d1%81%d1%82%d0%be%d1%80%d0%be%d0%bd%d0%bd%d0%b5-%d1%83%d0%b3%d0%bb%d1%83%d0%b1%d0%bb/
+2024-09-09 09:53:42,788 INFO: Заголовок отсутствует для https://weproject.media/articles/obzory/
+2024-09-09 09:53:43,159 INFO: Заголовок отсутствует для https://www.fpl.kz/ru/bp-rek
+2024-09-09 09:53:43,406 INFO: Контент отсутствует для https://fstrk.kz/category/news/page/22/
+2024-09-09 09:53:43,964 INFO: Заголовок отсутствует для https://gp21.kz/news.php
+2024-09-09 09:53:44,603 INFO: Дата отсутствует для http://al-bclegion.kz/media/photos/
+2024-09-09 09:53:44,625 INFO: Ссылка уже существует в базе TEMP: http://al-bclegion.kz/news/?id=1955
+2024-09-09 09:53:44,675 INFO: Дата отсутствует для http://al-bclegion.kz/section-chemp/
+2024-09-09 09:53:44,685 INFO: Дата отсутствует для http://al-bclegion.kz/news/?year=2024&month=05&category=6
+2024-09-09 09:53:44,760 INFO: Контент отсутствует для http://asiainfo.kz/e/tags/?tagname=%D0%96%D0%B0%D2%A3%D0%B0%D0%BB%D1%8B%D2%9B
+2024-09-09 09:53:45,146 INFO: Дата отсутствует для http://al-bclegion.kz/team/
+2024-09-09 09:53:45,156 INFO: Дата отсутствует для http://al-bclegion.kz/tournaments/
+2024-09-09 09:53:45,163 INFO: Дата отсутствует для http://al-bclegion.kz/calendar/
+2024-09-09 09:53:45,193 INFO: Заголовок отсутствует для https://www.fpl.kz/en/news/8/
+2024-09-09 09:53:45,492 INFO: Дата отсутствует для http://al-bclegion.kz/dubl/
+2024-09-09 09:53:45,743 INFO: Контент отсутствует для http://asiainfo.kz/A_sanat/biz/
+2024-09-09 09:53:45,755 INFO: Контент отсутствует для https://fstrk.kz/category/news/page/20/
+2024-09-09 09:53:46,280 INFO: Дата отсутствует для http://al-bclegion.kz/club/
+2024-09-09 09:53:46,810 INFO: Ссылка уже существует в базе TEMP: https://gp21.kz/blog.php?id=7
+2024-09-09 09:53:47,022 INFO: Заголовок отсутствует для http://www.al-bclegion.kz
+2024-09-09 09:53:48,238 INFO: Контент отсутствует для https://ayu.edu.kz/birimler/kz/4-spor-ve-sanat-fakultesi
+2024-09-09 09:53:48,572 INFO: Дата отсутствует для http://al-bclegion.kz/dubl/index.html
+2024-09-09 09:53:51,287 WARNING: Новость добавлена в базу: http://infotimes.kz/ru/%d0%ba%d0%b0%d0%b7%d0%b0%d1%85%d1%81%d1%82%d0%b0%d0%bd%d1%81%d0%ba%d0%b8%d0%b9-%d1%84%d0%b8%d0%bb%d1%8c%d0%bc-%d0%b2%d1%8b%d1%81%d0%be%d0%ba%d0%be-%d0%be%d1%86%d0%b5%d0%bd%d0%b8%d0%bb%d0%b8-%d0%bc/
+2024-09-09 09:53:51,292 INFO: Контент отсутствует для http://infotimes.kz/ru/category/%d0%ba%d1%83%d0%bb%d1%8c%d1%82%d1%83%d1%80%d0%b0/%d0%bd%d0%b0%d1%88%d0%b8%d0%b2%d1%8b%d0%bf%d1%83%d1%81%d0%ba%d0%bd%d0%b8%d0%ba%d0%b8-%d0%bd%d0%b0%d1%88%d0%b0%d0%b3%d0%be%d1%80%d0%b4%d0%be%d1%81%d1%82%d1%8c/top-5/
+2024-09-09 09:53:51,323 INFO: Контент отсутствует для http://infotimes.kz/ru/category/%d0%b2%d1%8b%d0%bf%d1%83%d1%81%d0%ba%d0%bd%d0%b8%d0%ba%d0%b8/
+2024-09-09 09:53:51,334 INFO: Контент отсутствует для http://infotimes.kz/ru/category/%d0%ba%d1%83%d0%bb%d1%8c%d1%82%d1%83%d1%80%d0%b0/%d0%ba%d0%b8%d0%bd%d0%be/
+2024-09-09 09:53:51,344 INFO: Контент отсутствует для http://infotimes.kz/ru/category/%d0%ba%d1%83%d0%bb%d1%8c%d1%82%d1%83%d1%80%d0%b0/%d0%bd%d0%b0%d1%88%d0%b8%d0%b2%d1%8b%d0%bf%d1%83%d1%81%d0%ba%d0%bd%d0%b8%d0%ba%d0%b8-%d0%bd%d0%b0%d1%88%d0%b0%d0%b3%d0%be%d1%80%d0%b4%d0%be%d1%81%d1%82%d1%8c/
+2024-09-09 09:53:51,354 INFO: Заголовок отсутствует для http://infotimes.kz/ru/page/2/
+2024-09-09 09:53:51,364 INFO: Контент отсутствует для http://infotimes.kz/ru/category/%d0%b8%d0%bd%d1%82%d0%b5%d1%80%d0%b2%d1%8c%d1%8e/
+2024-09-09 09:53:51,374 INFO: Контент отсутствует для http://infotimes.kz/ru/category/innovation/
+2024-09-09 09:53:51,405 INFO: Контент отсутствует для http://infotimes.kz/ru/category/%d0%b3%d0%be%d1%81%d1%83%d0%b4%d0%b0%d1%80%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d1%8b%d0%b5-%d0%bf%d1%80%d0%be%d0%b3%d1%80%d0%b0%d0%bc%d0%bc%d1%8b/
+2024-09-09 09:53:51,769 INFO: Дата отсутствует для http://al-bclegion.kz/dubl/2017/spring-u13
+2024-09-09 09:53:52,000 WARNING: Новость добавлена в базу: https://ayu.edu.kz/kz/haberler/123
+2024-09-09 09:53:52,934 INFO: Контент отсутствует для http://infotimes.kz/ru/category/vozmojnosti/page/2/
+2024-09-09 09:53:52,964 INFO: Дата отсутствует для http://al-bclegion.kz/club/contacts/
+2024-09-09 09:53:52,992 INFO: Ссылка уже существует в базе TEMP: http://asiainfo.kz/A_kop/Otbasy/2018-03-07/1082.html
+2024-09-09 09:53:53,006 INFO: Контент отсутствует для http://infotimes.kz/ru/tag/%d0%bf%d1%80%d0%be%d0%be%d0%bd/
+2024-09-09 09:53:53,803 INFO: Дата отсутствует для http://al-bclegion.kz/club/subscribe/
+2024-09-09 09:53:54,850 INFO: Дата отсутствует для https://k-company.kz/ru/news/pg/10/
+2024-09-09 09:53:54,983 INFO: Дата отсутствует для http://www.al-bclegion.kz/media//photos/?id=308
+2024-09-09 09:53:55,268 INFO: Дата отсутствует для https://ayu.edu.kz/birimler/kz/4-spor-ve-sanat-fakultesi/etkinlikler/35
+2024-09-09 09:53:55,307 WARNING: Новость добавлена в базу: http://infotimes.kz/ru/alumnibook/
+2024-09-09 09:53:55,332 INFO: Дата отсутствует для http://al-bclegion.kz/club/press/
+2024-09-09 09:53:55,348 WARNING: Новость добавлена в базу: http://asiainfo.kz/A_kop/psxologiya/2017-08-22/898.html
+2024-09-09 09:53:55,364 INFO: Контент отсутствует для http://infotimes.kz/ru/tag/%d0%b2%d1%8b%d1%81%d1%88%d0%b8%d0%b9-%d1%81%d1%83%d0%b4%d0%b5%d0%b1%d0%bd%d1%8b%d0%b9-%d1%81%d0%be%d0%b2%d0%b5%d1%82/
+2024-09-09 09:53:55,734 INFO: Ссылка уже существует в базе TEMP: https://gp21.kz/blog.php?id=8
+2024-09-09 09:53:55,773 INFO: Контент отсутствует для https://kazbilim.kz/archives/category/e-learning
+2024-09-09 09:53:55,891 INFO: Контент отсутствует для https://fstrk.kz/category/news/page/19/
+2024-09-09 09:53:56,216 INFO: Контент отсутствует для https://kostacademy.kz/news?page=9
+2024-09-09 09:53:56,260 INFO: Дата отсутствует для https://k-company.kz/ru/news/pg/11/
+2024-09-09 09:53:56,497 INFO: Контент отсутствует для https://kaz-waste.kz/reestr-sertifitsirovannykh-predpriyatiy/
+2024-09-09 09:53:57,733 INFO: Контент отсутствует для https://kostacademy.kz/news?page=7
+2024-09-09 09:53:57,744 INFO: Заголовок отсутствует для https://weproject.media/user_rules.php
+2024-09-09 09:53:57,772 INFO: Заголовок отсутствует для https://weproject.media/user_agreements.php
+2024-09-09 09:53:57,948 INFO: Дата отсутствует для http://al-bclegion.kz/club/sponsors/
+2024-09-09 09:53:57,956 INFO: Контент отсутствует для http://infotimes.kz/ru/category/%d0%b3%d0%be%d1%81%d1%83%d0%b4%d0%b0%d1%80%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d1%8b%d0%b5-%d0%bf%d1%80%d0%be%d0%b3%d1%80%d0%b0%d0%bc%d0%bc%d1%8b/page/2/
+2024-09-09 09:53:57,974 INFO: Дата отсутствует для http://www.al-bclegion.kz/media//photos/?id=309
+2024-09-09 09:53:57,985 INFO: Дата отсутствует для http://al-bclegion.kz/club/arena/
+2024-09-09 09:53:58,004 WARNING: Новость добавлена в базу: http://asiainfo.kz/A_adebiet/sin/2017-08-16/877.html
+2024-09-09 09:53:59,018 INFO: Контент отсутствует для https://fstrk.kz/category/news/page/21/
+2024-09-09 09:53:59,038 INFO: Ссылка уже существует в базе TEMP: http://infotimes.kz/ru/%d0%bd%d0%b0%d1%86%d0%ba%d0%be%d0%bc%d0%b8%d1%81%d1%81%d0%b8%d1%8f-%d0%be%d0%b7%d0%b2%d1%83%d1%87%d0%b8%d0%bb%d0%b0-%d0%bf%d1%80%d0%b5%d0%b4%d0%bb%d0%be%d0%b6%d0%b5%d0%bd%d0%b8%d1%8f-%d0%bf%d0%be/
+2024-09-09 09:54:00,270 INFO: Ссылка уже существует в базе TEMP: https://kaz-waste.kz/news/848/
+2024-09-09 09:54:00,280 INFO: Дата отсутствует для https://k-company.kz/ru/news/pg/14/
+2024-09-09 09:54:00,590 INFO: Дата отсутствует для http://www.al-bclegion.kz/media//photos/?id=310
+2024-09-09 09:54:00,613 WARNING: Новость добавлена в базу: http://asiainfo.kz/A_suhbat/2017-07-04/810.html
+2024-09-09 09:54:00,645 WARNING: Новость добавлена в базу: http://infotimes.kz/ru/%d0%b2%d1%8b%d1%81%d0%be%d0%ba%d0%be%d0%ba%d0%b0%d1%87%d0%b5%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%b5-%d1%80%d0%b0%d0%b7%d0%b2%d0%b8%d1%82%d0%b8%d0%b5-%d0%ba%d0%b8%d1%82%d0%b0%d0%b9%d1%81%d0%ba/
+2024-09-09 09:54:00,814 INFO: Заголовок отсутствует для https://ayu.edu.kz/ru/haberler/123
+2024-09-09 09:54:00,846 INFO: Ссылка уже существует в базе TEMP: https://gp21.kz/blog.php?id=9
+2024-09-09 09:54:01,435 INFO: Контент отсутствует для http://asiainfo.kz/A_sanat/bailanys/
+2024-09-09 09:54:01,505 INFO: Контент отсутствует для https://kazservice.kz/info/news/?PAGEN_1=6
+2024-09-09 09:54:01,525 WARNING: Новость добавлена в базу: https://kostacademy.kz/news/24562
+2024-09-09 09:54:01,755 WARNING: Новость добавлена в базу: http://infotimes.kz/ru/%d1%81%d0%b5%d0%bc%d1%8c%d1%8f-%d1%8d%d1%82%d0%be-%d0%b2%d0%b0%d0%b6%d0%bd%d0%be/
+2024-09-09 09:54:01,766 INFO: Заголовок отсутствует для https://astana.citypass.kz/ru/segodnya-dostupno-s-nur-sultan-pass/
+2024-09-09 09:54:02,501 INFO: Дата отсутствует для https://k-company.kz/ru/news/pg/8/
+2024-09-09 09:54:03,169 INFO: Дата отсутствует для http://www.al-bclegion.kz/media//photos/?id=311
+2024-09-09 09:54:03,199 WARNING: Новость добавлена в базу: http://asiainfo.kz/A_adebiet/proza/2017-09-25/947.html
+2024-09-09 09:54:03,240 INFO: Ссылка уже существует в базе TEMP: https://kazbilim.kz/archives/2841
+2024-09-09 09:54:03,519 INFO: Контент отсутствует для https://fstrk.kz/category/news/
+2024-09-09 09:54:03,701 INFO: Заголовок отсутствует для https://kazbar.org.kz/komissiya-po-kontrolyu-za-deyatelnostyu-chlenov-palaty-kazbar-copy/
+2024-09-09 09:54:03,814 INFO: Заголовок отсутствует для http://www.asiainfo.kz
+2024-09-09 09:54:04,415 INFO: Заголовок отсутствует для https://ef-ca.kz/o_fonde/podhody
+2024-09-09 09:54:04,653 WARNING: Новость добавлена в базу: http://infotimes.kz/ru/%d0%b8%d0%bd%d1%81%d1%82%d0%b8%d1%82%d1%83%d1%82-%d0%bc%d0%b5%d0%b4%d0%b8%d0%b0%d1%86%d0%b8%d0%b8-%d1%81%d0%be%d1%81%d1%82%d0%be%d1%8f%d0%bd%d0%b8%d0%b5-%d0%b8-%d0%bf%d0%b5%d1%80%d1%81%d0%bf%d0%b5/
+2024-09-09 09:54:04,670 WARNING: Новость добавлена в базу: http://asiainfo.kz/A_news/2017-05-03/589.html
+2024-09-09 09:54:04,768 INFO: Заголовок отсутствует для https://weproject.media/articles/obzory/?PAGEN_2=2
+2024-09-09 09:54:05,708 INFO: Контент отсутствует для https://kazbar.org.kz/farmaczevtika-zh%d3%99ne-mediczina-m%d3%99seleleri-zh%d3%a9nindegi-komiteti/
+2024-09-09 09:54:05,946 INFO: Дата отсутствует для http://al-bclegion.kz/club/history/
+2024-09-09 09:54:05,971 INFO: Дата отсутствует для http://al-bclegion.kz/club/index.html
+2024-09-09 09:54:06,233 INFO: Контент отсутствует для https://kazservice.kz/info/news/?PAGEN_1=5
+2024-09-09 09:54:06,254 WARNING: Новость добавлена в базу: https://kostacademy.kz/news/24591
+2024-09-09 09:54:06,347 INFO: Дата отсутствует для http://www.al-bclegion.kz/media//photos/?id=312
+2024-09-09 09:54:06,367 WARNING: Новость добавлена в базу: http://asiainfo.kz/A_kop/Otbasy/2017-10-25/977.html
+2024-09-09 09:54:06,401 WARNING: Новость добавлена в базу: http://infotimes.kz/ru/%d0%b7%d0%b5%d0%bb%d0%b5%d0%bd%d0%b0%d1%8f-%d0%b8-%d1%86%d0%b8%d1%84%d1%80%d0%be%d0%b2%d0%b0%d1%8f-%d1%82%d1%80%d0%b0%d0%bd%d1%81%d1%84%d0%be%d1%80%d0%bc%d0%b0%d1%86%d0%b8%d1%8f-%d0%bd%d0%be/
+2024-09-09 09:54:08,418 INFO: Дата отсутствует для https://k-company.kz/ru/news/pg/16/
+2024-09-09 09:54:08,437 INFO: Ссылка уже существует в базе TEMP: https://fstrk.kz/uchebno-trenirovochnye-sbory-afst-rk/
+2024-09-09 09:54:08,451 INFO: Ссылка уже существует в базе TEMP: https://k-company.kz/ru/news/756-ijunskije_prodazhi_nefti_v_mire_upali_do_minimuma_za_devat_let/
+2024-09-09 09:54:08,474 WARNING: Новость добавлена в базу: http://asiainfo.kz/A_adebiet/sin/2017-08-09/869.html
+2024-09-09 09:54:08,504 WARNING: Новость добавлена в базу: http://infotimes.kz/ru/2024-%d0%b3%d0%be%d0%b4-%d0%be%d0%b1%d1%8a%d1%8f%d0%b2%d0%bb%d0%b5%d0%bd-%d0%b3%d0%be%d0%b4%d0%be%d0%bc-%d1%82%d1%83%d1%80%d0%b8%d0%b7%d0%bc%d0%b0-%d0%ba%d0%b0%d0%b7%d0%b0%d1%85%d1%81%d1%82%d0%b0/
+2024-09-09 09:54:09,867 INFO: Ссылка уже существует в базе TEMP: https://kaz-waste.kz/news/850/

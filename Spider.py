@@ -1,40 +1,37 @@
-import time
-
-from myproject.spiders.resource_spider import ResourceSpider
-import os
-from dotenv import load_dotenv
-
-import asyncio
-from twisted.internet import asyncioreactor
 from scrapy.crawler import CrawlerRunner
-from scrapy.utils.project import get_project_settings
-import mysql.connector
-import logging
-from twisted.internet.defer import inlineCallbacks, DeferredList, Deferred
+from twisted.internet import reactor, defer, task
+from twisted.internet.defer import inlineCallbacks
+from twisted.internet.task import LoopingCall
 from logging.handlers import RotatingFileHandler
-
-asyncioreactor.install()
+from myproject.spiders.resource_spider import ResourceSpider
+from scrapy.utils.project import get_project_settings
+import logging
+import time
+import os
+from dotenv import load_dotenv  # Импортируйте паука
 load_dotenv()
+import mysql.connector
 
-log_file = 'logi.log'
+log_file = 'logs/logi.log'
 handler = RotatingFileHandler(
     log_file,           # Имя файла логов
     mode='a',           # Режим добавления ('a'), чтобы не перезаписывать сразу
-    maxBytes=5*1024*1024,  # Максимальный размер файла (в байтах), например, 5 МБ
+    maxBytes=15*1024*1024,  # Максимальный размер файла (в байтах), например, 5 МБ
     backupCount=1       # Количество резервных копий логов (если установить 0, то старый файл будет перезаписываться)
 )
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s %(levelname)s: %(message)s',
     handlers=[
-        handler,        # Используем RotatingFileHandler
-        logging.StreamHandler()
+        handler   # Используем RotatingFileHandler
     ]
 )
 
+spider_resources = {}
+
 def connect_to_database():
     retries = 20  # Количество попыток подключения
-    delay = 120  # Время задержки между попытками в секундах
+    delay = 600  # Время задержки между попытками в секундах
     for attempt in range(retries):
         try:
             conn_1 = mysql.connector.connect(
@@ -56,64 +53,6 @@ def connect_to_database():
     logging.error("Не удалось подключиться к базе данных после нескольких попыток.")
     return None
 
-@inlineCallbacks
-def crawl():
-    conn_1 = connect_to_database()
-    if conn_1:
-        cursor_1 = conn_1.cursor()
-        runner = CrawlerRunner(get_project_settings())
-            # Загрузка ресурсов из базы данных
-        resources = load_resources(cursor_1)
-            # Разделяем ресурсы на группы для каждого паука
-        num_parts = 5
-        part_size = len(resources) // num_parts
-        remainder = len(resources) % num_parts
-
-        # Разделяем ресурсы на 5 частей
-        resources_spiders = []
-        start = 0
-
-        for i in range(num_parts):
-            end = start + part_size + (1 if i < remainder else 0)
-            resources_spiders.append(resources[start:end])
-            start = end
-
-        resources_spider_1, resources_spider_2, resources_spider_3, resources_spider_4, resources_spider_5 = resources_spiders
-
-        logging.info(f'Number of resources for Spider 1: {len(resources_spider_1)}')
-        logging.info(f'Number of resources for Spider 2: {len(resources_spider_2)}')
-        logging.info(f'Number of resources for Spider 3: {len(resources_spider_3)}')
-        logging.info(f'Number of resources for Spider 4: {len(resources_spider_4)}')
-        logging.info(f'Number of resources for Spider 5: {len(resources_spider_5)}')
-
-
-            # Запуск пауков с разными ресурсами
-        deferred_1 = runner.crawl(ResourceSpider, conn_1=conn_1, resources=resources_spider_1, spider_name='spider_1', log_file='spider_1.log')
-        deferred_2 = runner.crawl(ResourceSpider, conn_1=conn_1, resources=resources_spider_2, spider_name='spider_2', log_file='spider_2.log')
-        deferred_3 = runner.crawl(ResourceSpider, conn_1=conn_1, resources=resources_spider_3, spider_name='spider_3', log_file='spider_3.log')
-        deferred_4 = runner.crawl(ResourceSpider, conn_1=conn_1, resources=resources_spider_4, spider_name='spider_4', log_file='spider_4.log')
-        deferred_5 = runner.crawl(ResourceSpider, conn_1=conn_1, resources=resources_spider_5, spider_name='spider_5', log_file='spider_5.log')
-        # Ждем завершения пауков
-
-
-
-
-        yield DeferredList([deferred_1, deferred_2, deferred_3, deferred_4, deferred_5])
-
-        def waits():
-            deferred = Deferred()
-            reactor.callLater(900, deferred.callback, None)  # Ожидание 30 минут
-            return deferred
-
-        yield waits()
-
-            # Повторный запуск цикла без ожидания
-        yield crawl()
-
-    else:
-        logging.error('Программа завершена из-за невозможности подключиться к базе данных.')
-
-
 def load_resources(cursor):
     cursor.execute(
         "SELECT RESOURCE_ID, RESOURCE_NAME, RESOURCE_URL, top_tag, bottom_tag, title_cut, date_cut, convert_date "
@@ -126,15 +65,76 @@ def load_resources(cursor):
     )
     return cursor.fetchall()
 
+def load_and_divide_resources(cursor_1, num_parts):
+    # Загрузка ресурсов из базы данных
+    resources = load_resources(cursor_1)
+    # Разделение ресурсов на части
+    part_size = len(resources) // num_parts
+    remainder = len(resources) % num_parts
+    resources_spiders = []
+    start = 0
+    for i in range(num_parts):
+        end = start + part_size + (1 if i < remainder else 0)
+        resources_spiders.append(resources[start:end])
+        start = end
+    return resources_spiders
 
-# Запуск первого цикла
-if __name__ == '__main__':
-    from twisted.internet import reactor
+def load_and_update_resources(num_parts):
+    print("Подключение к базе данных и загрузка ресурсов...")
+    conn_1 = connect_to_database()
+    cursor_1 = conn_1.cursor()
+    resources_spiders = load_and_divide_resources(cursor_1, num_parts)
+    cursor_1.close()
+    conn_1.close()# Получаем разделенные ресурсы
+    return resources_spiders
 
-    @inlineCallbacks
-    def start_crawl():
-        yield crawl()
-        reactor.stop()
 
-    reactor.callWhenRunning(start_crawl)
+@inlineCallbacks
+def run_spiders(runner, spider_name):
+    while True:
+        global spider_resources
+        resources = spider_resources.get(spider_name)  # Получаем актуальные ресурсы
+        if resources:         # Проверяем, что ресурсы существуют
+            yield runner.crawl(ResourceSpider, resources=resources, spider_name=spider_name)
+            print(f'{spider_name} завершил работу, перезапуск...')
+        else:
+            print(f'{spider_name} ожидает обновления ресурсов...')
+            yield task.deferLater(reactor, 10, lambda: None)
+
+
+@inlineCallbacks
+def update_resources_every_hour(update_interval, num_parts):
+    global spider_resources
+    while True:
+        yield task.deferLater(reactor, update_interval, lambda: None)  # Ожидание заданного времени
+        new_resources = load_and_update_resources(num_parts)  # Обновление ресурсов
+        for i in range(num_parts):
+            spider_resources[f'spider_{i + 1}'] = new_resources[i]
+        logging.info(f"Ресурсы обновлены в {time.strftime('%Y-%m-%d %H:%M:%S')}")
+
+def start_spiders(num_parts):
+    runner = CrawlerRunner(get_project_settings())
+    initial_resources = load_and_update_resources(num_parts)
+    global spider_resources
+
+    spider_resources = {f'spider_{i + 1}': initial_resources[i] for i in range(num_parts)}
+
+    for i in range(num_parts):
+        run_spiders(runner, f'spider_{i + 1}')
+
+    update_interval = 3600  # Интервал обновления в секундах (можно изменить)
+    task.LoopingCall(update_resources_every_hour, update_interval, num_parts).start(0)
     reactor.run()
+
+
+if __name__ == '__main__':
+    conn_1 = connect_to_database()
+    cursor_1 = conn_1.cursor()
+    resources = load_resources(cursor_1)
+    cursor_1.close()
+    conn_1.close()
+    resource_count = len([resource[0] for resource in resources])
+    print(resource_count)
+    n = max(1, (resource_count // 25))
+    print(n)
+    start_spiders(n)

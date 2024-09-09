@@ -1,0 +1,757 @@
+2024-09-09 09:53:35,579 INFO: Подключение к базе данных успешно
+2024-09-09 09:53:35,667 INFO: Подключение к базе данных успешно
+2024-09-09 09:53:35,774 INFO: Есть подключение к БД: spider_1
+2024-09-09 09:53:35,774 INFO: Allowed domains: ['zonakz.net', 'interfax.kz', 'vlast.kz', 'tv7.kz', 'kazpravda.kz', 'kp.kz', 'vecher.kz', 'nv.kz', 'pricom.kz', 'belta.by', 'vb.kg', 'kabar.kg', 'podrobno.uz', 'vestikavkaza.ru', 'scmp.com', 'newsweek.com', 'edition.cnn.com', 'akorda.kz', 'tccb.gov.tr', 'uzdaily.com', 'sud.gov.kz', 'irstar.kz', 'kaztag.info', 'astana-motors.kz', 'flashpress.kz']
+2024-09-09 09:53:35,952 INFO: Есть подключение к БД: spider_2
+2024-09-09 09:53:35,953 INFO: Allowed domains: ['arna-news.kz', 'spectr.com.kz', 'aljazeera.com', 'economist.com', 'golos-ameriki.ru', 'tvzvezda.ru', 'forbes.ru', 'pravda.ru', 'expert.ru', 'npr.org', 'prnewswire.co.uk', 'jasqazaq.kz', 'qazaquni.kz', 'qazaqstan.tv', 'mysl.kazgazeta.kz', 'ztb.kz', 'namys.kz', 'timeskz.kz', 'kerekinfo.kz', 'infozakon.kz', 'regtv.kz', 'arna-news.kz', 'almatyzdrav.kz', 'hordelo.kz', 'pavlodarnews.kz']
+2024-09-09 09:53:35,974 INFO: Есть подключение к БД: spider_3
+2024-09-09 09:53:35,974 INFO: Allowed domains: ['agroinfo.kz', 'kokshetau.asia', 'lsm.kz', 'almaty.tv', 'bizmedia.kz', 'zhambylnews.kz', 'seykhuninfo.kz', 'ic24.kz', 'etoday.kz', 'gismeteo.kz', 'rudnyi-altai.kz', 'qazsporttv.kz', 'asylarna.kz', 'koreilbo.com', 'novgaz.com', 'uyguravazi.kazgazeta.kz', 'abai.kz', 'arasha.kz', 'dalanews.kz', 'minber.kz', 'ru.sputnik.kz', 'ortcom.kz', 'qamshy.kz', 'ras.kz', 'sayasat.kz']
+2024-09-09 09:53:35,998 INFO: Есть подключение к БД: spider_4
+2024-09-09 09:53:35,999 INFO: Allowed domains: ['serke.org', 'sn.kz', '5kanal.info', 'aigak.kz', 'aqtobetv.kz', 'atyrautv.kz', 'aqmeshit.kz', 'panorama.shymkala.kz', 'priru.kz', 'izdatelstvo-sk.kz', 'uakit.kz', 'mygorod.kz', 'caspionews.kz', 'oskemen.info', 'shop.kz', 'el.kz', 'infor.kz', '16news.kz', 'ibirzha.kz', 'kazembassy.ru', 'finprom.kz', 'halaldamu.kz', 'atpress.kz', 'bilimdinews.kz', 'astana.sud.kz']
+2024-09-09 09:53:36,030 INFO: Есть подключение к БД: spider_5
+2024-09-09 09:53:36,030 INFO: Allowed domains: ['astana-piramida.kz', 'astanazan.kz', '103-astana.kz', 'bilimdiler.kz', 'kdts.kz', 'infs.kz', 'sb.by', 'slovo.kg', 'aqjolgazet.kz', 'kerek-info.kz', 'zannews.kz', 'kazakbol.com', 'al-isnad.kz', 'akm.sud.kz', 'gatob.kz', 'kzkazan.ru', 'edunews.kz', 'alakol-aynasy.kz', 'ile-tany.kz', 'adym.kz', 'smartnews.kz', 'ec-sport.kz', 'flyarystan.ru', 'kazaknews.kz', 'kmg.kz']
+2024-09-09 09:53:36,056 INFO: Есть подключение к БД: spider_6
+2024-09-09 09:53:36,057 INFO: Allowed domains: ['weproject.media', 'infotimes.kz', 'al-bclegion.kz', 'kazbilim.kz', 'kaz-waste.kz', 'kostacademy.kz', 'alashaqparat.kz', 'fstrk.kz', 'kazbar.org.kz', 'kazservice.kz', 'ke.kz', 'k-company.kz', 'ef-ca.kz', 'ank.kz', 'gp21.kz', 'ayu.edu.kz', 'kustanay.kz', 'fpl.kz', 'aulieatanews.kz', 'astana.citypass.kz', 'ecogosfond.kz', 'ecogosfond.kz', 'malim.kz', 'jurnalist.kz', 'asiainfo.kz']
+2024-09-09 09:53:36,082 INFO: Есть подключение к БД: spider_7
+2024-09-09 09:53:36,083 INFO: Allowed domains: ['hantengrigazeti.kz', 'grr.kz', 'kazniilha.kz', 'avtovozov.kz', 'angime.kz', 'atr.sud.kz', 'ayu.edu.kz', 'ayu.edu.kz', 'paryz.kz', 'akylkenes.kz', 'tenderbot.kz', 'kk.ef-ca.kz', 'economy.kz', 'ozgepikir.kz', 'allbanks.kz', 'tan.kz', 'kyzmet-gazeti.kz', 'bizmedia.kz', 'dknews.kz', 'kazenergy.com', 'edu-tradeunion.kz', 'pospeliha.ru', 'lenta.profinansy.ru', 'moscowtimes.io', 'umarovnews.kz']
+2024-09-09 09:53:37,591 INFO: Ссылка уже существует в базе TEMP: http://al-bclegion.kz/news/?id=1956
+2024-09-09 09:53:37,664 INFO: Заголовок отсутствует для http://astanazan.kz/
+2024-09-09 09:53:37,755 INFO: Заголовок отсутствует для https://kokshetau.asia
+2024-09-09 09:53:37,777 INFO: Дата отсутствует для http://al-bclegion.kz/news/
+2024-09-09 09:53:37,784 INFO: Дата отсутствует для http://kazniilha.kz/content/otdel-selekcii/lang-
+2024-09-09 09:53:37,923 INFO: Ссылка уже существует в базе TEMP: http://astanazan.kz/?p=6298
+2024-09-09 09:53:37,950 INFO: Ссылка уже существует в базе TEMP: https://kokshetau.asia/v-regionah/ymer-korol-velikobritanii-charlz-iii-4/
+2024-09-09 09:53:38,047 INFO: Дата отсутствует для http://al-bclegion.kz/news/index.html
+2024-09-09 09:53:38,095 INFO: Заголовок отсутствует для http://infotimes.kz/ru/
+2024-09-09 09:53:38,132 INFO: Контент отсутствует для http://kazniilha.kz/content/9388-07-03-19-12-00-32-novosti/start-108
+2024-09-09 09:53:38,197 INFO: Ссылка уже существует в базе TEMP: http://astanazan.kz/?p=6319
+2024-09-09 09:53:38,325 INFO: Заголовок отсутствует для https://bizmedia.kz/
+2024-09-09 09:53:38,454 INFO: Ссылка уже существует в базе TEMP: https://kokshetau.asia/newskz/ekonomnews/prisvoenie-imen-v-astane-riad-shkol-nazvali-v-chest-izvestnyh-kazahstanskih-deiatelei/
+2024-09-09 09:53:38,599 INFO: Контент отсутствует для http://kazniilha.kz/content/9388-07-03-19-12-00-32-novosti/start-90
+2024-09-09 09:53:38,639 INFO: Заголовок отсутствует для http://al-bclegion.kz/
+2024-09-09 09:53:38,724 INFO: Заголовок отсутствует для https://sn.kz/
+2024-09-09 09:53:38,762 INFO: Ссылка уже существует в базе TEMP: http://astanazan.kz/?p=6363
+2024-09-09 09:53:38,771 INFO: Контент отсутствует для http://infotimes.kz/ru/category/%d0%ba%d1%83%d0%bb%d1%8c%d1%82%d1%83%d1%80%d0%b0/
+2024-09-09 09:53:39,020 INFO: Дата отсутствует для https://kokshetau.asia/newskz/sbornaia-kazahstana-po-fytzaly-obygrala-argentiny-v-tovarisheskom-matche/
+2024-09-09 09:53:39,029 INFO: Контент отсутствует для https://kostacademy.kz/news?page=10
+2024-09-09 09:53:39,049 INFO: Контент отсутствует для http://kazniilha.kz/content/9388-07-03-19-12-00-32-novosti/start-72
+2024-09-09 09:53:39,232 WARNING: Новость добавлена в базу: http://infotimes.kz/ru/%d0%bf%d1%80%d0%be%d1%88%d0%b5%d0%bb-%d1%84%d0%be%d1%80%d1%83%d0%bc-%d0%b0%d0%bb%d1%8c%d1%8f%d0%bd%d1%81%d0%b0-%d0%b2%d1%8b%d0%bf%d1%83%d1%81%d0%ba%d0%bd%d0%b8%d0%ba%d0%be%d0%b2-%d0%bf%d1%80%d0%b5/
+2024-09-09 09:53:39,303 INFO: Заголовок отсутствует для https://weproject.media/sitemap/
+2024-09-09 09:53:39,370 INFO: Дата отсутствует для https://kokshetau.asia/newskz/kazahstan-predlojil-provodit-regyliarnye-tyrniry-po-etnosporty-sredi-turkskih-gosydarstv/
+2024-09-09 09:53:39,401 INFO: Контент отсутствует для https://kostacademy.kz/news?page=8
+2024-09-09 09:53:39,446 INFO: Контент отсутствует для http://kazniilha.kz/content/9388-07-03-19-12-00-32-novosti/start-54
+2024-09-09 09:53:39,486 INFO: Контент отсутствует для https://tv7.kz/ru/serials/
+2024-09-09 09:53:39,544 INFO: Контент отсутствует для http://ayu.edu.kz/birimler/en/4-muhendislik-fakultesi
+2024-09-09 09:53:39,577 INFO: Ссылка уже существует в базе TEMP: https://sn.kz/ekonomika/114099-utilalym-kazakstandyktar-eki-zhylda-447-3-mlrd-tenge-tolegen
+2024-09-09 09:53:39,604 INFO: Заголовок отсутствует для https://bizmedia.kz/stil-zhizni/sport/
+2024-09-09 09:53:39,623 INFO: Дата отсутствует для https://kokshetau.asia/newskz/tymany-i-vysokaia-pojarnaia-opasnost-prognoz-pogody-v-kazahstane-na-9-sentiabria/
+2024-09-09 09:53:39,632 INFO: Контент отсутствует для http://infotimes.kz/ru/category/lifestyle/
+2024-09-09 09:53:39,855 INFO: Контент отсутствует для https://kokshetau.asia/newskz/ekonomnews/
+2024-09-09 09:53:39,971 INFO: Дата отсутствует для https://k-company.kz/ru/news/pg/33/
+2024-09-09 09:53:39,980 INFO: Заголовок отсутствует для https://www.pravda.ru/
+2024-09-09 09:53:40,039 WARNING: Новость добавлена в базу: http://infotimes.kz/ru/%d0%bc%d0%be%d0%b6%d0%bd%d0%be-%d0%bb%d0%b8-%d0%b1%d1%8e%d0%b4%d0%b6%d0%b5%d1%82%d0%bd%d0%b8%d0%ba%d1%83-%d0%be%d1%82%d0%b4%d0%be%d1%85%d0%bd%d1%83%d1%82%d1%8c-%d0%b2-%d0%ba%d0%b0%d0%b7%d0%b0%d1%85/
+2024-09-09 09:53:40,104 INFO: Заголовок отсутствует для https://tv7.kz/ru/schedule/
+2024-09-09 09:53:40,390 INFO: Контент отсутствует для https://tv7.kz/ru/live/
+2024-09-09 09:53:40,400 INFO: Контент отсутствует для http://kazniilha.kz/content/9388-07-03-19-12-00-32-novosti/start-36
+2024-09-09 09:53:40,440 INFO: Дата отсутствует для https://kokshetau.asia/newskz/ekonomnews/vypadenie-detei-iz-okon-sovmestnye-ysiliia-dlia-bezopasnosti/
+2024-09-09 09:53:40,469 INFO: Контент отсутствует для https://angime.kz/contacts/
+2024-09-09 09:53:40,538 INFO: Контент отсутствует для http://ayu.edu.kz/ru/4265/yesevi-universitesi-gazetesi/
+2024-09-09 09:53:40,564 INFO: Ссылка уже существует в базе TEMP: https://kostacademy.kz/news/24555
+2024-09-09 09:53:40,574 INFO: Контент отсутствует для http://astanazan.kz/?cat=2
+2024-09-09 09:53:40,754 INFO: Контент отсутствует для http://kazniilha.kz/content/9388-07-03-19-12-00-32-novosti/start-18
+2024-09-09 09:53:40,857 INFO: Ссылка уже существует в базе TEMP: https://sn.kz/ekonomika/114755-kazaktelekomnyn-baskarma-ku-ramynda-bagdat-musinnen-bolek-kimder-bar-ekeni-zhariialandy
+2024-09-09 09:53:40,866 INFO: Заголовок отсутствует для https://tv7.kz/ru/
+2024-09-09 09:53:40,878 INFO: Контент отсутствует для https://kokshetau.asia/spr/
+2024-09-09 09:53:40,897 INFO: Контент отсутствует для https://kazakbol.com/category/kazak/
+2024-09-09 09:53:40,916 INFO: Контент отсутствует для http://infotimes.kz/ru/category/vozmojnosti/
+2024-09-09 09:53:40,961 WARNING: Новость добавлена в базу: https://www.pravda.ru/news/recipes/2092251-rulet-s-vetchinoi/
+2024-09-09 09:53:40,985 INFO: Дата отсутствует для https://k-company.kz/ru/news/pg/9/
+2024-09-09 09:53:41,011 WARNING: Новость добавлена в базу: https://jasqazaq.kz/bajlanys/
+2024-09-09 09:53:41,117 INFO: Заголовок отсутствует для https://qazsporttv.kz/kz/
+2024-09-09 09:53:41,130 INFO: Дата отсутствует для http://ayu.edu.kz/birimler/en/4-muhendislik-fakultesi/haberler/120
+2024-09-09 09:53:41,154 INFO: Ссылка уже существует в базе TEMP: https://www.kp.kz/online/news/5973606/
+2024-09-09 09:53:41,481 INFO: Ссылка уже существует в базе TEMP: https://bizmedia.kz/2024-08-27-kazahstanskaya-air-astana-nachnet-vypolnyat-rejsy-iz-shymkenta-v-dzhiddu/
+2024-09-09 09:53:41,552 INFO: Контент отсутствует для http://astanazan.kz/?cat=4
+2024-09-09 09:53:41,626 INFO: Заголовок отсутствует для http://mygorod.kz
+2024-09-09 09:53:41,648 INFO: Контент отсутствует для http://ayu.edu.kz/birimler/en/4-muhendislik-fakultesi/tum_haberler
+2024-09-09 09:53:41,665 INFO: Заголовок отсутствует для https://economy.kz
+2024-09-09 09:53:41,685 WARNING: Новость добавлена в базу: http://kazniilha.kz/content/otmecheny-luchshie-lidery-ppo
+2024-09-09 09:53:41,703 WARNING: Новость добавлена в базу: http://infotimes.kz/ru/%d1%87%d0%b5%d1%80%d0%b5%d0%b7-%d1%88%d0%b0%d1%85%d0%bc%d0%b0%d1%82%d1%8b-%d0%be%d0%b1%d0%be-%d0%b2%d1%81%d0%b5%d0%bc/
+2024-09-09 09:53:41,710 INFO: Контент отсутствует для https://kokshetau.asia/socnetwork/
+2024-09-09 09:53:41,748 WARNING: Новость добавлена в базу: https://www.pravda.ru/news/travel/2092598-bezopasnoe-mesto-v-samolete/
+2024-09-09 09:53:42,072 INFO: Заголовок отсутствует для https://ke.kz/ru/press-center/news/
+2024-09-09 09:53:42,100 WARNING: Новость добавлена в базу: https://jasqazaq.kz/gazet-redaktsiyasy/
+2024-09-09 09:53:42,229 INFO: Заголовок отсутствует для https://vecher.kz/ru
+2024-09-09 09:53:42,246 INFO: Контент отсутствует для https://fstrk.kz/
+2024-09-09 09:53:42,348 INFO: Ссылка уже существует в базе TEMP: https://sn.kz/ekonomika/115301-belsendiler-onlain-kreditke-tyiym-saluga-petitsiia-zhariialady-onai-nesie-kimge-kazhet
+2024-09-09 09:53:42,379 WARNING: Новость добавлена в базу: http://kazniilha.kz/content/opredelenie-gidrologicheskoy-roli-temnohvoynyh-lesov-rudnogo-altaya
+2024-09-09 09:53:42,400 WARNING: Новость добавлена в базу: http://infotimes.kz/ru/%d0%ba%d0%b8%d1%82%d0%b0%d0%b9-%d0%bf%d1%80%d0%be%d0%b4%d0%be%d0%bb%d0%b6%d0%b0%d0%b5%d1%82-%d0%b2%d1%81%d0%b5%d1%81%d1%82%d0%be%d1%80%d0%be%d0%bd%d0%bd%d0%b5-%d1%83%d0%b3%d0%bb%d1%83%d0%b1%d0%bb/
+2024-09-09 09:53:42,405 INFO: Контент отсутствует для https://tv7.kz/ru/contacts/
+2024-09-09 09:53:42,475 INFO: Заголовок отсутствует для http://uakit.kz/archives/category/%d0%b6%d0%b0%d2%a3%d0%b0%d0%bb%d1%8b%d2%9b%d1%82%d0%b0%d1%80
+2024-09-09 09:53:42,537 INFO: Контент отсутствует для https://dknews.kz/contacts
+2024-09-09 09:53:42,576 WARNING: Новость добавлена в базу: https://www.pravda.ru/news/sport/2092644-sport-posle-bolezni/
+2024-09-09 09:53:42,651 INFO: Контент отсутствует для http://kk.ef-ca.kz/o_fonde/sotrudniki
+2024-09-09 09:53:42,668 INFO: Ссылка уже существует в базе TEMP: https://qazsporttv.kz/ru/news/17829/
+2024-09-09 09:53:42,773 INFO: Контент отсутствует для https://qazaqstan.tv/videos/198951
+2024-09-09 09:53:42,788 INFO: Заголовок отсутствует для https://weproject.media/articles/obzory/
+2024-09-09 09:53:42,805 INFO: Контент отсутствует для http://ayu.edu.kz/tr/4265/yesevi-universitesi-gazetesi/
+2024-09-09 09:53:42,827 INFO: Контент отсутствует для https://www.kdts.kz/ru/o-sajte/
+2024-09-09 09:53:42,839 INFO: Контент отсутствует для https://kokshetau.asia/kokshetaunews/mnenie/bloggery/
+2024-09-09 09:53:42,868 INFO: Контент отсутствует для https://angime.kz/about/
+2024-09-09 09:53:42,887 INFO: Ссылка уже существует в базе TEMP: http://kzkazan.ru/ru/glava-gosudarstva-vystupil-s-poslaniem-narodu-kazahstana/
+2024-09-09 09:53:42,914 WARNING: Новость добавлена в базу: https://jasqazaq.kz/tyrkistan-oblys-politsiyasy-aukhymdy-is-sharalar-otkizdi/
+2024-09-09 09:53:42,924 INFO: Заголовок отсутствует для http://kerekinfo.kz/
+2024-09-09 09:53:42,968 INFO: Контент отсутствует для http://16news.kz/
+2024-09-09 09:53:43,011 WARNING: Новость добавлена в базу: https://www.kp.kz/online/news/5973682/
+2024-09-09 09:53:43,053 INFO: Ссылка уже существует в базе TEMP: https://kazembassy.ru/rus/press_centr/novosti/?cid=0&rid=5646
+2024-09-09 09:53:43,090 INFO: Заголовок отсутствует для https://economy.kz/ru/Nacionalnyj_kontaktnyj_centr/Ob_NKC/
+2024-09-09 09:53:43,159 INFO: Заголовок отсутствует для https://www.fpl.kz/ru/bp-rek
+2024-09-09 09:53:43,313 INFO: Контент отсутствует для https://etoday.kz/category/business-and-economy/
+2024-09-09 09:53:43,322 INFO: Заголовок отсутствует для https://kazakbol.com/wp-login.php?action=lostpassword&redirect_to=https%3A%2F%2Fkazakbol.com%2F
+2024-09-09 09:53:43,326 INFO: Заголовок отсутствует для https://dknews.kz/advertising
+2024-09-09 09:53:43,384 WARNING: Новость добавлена в базу: http://kazniilha.kz/content/vliyanie-sostava-lesnyh-nasaghdeniy-na-vlaghnosty-pochvy
+2024-09-09 09:53:43,406 INFO: Контент отсутствует для https://fstrk.kz/category/news/page/22/
+2024-09-09 09:53:43,427 INFO: Контент отсутствует для https://kokshetau.asia/worldnews/
+2024-09-09 09:53:43,447 INFO: Ссылка уже существует в базе TEMP: https://sn.kz/sn-sayasat/115831-zhenisimdi-kazak-eline-arnaimyn-lem-chempiony-atangan-sanzhar-erulanuly-khalykk-a-undeu-zholdady
+2024-09-09 09:53:43,520 INFO: Заголовок отсутствует для https://www.pravda.ru/realty/design_and_interior/
+2024-09-09 09:53:43,693 INFO: Заголовок отсутствует для https://www.tccb.gov.tr/
+2024-09-09 09:53:43,732 INFO: Ссылка уже существует в базе TEMP: https://tan.kz/archives/2748
+2024-09-09 09:53:43,767 INFO: Ссылка уже существует в базе TEMP: http://astanazan.kz/?p=6163
+2024-09-09 09:53:43,840 INFO: Контент отсутствует для http://ayu.edu.kz/ru/4265/yesevi-universitesi-gazetesi
+2024-09-09 09:53:43,861 INFO: Контент отсутствует для https://vecher.kz/ru/ac/policy.html
+2024-09-09 09:53:43,892 INFO: Дата отсутствует для http://kzkazan.ru/ru/news/page/2/
+2024-09-09 09:53:43,964 INFO: Заголовок отсутствует для https://gp21.kz/news.php
+2024-09-09 09:53:44,050 INFO: Заголовок отсутствует для http://kerekinfo.kz/index/page407/
+2024-09-09 09:53:44,134 INFO: Заголовок отсутствует для http://16news.kz/kontaktyi
+2024-09-09 09:53:44,147 INFO: Контент отсутствует для https://expert.ru/
+2024-09-09 09:53:44,178 WARNING: Новость добавлена в базу: https://jasqazaq.kz/tyrkistan-mal-yrlagan-ystaldy-esirtki-sakhtagan-tytyldy/
+2024-09-09 09:53:44,192 INFO: Контент отсутствует для https://allbanks.kz/obmenniki/taldykorgan
+2024-09-09 09:53:44,350 INFO: Ссылка уже существует в базе TEMP: https://dknews.kz/ru/v-strane/338410-v-astane-proshla-pervaya-zarubezhnaya-prezentaciya
+2024-09-09 09:53:44,359 INFO: Контент отсутствует для https://kokshetau.asia/newskz/
+2024-09-09 09:53:44,384 INFO: Ссылка уже существует в базе TEMP: https://economy.kz/?p=7146
+2024-09-09 09:53:44,392 INFO: Заголовок отсутствует для https://kazembassy.ru/rus/site_map/
+2024-09-09 09:53:44,445 INFO: Заголовок отсутствует для https://www.ortcom.kz/ru/
+2024-09-09 09:53:44,554 INFO: Ссылка уже существует в базе TEMP: https://angime.kz/rastayal-li-led-mezhdu-zagitovoi-i-medvedevoi/
+2024-09-09 09:53:44,561 INFO: Контент отсутствует для https://pospeliha.ru/page/1725
+2024-09-09 09:53:44,570 INFO: Контент отсутствует для https://smartnews.kz/ru
+2024-09-09 09:53:44,580 INFO: Контент отсутствует для https://uyguravazi.kazgazeta.kz/redactionnews?page=2717
+2024-09-09 09:53:44,603 INFO: Дата отсутствует для http://al-bclegion.kz/media/photos/
+2024-09-09 09:53:44,625 INFO: Ссылка уже существует в базе TEMP: http://al-bclegion.kz/news/?id=1955
+2024-09-09 09:53:44,675 INFO: Дата отсутствует для http://al-bclegion.kz/section-chemp/
+2024-09-09 09:53:44,685 INFO: Дата отсутствует для http://al-bclegion.kz/news/?year=2024&month=05&category=6
+2024-09-09 09:53:44,713 INFO: Контент отсутствует для http://astanazan.kz/?cat=3
+2024-09-09 09:53:44,740 WARNING: Новость добавлена в базу: https://www.pravda.ru/news/realty/2092642-bed-placement-tips/
+2024-09-09 09:53:44,748 INFO: Заголовок отсутствует для https://kazakbol.com/wp-login.php?action=lostpassword&redirect_to=https%3A%2F%2Fkazakbol.com%2Fcategory%2Fkazak%2F
+2024-09-09 09:53:44,751 INFO: Контент отсутствует для http://kk.ef-ca.kz/o_fonde/sotrudniki/page/2/
+2024-09-09 09:53:44,760 INFO: Контент отсутствует для http://asiainfo.kz/e/tags/?tagname=%D0%96%D0%B0%D2%A3%D0%B0%D0%BB%D1%8B%D2%9B
+2024-09-09 09:53:45,146 INFO: Дата отсутствует для http://al-bclegion.kz/team/
+2024-09-09 09:53:45,156 INFO: Дата отсутствует для http://al-bclegion.kz/tournaments/
+2024-09-09 09:53:45,163 INFO: Дата отсутствует для http://al-bclegion.kz/calendar/
+2024-09-09 09:53:45,188 INFO: Контент отсутствует для https://tenderbot.kz/pages/contacts
+2024-09-09 09:53:45,193 INFO: Заголовок отсутствует для https://www.fpl.kz/en/news/8/
+2024-09-09 09:53:45,211 INFO: Контент отсутствует для https://shop.kz/personal/
+2024-09-09 09:53:45,279 INFO: Дата отсутствует для https://sayasat.kz/rules
+2024-09-09 09:53:45,285 INFO: Контент отсутствует для https://kokshetau.asia/aqmolanews/
+2024-09-09 09:53:45,316 INFO: Дата отсутствует для http://ayu.edu.kz/kz/4265/yesevi-universitesi-gazetesi/
+2024-09-09 09:53:45,347 WARNING: Новость добавлена в базу: http://kazniilha.kz/content/usilenaohranahvoynyh-molodnyakov
+2024-09-09 09:53:45,355 INFO: Контент отсутствует для https://qazaqstan.tv/videos/198954
+2024-09-09 09:53:45,382 INFO: Контент отсутствует для https://tv7.kz/ru/celebs-ru/
+2024-09-09 09:53:45,392 INFO: Заголовок отсутствует для https://halaldamu.kz/kk/illegal
+2024-09-09 09:53:45,413 INFO: Заголовок отсутствует для https://edu-tradeunion.kz/kk/
+2024-09-09 09:53:45,436 INFO: Дата отсутствует для https://www.tccb.gov.tr/ata_ozel/biyografi/
+2024-09-09 09:53:45,475 WARNING: Новость добавлена в базу: https://tan.kz/archives/646
+2024-09-09 09:53:45,492 INFO: Дата отсутствует для http://al-bclegion.kz/dubl/
+2024-09-09 09:53:45,542 INFO: Ссылка уже существует в базе TEMP: http://astanazan.kz/?p=6160
+2024-09-09 09:53:45,550 INFO: Контент отсутствует для http://edunews.kz/
+2024-09-09 09:53:45,573 WARNING: Новость добавлена в базу: http://16news.kz/tv/gorod/c_bp9_fwqYc
+2024-09-09 09:53:45,690 INFO: Заголовок отсутствует для https://expert.ru/personal/
+2024-09-09 09:53:45,736 INFO: Ссылка уже существует в базе TEMP: https://dknews.kz/ru/v-strane/338392-face-id-v-poliklinikah-novyy-etap-v-zdravoohranenii
+2024-09-09 09:53:45,743 INFO: Контент отсутствует для http://asiainfo.kz/A_sanat/biz/
+2024-09-09 09:53:45,755 INFO: Контент отсутствует для https://fstrk.kz/category/news/page/20/
+2024-09-09 09:53:46,199 WARNING: Новость добавлена в базу: http://kazniilha.kz/content/o-sostoyanii-zelenyh-nasaghdeniy-goroda-aktobe
+2024-09-09 09:53:46,227 INFO: Ссылка уже существует в базе TEMP: https://sn.kz/sn-sayasat/116004-putinnin-mong-oliiaga-sapary-mong-oliia-nelikten-ony-tutkyndau-turaly-khku-sheshimin-oryndamady
+2024-09-09 09:53:46,280 INFO: Дата отсутствует для http://al-bclegion.kz/club/
+2024-09-09 09:53:46,286 INFO: Заголовок отсутствует для https://www.kp.kz/go/https://t.me/+fZt4w7gp8dpmODNi
+2024-09-09 09:53:46,288 INFO: Контент отсутствует для https://smartnews.kz/pages/advertisement
+2024-09-09 09:53:46,301 INFO: Заголовок отсутствует для https://kyzmet-gazeti.kz/
+2024-09-09 09:53:46,330 INFO: Контент отсутствует для https://kokshetau.asia/kokshetaunews/
+2024-09-09 09:53:46,384 WARNING: Новость добавлена в базу: https://jasqazaq.kz/tyrkistan-tartip-sakhshylary-futbol-da-ojnajdy-manerlep-okhudy-da-mengergen/
+2024-09-09 09:53:46,407 INFO: Заголовок отсутствует для https://zannews.kz/2024/03/
+2024-09-09 09:53:46,417 INFO: Контент отсутствует для https://vecher.kz/ru/ac/contactus.html
+2024-09-09 09:53:46,439 INFO: Ссылка уже существует в базе TEMP: https://kazembassy.ru/rus/press_centr/novosti/?cid=0&rid=5647
+2024-09-09 09:53:46,461 INFO: Ссылка уже существует в базе TEMP: https://www.ortcom.kz/kk/infografika/1724931135
+2024-09-09 09:53:46,472 INFO: Заголовок отсутствует для http://kerekinfo.kz/index/page3/
+2024-09-09 09:53:46,485 INFO: Контент отсутствует для http://kk.ef-ca.kz/o_fonde/sotrudniki/
+2024-09-09 09:53:46,494 INFO: Заголовок отсутствует для https://www.pravda.ru/gardening/ovoshchi/
+2024-09-09 09:53:46,701 INFO: Ссылка уже существует в базе TEMP: http://astanazan.kz/?p=6427
+2024-09-09 09:53:46,717 WARNING: Новость добавлена в базу: https://www.tccb.gov.tr/cumhurbaskanligi-sozculugunden/1695/144217/cumhurbaskanligi-sozcusu-buyukelci-ibrahim-kalin-jake-sullivan-ve-victoria-nuland-ile-gorusmeler
+2024-09-09 09:53:46,737 INFO: Заголовок отсутствует для https://arasha.kz/ru/
+2024-09-09 09:53:46,750 INFO: Заголовок отсутствует для https://www.sb.by/en/
+2024-09-09 09:53:46,764 INFO: Контент отсутствует для https://pospeliha.ru/page/30
+2024-09-09 09:53:46,787 INFO: Ссылка уже существует в базе TEMP: https://tan.kz/archives/2748?amp=1
+2024-09-09 09:53:46,794 INFO: Дата отсутствует для https://sayasat.kz/about
+2024-09-09 09:53:46,810 INFO: Ссылка уже существует в базе TEMP: https://gp21.kz/blog.php?id=7
+2024-09-09 09:53:46,846 INFO: Контент отсутствует для http://ayu.edu.kz/birimler/en/0-ahmet-yesevi-universitesi
+2024-09-09 09:53:46,883 WARNING: Новость добавлена в базу: http://16news.kz/tv/gorod/J_e2b0JUbZY-555666888
+2024-09-09 09:53:46,890 INFO: Контент отсутствует для http://hordelo.kz
+2024-09-09 09:53:46,924 INFO: Ссылка уже существует в базе TEMP: http://astanazan.kz/?p=6420
+2024-09-09 09:53:46,938 INFO: Дата отсутствует для http://kzkazan.ru/ru/news/page/3/
+2024-09-09 09:53:46,949 INFO: Заголовок отсутствует для https://kazakbol.com/wp-login.php
+2024-09-09 09:53:46,962 INFO: Ссылка уже существует в базе TEMP: https://economy.kz/?p=7161
+2024-09-09 09:53:46,969 INFO: Контент отсутствует для https://www.kdts.kz/en/o-sajte/
+2024-09-09 09:53:46,987 INFO: Контент отсутствует для http://astanazan.kz/?cat=3&paged=3
+2024-09-09 09:53:47,013 INFO: Ссылка уже существует в базе TEMP: http://astanazan.kz/?p=6260
+2024-09-09 09:53:47,022 INFO: Заголовок отсутствует для http://www.al-bclegion.kz
+2024-09-09 09:53:47,041 INFO: Контент отсутствует для http://astanazan.kz/?cat=3&paged=2
+2024-09-09 09:53:47,098 INFO: Ссылка уже существует в базе TEMP: http://astanazan.kz/?p=6202
+2024-09-09 09:53:47,121 INFO: Контент отсутствует для https://tv7.kz/ru/about-us/
+2024-09-09 09:53:47,141 INFO: Ссылка уже существует в базе TEMP: https://angime.kz/denis-ten-sochi-pervaya-bronza/
+2024-09-09 09:53:47,498 WARNING: Новость добавлена в базу: http://kazniilha.kz/content/s-dnem-nezavisimosti-respubliki-kazahstan
+2024-09-09 09:53:47,510 INFO: Ссылка уже существует в базе TEMP: https://dknews.kz/ru/dk-life/338395-ioi-2024-kazahstanskie-shkolniki-zavoevali-medali
+2024-09-09 09:53:47,530 WARNING: Новость добавлена в базу: https://kokshetau.asia/glavnaya/
+2024-09-09 09:53:47,546 INFO: Ссылка уже существует в базе TEMP: https://qazaqstan.tv/news/198797/
+2024-09-09 09:53:47,560 INFO: Контент отсутствует для https://allbanks.kz/news/index/page:5587
+2024-09-09 09:53:47,571 INFO: Контент отсутствует для https://uyguravazi.kazgazeta.kz/redactionnews?page=10
+2024-09-09 09:53:47,582 INFO: Контент отсутствует для https://www.qazaquni.kz/news/page/816
+2024-09-09 09:53:48,184 INFO: Заголовок отсутствует для https://kokshetau.asia/author/adminkokshe/
+2024-09-09 09:53:48,206 INFO: Дата отсутствует для https://kokshetau.asia/newskz/kairat-ystypil-zenity-v-tovarisheskom-matche/
+2024-09-09 09:53:48,227 INFO: Ссылка уже существует в базе TEMP: http://astanazan.kz/?p=6430
+2024-09-09 09:53:48,238 INFO: Контент отсутствует для https://ayu.edu.kz/birimler/kz/4-spor-ve-sanat-fakultesi
+2024-09-09 09:53:48,266 INFO: Ссылка уже существует в базе TEMP: http://astanazan.kz/?p=6433
+2024-09-09 09:53:48,297 INFO: Ссылка уже существует в базе TEMP: https://lenta.profinansy.ru/selections/2119392
+2024-09-09 09:53:48,316 INFO: Ссылка уже существует в базе TEMP: http://astanazan.kz/?p=6436
+2024-09-09 09:53:48,324 INFO: Контент отсутствует для http://astanazan.kz/?cat=3&paged=50
+2024-09-09 09:53:48,334 INFO: Контент отсутствует для http://kazniilha.kz/content/ob-institute
+2024-09-09 09:53:48,347 INFO: Дата отсутствует для http://kazniilha.kz/content/istoriya/lang-
+2024-09-09 09:53:48,359 INFO: Дата отсутствует для http://kazniilha.kz/content/nauchnaya-deyatelynosty/lang-
+2024-09-09 09:53:48,384 WARNING: Новость добавлена в базу: https://www.ortcom.kz/ru/deyatelnost-glavy-gosudarstva/1725815730
+2024-09-09 09:53:48,428 WARNING: Новость добавлена в базу: https://spectr.com.kz/ekonomika/biznes/5589-narusheniya-po-nds-biznesmeny-poluchayut-uvedomleniya.html
+2024-09-09 09:53:48,454 INFO: Контент отсутствует для https://shop.kz/personal/wishlist/
+2024-09-09 09:53:48,516 INFO: Заголовок отсутствует для https://umarovnews.kz/ru/
+2024-09-09 09:53:48,526 INFO: Заголовок отсутствует для https://kazembassy.ru/rus/posolstvo/posol/fotogalereya/?cid=488
+2024-09-09 09:53:48,551 WARNING: Новость добавлена в базу: http://16news.kz/tv/obschestvo/cHgIJEp5YaQ
+2024-09-09 09:53:48,556 INFO: Контент отсутствует для http://ayu.edu.kz/birimler/en/4-muhendislik-fakultesi/tum_duyurular
+2024-09-09 09:53:48,572 INFO: Дата отсутствует для http://al-bclegion.kz/dubl/index.html
+2024-09-09 09:53:48,592 INFO: Ссылка уже существует в базе TEMP: https://sn.kz/sn-sayasat/116003-germaniianyn-federaldyk-kantsleri-kazakstanga-saparmen-kelmek
+2024-09-09 09:53:48,614 WARNING: Новость добавлена в базу: https://etoday.kz/business-and-economy/111541-v-briks-prinyali-saudovskuyu-araviyu-argentinu-egipet-oae-iran-i-efiopiyu/
+2024-09-09 09:53:48,628 INFO: Контент отсутствует для http://kazniilha.kz/content/administraciya/lang-
+2024-09-09 09:53:48,638 INFO: Контент отсутствует для http://kazniilha.kz/content/struktura-instituta
+2024-09-09 09:53:48,658 INFO: Ссылка уже существует в базе TEMP: http://astanazan.kz/?p=6239
+2024-09-09 09:53:48,685 INFO: Ссылка уже существует в базе TEMP: http://astanazan.kz/?p=6165
+2024-09-09 09:53:48,700 INFO: Ссылка уже существует в базе TEMP: http://astanazan.kz/?p=6196
+2024-09-09 09:53:48,730 INFO: Дата отсутствует для https://kokshetau.asia/newskz/ekonomnews/kitai-inostrancy-ne-smogyt-ysynovliat-detei-milliardy-v-afriky-i-proryv-v-ochistke-grafita-inbusiness-kz/
+2024-09-09 09:53:48,749 INFO: Дата отсутствует для https://kokshetau.asia/newskz/simonian-nazvala-dve-prichiny-sankcii-protiv-rt-i-rossii-segodnia/
+2024-09-09 09:53:48,761 INFO: Дата отсутствует для https://kokshetau.asia/newskz/my-nachinaem-kvn-kakim-nam-zapomnitsia-aleksandr-masliakov/
+2024-09-09 09:53:48,771 INFO: Заголовок отсутствует для https://www.pravda.ru/gardening/
+2024-09-09 09:53:48,782 INFO: Заголовок отсутствует для http://kk.ef-ca.kz/news/fond/page/26/
+2024-09-09 09:53:48,794 INFO: Заголовок отсутствует для http://kerekinfo.kz/index/page405/
+2024-09-09 09:53:49,102 INFO: Ссылка уже существует в базе TEMP: https://kokshetau.asia/qazaqnews/densayly-sa-tay-ministrligi-j-ne-jas-densayly-sa-tay-k-shbasshylary-birinshi-forym-innovaciiany-yntalandyrady/
+2024-09-09 09:53:49,138 INFO: Контент отсутствует для https://kokshetau.asia/qazaqnews/
+2024-09-09 09:53:49,194 INFO: Контент отсутствует для https://kokshetau.asia/v-regionah/
+2024-09-09 09:53:49,218 INFO: Ссылка уже существует в базе TEMP: https://kokshetau.asia/newskz/chto-nuzhno-znat-o-mobilnyh-perevodah-v-2024-godu/
+2024-09-09 09:53:49,254 WARNING: Новость добавлена в базу: http://kazniilha.kz/content/vosstanovity-lesa-oblasti-abay-pomogut-uchenye
+2024-09-09 09:53:49,280 INFO: Контент отсутствует для http://kazniilha.kz/content/9388-07-03-19-12-00-32-novosti/start-144
+2024-09-09 09:53:49,300 INFO: Контент отсутствует для http://kazniilha.kz/content/9388-07-03-19-12-00-32-novosti/start-126
+2024-09-09 09:53:49,319 INFO: Контент отсутствует для http://kazniilha.kz/content/9388-07-03-19-12-00-32-novosti/start-162
+2024-09-09 09:53:49,366 INFO: Контент отсутствует для https://abai.kz/
+2024-09-09 09:53:49,535 INFO: Контент отсутствует для https://tenderbot.kz/pages/about
+2024-09-09 09:53:49,541 INFO: Заголовок отсутствует для https://bilimdiler.kz/?do=register
+2024-09-09 09:53:49,557 INFO: Контент отсутствует для https://smartnews.kz/ru/pages/advertisement
+2024-09-09 09:53:49,566 INFO: Контент отсутствует для https://www.kdts.kz/sajt-turaly/
+2024-09-09 09:53:49,596 INFO: Контент отсутствует для https://www.sb.by/cooperation/advertising/publicity/
+2024-09-09 09:53:49,628 INFO: Ссылка уже существует в базе TEMP: https://zannews.kz/nasiliya-v-otnoshenii-zhurnalistov-byt-ne-dolzhno/
+2024-09-09 09:53:49,648 INFO: Ссылка уже существует в базе TEMP: https://economy.kz/?p=8052
+2024-09-09 09:53:49,667 WARNING: Новость добавлена в базу: https://edu-tradeunion.kz/kk/press/press-area/10707/
+2024-09-09 09:53:49,680 INFO: Контент отсутствует для https://pospeliha.ru/page/1723
+2024-09-09 09:53:49,699 INFO: Контент отсутствует для https://tan.kz/archives/tag/%d0%bd%d0%be%d0%b2%d0%be%d1%81%d1%82%d0%b8-%d1%88%d1%8b%d0%bc%d0%ba%d0%b5%d0%bd%d1%82%d0%b0
+2024-09-09 09:53:49,753 WARNING: Новость добавлена в базу: https://kokshetau.asia/newskz/ekonomnews/kitai-snijenie-stavok-po-vkladam-rost-vnytrennego-tyrizma-i-alians-s-avtogigantami-evropy-inbusiness-kz/
+2024-09-09 09:53:49,776 WARNING: Новость добавлена в базу: https://jasqazaq.kz/tyrkistan-politsiya-mal-yrlagandardy-khyrykhtady/
+2024-09-09 09:53:49,830 INFO: Дата отсутствует для https://expert.ru/public-offer/
+2024-09-09 09:53:49,861 INFO: Заголовок отсутствует для http://hordelo.kz/register
+2024-09-09 09:53:49,971 WARNING: Новость добавлена в базу: http://kazniilha.kz/content/12-aprelyadeny-rabotnikov-nauki
+2024-09-09 09:53:49,991 INFO: Ссылка уже существует в базе TEMP: http://astanazan.kz/?p=6360
+2024-09-09 09:53:50,019 WARNING: Новость добавлена в базу: http://astanazan.kz/?p=6301
+2024-09-09 09:53:50,039 INFO: Ссылка уже существует в базе TEMP: http://astanazan.kz/?p=6322
+2024-09-09 09:53:50,053 WARNING: Новость добавлена в базу: http://kazniilha.kz/content/s-meghdunarodnaya-ghenskim-dnem
+2024-09-09 09:53:50,067 WARNING: Новость добавлена в базу: http://kazniilha.kz/content/9605-22-04-24-11-31-47-nauryz-meyramy-tty-bolsyn
+2024-09-09 09:53:50,086 WARNING: Новость добавлена в базу: http://kazniilha.kz/content/vizit-delegacii-ministerstva-lesnogo-hozyaystva-respubliki-belarusy
+2024-09-09 09:53:50,104 WARNING: Новость добавлена в базу: http://kazniilha.kz/content/v-deny-nauki-otmecheny-luchshie
+2024-09-09 09:53:50,119 INFO: Дата отсутствует для http://kazniilha.kz/content/tekuschie-napravleniya-issledovaniy
+2024-09-09 09:53:50,124 INFO: Контент отсутствует для http://16news.kz/marketing
+2024-09-09 09:53:50,130 INFO: Заголовок отсутствует для http://kerekinfo.kz/profile/assar/
+2024-09-09 09:53:50,143 INFO: Ссылка уже существует в базе TEMP: https://dknews.kz/ru/sport/338416-v-astane-prohodit-ceremoniya-otkrytiya-vsemirnyh-igr
+2024-09-09 09:53:50,151 INFO: Контент отсутствует для https://www.moscowtimes.io/page/rss
+2024-09-09 09:53:50,160 INFO: Заголовок отсутствует для http://kk.ef-ca.kz/news/fond/page/7/
+2024-09-09 09:53:50,183 WARNING: Новость добавлена в базу: https://kokshetau.asia/newskz/ekonomnews/cena-na-neft-brent-dostigla-80-kakie-faktory-vliiaut-na-rost/
+2024-09-09 09:53:50,193 INFO: Контент отсутствует для https://kokshetau.asia/inastana/
+2024-09-09 09:53:50,226 WARNING: Новость добавлена в базу: https://www.pravda.ru/news/gardening/2092681-perec-na-okne/
+2024-09-09 09:53:50,269 WARNING: Новость добавлена в базу: http://astanazan.kz/?p=6389
+2024-09-09 09:53:50,276 INFO: Заголовок отсутствует для https://halaldamu.kz/kk/halal
+2024-09-09 09:53:50,295 INFO: Ссылка уже существует в базе TEMP: https://angime.kz/%d0%ba%d0%b0%d0%b7%d0%b0%d1%85%d1%81%d1%82%d0%b0%d0%bd-%d1%84%d1%80%d0%b0%d0%bd%d1%86%d0%b8%d1%8f/
+2024-09-09 09:53:50,301 INFO: Заголовок отсутствует для https://kyzmet-gazeti.kz/page/433
+2024-09-09 09:53:50,313 INFO: Контент отсутствует для https://vecher.kz/ru/ac/reporter.html
+2024-09-09 09:53:50,335 WARNING: Новость добавлена в базу: https://arasha.kz/alem-jane-zan/qyqyqtyq-alandagy-qogam/sybaga-bagdarlamasy-ajasynda-ber-lgen-subsidija-qoldy-bolgan/
+2024-09-09 09:53:50,906 INFO: Контент отсутствует для https://qazaqstan.tv/videos/197703
+2024-09-09 09:53:50,945 WARNING: Новость добавлена в базу: https://agroinfo.kz/too-st-esembli-nachat-s-nulya-i-ne-ostanavlivatsya/
+2024-09-09 09:53:50,960 INFO: Ссылка уже существует в базе TEMP: http://kazniilha.kz/content/akciya-po-posadke-derevyev-v-g-akkoly-akmolinskoy-oblasti
+2024-09-09 09:53:50,977 WARNING: Новость добавлена в базу: http://kazniilha.kz/content/sozdanie-zelenogo-poyasa-vokrug-g-turkestan
+2024-09-09 09:53:50,998 INFO: Ссылка уже существует в базе TEMP: https://kazakbol.com/delegacziya-kazahstana-gotova-vyletet-vo-vladivostok-v-rf-startuet-viii-vostochnyj-ekonomicheskij-forum/
+2024-09-09 09:53:51,016 INFO: Заголовок отсутствует для https://kazembassy.ru/rus/press_centr/fotogalereya/?cid=83
+2024-09-09 09:53:51,031 INFO: Заголовок отсутствует для https://www.kp.kz/go/https://dzen.ru/kp_kz
+2024-09-09 09:53:51,034 INFO: Контент отсутствует для https://uyguravazi.kazgazeta.kz/redactionnews?page=2715
+2024-09-09 09:53:51,057 WARNING: Новость добавлена в базу: https://umarovnews.kz/ru/blog/item/139-v-akimate-uralska-chinovnik-vydal-sluzhebnuyu-kvartiru-svoey-zhene.html
+2024-09-09 09:53:51,062 INFO: Контент отсутствует для http://hordelo.kz/login
+2024-09-09 09:53:51,071 INFO: Заголовок отсутствует для https://www.aljazeera.com/
+2024-09-09 09:53:51,216 INFO: Контент отсутствует для https://tv7.kz/ru/channel-news/page/5/
+2024-09-09 09:53:51,226 INFO: Контент отсутствует для http://ayu.edu.kz/birimler/ru/4-muhendislik-fakultesi/
+2024-09-09 09:53:51,248 INFO: Ссылка уже существует в базе TEMP: https://sn.kz/sn-sayasat/116005-mang-ystau-oblysynda-koshede-kokys-tasityn-kolik-ortenip-zharylys-boldy-video
+2024-09-09 09:53:51,265 INFO: Ссылка уже существует в базе TEMP: http://kzkazan.ru/ru/kazahstan-prinyal-uchastie-v-iii-kazanskom-globalnom-molodezhnom-sammite/
+2024-09-09 09:53:51,287 WARNING: Новость добавлена в базу: http://infotimes.kz/ru/%d0%ba%d0%b0%d0%b7%d0%b0%d1%85%d1%81%d1%82%d0%b0%d0%bd%d1%81%d0%ba%d0%b8%d0%b9-%d1%84%d0%b8%d0%bb%d1%8c%d0%bc-%d0%b2%d1%8b%d1%81%d0%be%d0%ba%d0%be-%d0%be%d1%86%d0%b5%d0%bd%d0%b8%d0%bb%d0%b8-%d0%bc/
+2024-09-09 09:53:51,292 INFO: Контент отсутствует для http://infotimes.kz/ru/category/%d0%ba%d1%83%d0%bb%d1%8c%d1%82%d1%83%d1%80%d0%b0/%d0%bd%d0%b0%d1%88%d0%b8%d0%b2%d1%8b%d0%bf%d1%83%d1%81%d0%ba%d0%bd%d0%b8%d0%ba%d0%b8-%d0%bd%d0%b0%d1%88%d0%b0%d0%b3%d0%be%d1%80%d0%b4%d0%be%d1%81%d1%82%d1%8c/top-5/
+2024-09-09 09:53:51,313 INFO: Ссылка уже существует в базе TEMP: http://edunews.kz/editionelect/2634-r-prezident-s-basarmasy-medicinaly-ortalyyny-arlyash-balabashasyny-klder-skemen-alasyny-mektepke-deyng-yymdarymen-tzhribe-almasty.html
+2024-09-09 09:53:51,323 INFO: Контент отсутствует для http://infotimes.kz/ru/category/%d0%b2%d1%8b%d0%bf%d1%83%d1%81%d0%ba%d0%bd%d0%b8%d0%ba%d0%b8/
+2024-09-09 09:53:51,334 INFO: Контент отсутствует для http://infotimes.kz/ru/category/%d0%ba%d1%83%d0%bb%d1%8c%d1%82%d1%83%d1%80%d0%b0/%d0%ba%d0%b8%d0%bd%d0%be/
+2024-09-09 09:53:51,344 INFO: Контент отсутствует для http://infotimes.kz/ru/category/%d0%ba%d1%83%d0%bb%d1%8c%d1%82%d1%83%d1%80%d0%b0/%d0%bd%d0%b0%d1%88%d0%b8%d0%b2%d1%8b%d0%bf%d1%83%d1%81%d0%ba%d0%bd%d0%b8%d0%ba%d0%b8-%d0%bd%d0%b0%d1%88%d0%b0%d0%b3%d0%be%d1%80%d0%b4%d0%be%d1%81%d1%82%d1%8c/
+2024-09-09 09:53:51,354 INFO: Заголовок отсутствует для http://infotimes.kz/ru/page/2/
+2024-09-09 09:53:51,364 INFO: Контент отсутствует для http://infotimes.kz/ru/category/%d0%b8%d0%bd%d1%82%d0%b5%d1%80%d0%b2%d1%8c%d1%8e/
+2024-09-09 09:53:51,374 INFO: Контент отсутствует для http://infotimes.kz/ru/category/innovation/
+2024-09-09 09:53:51,398 INFO: Ссылка уже существует в базе TEMP: http://astanazan.kz/?p=6366
+2024-09-09 09:53:51,405 INFO: Контент отсутствует для http://infotimes.kz/ru/category/%d0%b3%d0%be%d1%81%d1%83%d0%b4%d0%b0%d1%80%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d1%8b%d0%b5-%d0%bf%d1%80%d0%be%d0%b3%d1%80%d0%b0%d0%bc%d0%bc%d1%8b/
+2024-09-09 09:53:51,567 WARNING: Новость добавлена в базу: https://sn.kz/sn-aleumet/114620-atak-satu-biznesin-kim-toktatady-murat-benov
+2024-09-09 09:53:51,583 INFO: Ссылка уже существует в базе TEMP: https://sn.kz/okigalar/114872-ielin-ortep-zhibergen-taraz-turgyny-ozine-kol-zhumsady
+2024-09-09 09:53:51,598 INFO: Ссылка уже существует в базе TEMP: https://sn.kz/okigalar/114812-aktauda-iel-oiyn-alanynda-tanymaityn-balany-uryp-sokk-an-video
+2024-09-09 09:53:51,613 INFO: Ссылка уже существует в базе TEMP: https://sn.kz/okigalar/114774-bir-ailyk-balasy-kaldy-kostanaida-iel-8-kabattan-sekirip-kaza-tapty
+2024-09-09 09:53:51,621 INFO: Заголовок отсутствует для https://www.kmg.kz/ru/press-center/press-releases/?PAGEN_1=128
+2024-09-09 09:53:51,633 INFO: Контент отсутствует для https://www.sb.by/cooperation/advertising/radio/
+2024-09-09 09:53:51,667 INFO: Ссылка уже существует в базе TEMP: https://zannews.kz/nedobrosovestnaya-konkurentsiya/
+2024-09-09 09:53:51,714 WARNING: Новость добавлена в базу: https://bilimdiler.kz/tarbie-sagaty/12834-menin-otanym-kazakstan.html
+2024-09-09 09:53:51,734 INFO: Контент отсутствует для https://smartnews.kz/ru/pages/about
+2024-09-09 09:53:51,769 INFO: Дата отсутствует для http://al-bclegion.kz/dubl/2017/spring-u13
+2024-09-09 09:53:51,791 WARNING: Новость добавлена в базу: https://www.5kanal.info/index.php/8-novosti/6443-m-mishustin-zayavil-o-rassmotrenii-novogo-zakonoproekta-o-naznachenii-ministrov-zdravookhraneniya
+2024-09-09 09:53:51,800 INFO: Контент отсутствует для http://16news.kz/about
+2024-09-09 09:53:51,806 INFO: Контент отсутствует для https://abai.kz/part/395
+2024-09-09 09:53:51,816 INFO: Контент отсутствует для https://www.ortcom.kz/kk/novosti?subcategory=dlya-smi
+2024-09-09 09:53:51,830 INFO: Контент отсутствует для https://pospeliha.ru/page/1722
+2024-09-09 09:53:51,858 WARNING: Новость добавлена в базу: https://tan.kz/archives/646?amp=1
+2024-09-09 09:53:51,866 INFO: Контент отсутствует для https://economy.kz/?author=247281907
+2024-09-09 09:53:51,875 INFO: Контент отсутствует для https://expert.ru/personal/?register=yes
+2024-09-09 09:53:51,912 WARNING: Новость добавлена в базу: https://jasqazaq.kz/atamnyn-amanaty-ardagerler-aldynda-esep-berdi/
+2024-09-09 09:53:51,925 INFO: Заголовок отсутствует для http://kk.ef-ca.kz/news/fond/page/5/
+2024-09-09 09:53:51,937 INFO: Заголовок отсутствует для http://kerekinfo.kz/index/page5/
+2024-09-09 09:53:51,969 WARNING: Новость добавлена в базу: https://www.pravda.ru/news/economics/2092570-bankrotstvo/
+2024-09-09 09:53:52,000 WARNING: Новость добавлена в базу: https://ayu.edu.kz/kz/haberler/123
+2024-09-09 09:53:52,034 INFO: Контент отсутствует для https://shop.kz/auth/?login=yes&backurl=%2Fpersonal%2Forders%2F4172845%2F
+2024-09-09 09:53:52,079 INFO: Заголовок отсутствует для https://lsm.kz/
+2024-09-09 09:53:52,103 WARNING: Новость добавлена в базу: https://zhambylnews.kz/fotoreports/125839-zhambyldy-tar-majdangerler-ruhyna-ta-zym-etti-fotoreportazh.html
+2024-09-09 09:53:52,119 INFO: Контент отсутствует для https://www.qazaquni.kz/news/page/3
+2024-09-09 09:53:52,150 INFO: Ссылка уже существует в базе TEMP: http://panorama.shymkala.kz/index.php/city/item/8701-glava-gosudarstva-provel-soveshchanie-po-podgotovke-k-v-vsemirnym-igram-kochevnikov
+2024-09-09 09:53:52,747 INFO: Контент отсутствует для http://ayu.edu.kz/birimler/en/4-muhendislik-fakultesi/
+2024-09-09 09:53:52,771 INFO: Ссылка уже существует в базе TEMP: https://sn.kz/sn-akparat-agyny/115991-almatyda-mopedshi-zhaiau-zhurginshini-kagyp-okiga-ornynan-kashyp-ketti-video
+2024-09-09 09:53:52,789 INFO: Ссылка уже существует в базе TEMP: http://kzkazan.ru/ru/prezident-kasym-zhomart-tokaev-provel-telefonnyj-razgovor-s-prezidentom-rossii-vladimirom-putinym-2/
+2024-09-09 09:53:52,847 INFO: Ссылка уже существует в базе TEMP: https://lenta.profinansy.ru/selections/2118526
+2024-09-09 09:53:52,879 WARNING: Новость добавлена в базу: http://astanazan.kz/?p=6204
+2024-09-09 09:53:52,900 WARNING: Новость добавлена в базу: http://edunews.kz/top-10/2456-ahmet-baytrsynly-lt-stazy.html
+2024-09-09 09:53:52,923 WARNING: Новость добавлена в базу: http://astanazan.kz/?p=5979
+2024-09-09 09:53:52,934 INFO: Контент отсутствует для http://infotimes.kz/ru/category/vozmojnosti/page/2/
+2024-09-09 09:53:52,964 INFO: Дата отсутствует для http://al-bclegion.kz/club/contacts/
+2024-09-09 09:53:52,992 INFO: Ссылка уже существует в базе TEMP: http://asiainfo.kz/A_kop/Otbasy/2018-03-07/1082.html
+2024-09-09 09:53:53,006 INFO: Контент отсутствует для http://infotimes.kz/ru/tag/%d0%bf%d1%80%d0%be%d0%be%d0%bd/
+2024-09-09 09:53:53,022 INFO: Контент отсутствует для https://www.moscowtimes.io/page/about-us
+2024-09-09 09:53:53,033 INFO: Контент отсутствует для https://dknews.kz/ru/dk-it
+2024-09-09 09:53:53,052 INFO: Заголовок отсутствует для http://hordelo.kz/radioselect.htm
+2024-09-09 09:53:53,054 INFO: Заголовок отсутствует для http://kazniilha.kz/
+2024-09-09 09:53:53,064 INFO: Контент отсутствует для http://kazniilha.kz/content/nauchnye-otdely
+2024-09-09 09:53:53,078 INFO: Ссылка уже существует в базе TEMP: https://sn.kz/okigalar/114797-kostanaida-eki-boks-bapkeri-barista-zhigitti-balagattap-sokk-yga-zhykty
+2024-09-09 09:53:53,096 INFO: Ссылка уже существует в базе TEMP: https://sn.kz/sn-aleumet/114874-allanyn-kalauymen-dep-aituga-tyiym-salynbagan-zhurnalist-sportshylarga-bulling-zhasaudy-dogaruga-shakyrdy
+2024-09-09 09:53:53,115 INFO: Ссылка уже существует в базе TEMP: https://sn.kz/ekonomika/113872-almaty-kimdigi-men-bta-bank-aksh-ta-khrapunov-pen-biliazovka-karsy-sottasty
+2024-09-09 09:53:53,140 WARNING: Новость добавлена в базу: https://sn.kz/sn-aleumet/114850-zhetimin-zhylatpagan-zhesirin-kang-ytpagan-degen-sozdin-torkinin-tusindim-sezindim-siriiadan-oralgan-kelinshektin-okigasy
+2024-09-09 09:53:53,160 WARNING: Новость добавлена в базу: https://sn.kz/sn-aleumet/114795-saiasaty-sanyrau-biligi-kanyrau-kogamy-menireu-ulty-enireude-zhurgen-el-dosai-kenzhetai
+2024-09-09 09:53:53,170 INFO: Контент отсутствует для http://ayu.edu.kz/kz/birimler/
+2024-09-09 09:53:53,207 INFO: Заголовок отсутствует для https://edu-tradeunion.kz/kk/yourquestions/
+2024-09-09 09:53:53,264 WARNING: Новость добавлена в базу: https://etoday.kz/business-and-economy/111547-okolo-30-ot-itogovoj-stoimosti-vvozimyh-v-kazahstan-avtomobilej-sostavlyayut-poshliny-i-nalogi/
+2024-09-09 09:53:53,287 INFO: Контент отсутствует для https://www.kdts.kz/ru/zakupki/
+2024-09-09 09:53:53,803 INFO: Дата отсутствует для http://al-bclegion.kz/club/subscribe/
+2024-09-09 09:53:53,811 INFO: Заголовок отсутствует для https://kazembassy.ru/rus/press_centr/fotogalereya/?cid=259
+2024-09-09 09:53:53,828 INFO: Контент отсутствует для http://16news.kz/news/&f=&page=114
+2024-09-09 09:53:53,865 INFO: Ссылка уже существует в базе TEMP: https://agroinfo.kz/acros-550-nadyozhnyj-i-proizvoditelnyj-zernouborochnyj-kombajn/
+2024-09-09 09:53:53,877 INFO: Контент отсутствует для https://qazaqstan.tv/videos/195607
+2024-09-09 09:53:53,918 INFO: Ссылка уже существует в базе TEMP: https://spectr.com.kz/zhizn/zdorove/5736-pravilnoe-pitanie-abrikosovoe-varene-bez-sakhara.html
+2024-09-09 09:53:53,933 INFO: Заголовок отсутствует для https://www.aljazeera.com/xml/rss/all.xml
+2024-09-09 09:53:53,944 INFO: Ссылка уже существует в базе TEMP: https://sn.kz/sn-sport/116027-boksshy-makhmud-sabyrkhan-shanyrak-koterdi
+2024-09-09 09:53:53,959 INFO: Ссылка уже существует в базе TEMP: https://sn.kz/sn-akparat-agyny/116019-paralimpiada-2024-kazakstandyk-sportshy-kola-zhuldeger-atandy
+2024-09-09 09:53:53,967 INFO: Заголовок отсутствует для http://kk.ef-ca.kz/news/fond/page/24/
+2024-09-09 09:53:53,979 INFO: Заголовок отсутствует для http://kerekinfo.kz/index/page4/
+2024-09-09 09:53:53,997 INFO: Контент отсутствует для https://kokshetau.asia/kokshetaunews/page/192/
+2024-09-09 09:53:54,009 INFO: Контент отсутствует для https://kokshetau.asia/kokshetaunews/page/2/
+2024-09-09 09:53:54,025 INFO: Контент отсутствует для https://tv7.kz/ru/channel-news/page/3/
+2024-09-09 09:53:54,036 INFO: Контент отсутствует для https://kokshetau.asia/kokshetaunews/page/3/
+2024-09-09 09:53:54,060 INFO: Ссылка уже существует в базе TEMP: https://angime.kz/astana-tobol-draw/
+2024-09-09 09:53:54,079 INFO: Заголовок отсутствует для https://halaldamu.kz/kk/category/zhanalyqtar/3
+2024-09-09 09:53:54,089 INFO: Заголовок отсутствует для https://arasha.kz/ru/runews/prezident-ssha-kritikoval-dejstvija-netanjahu-po-osvobozhdeniju-zalozhnikov-v-gaze/
+2024-09-09 09:53:54,389 INFO: Контент отсутствует для https://tv7.kz/ru/projects/zhetinshi-studiya-ru/
+2024-09-09 09:53:54,398 INFO: Контент отсутствует для https://tv7.kz/ru/projects/aigerim-seifollanyn-syrlasuy/
+2024-09-09 09:53:54,468 INFO: Ссылка уже существует в базе TEMP: https://www.pravda.ru/news/science/2092717-fire-safety-tips/
+2024-09-09 09:53:54,493 INFO: Ссылка уже существует в базе TEMP: https://www.pravda.ru/news/realty/2092633-budget-friendly-living-room/
+2024-09-09 09:53:54,516 INFO: Ссылка уже существует в базе TEMP: https://www.pravda.ru/news/economics/2092589-mjaso/
+2024-09-09 09:53:54,542 INFO: Ссылка уже существует в базе TEMP: https://www.pravda.ru/news/beauty/2091857-ingredienty-dlja-domashnikh-masok-dlja-volos/
+2024-09-09 09:53:54,582 INFO: Ссылка уже существует в базе TEMP: https://bizmedia.kz/2024-09-08-uspeshno-zavershayut-kazahstanskie-atlety-vystupleniya-na-paralimpiade-2024/
+2024-09-09 09:53:54,834 INFO: Ссылка уже существует в базе TEMP: https://www.pravda.ru/news/zoo/2092735-sobaki-stress/
+2024-09-09 09:53:54,850 INFO: Дата отсутствует для https://k-company.kz/ru/news/pg/10/
+2024-09-09 09:53:54,914 INFO: Ссылка уже существует в базе TEMP: https://www.pravda.ru/news/beauty/2091825-nizhnee-bele-iz-naturalnykh-tkanei/
+2024-09-09 09:53:54,983 INFO: Дата отсутствует для http://www.al-bclegion.kz/media//photos/?id=308
+2024-09-09 09:53:55,000 INFO: Ссылка уже существует в базе TEMP: https://sn.kz/sn-akparat-agyny/116028-duisenbide-elimizdin-basym-boliginde-aua-raiyna-bailanysty-eskertu-zhasaldy
+2024-09-09 09:53:55,009 INFO: Контент отсутствует для https://sn.kz/tag/%D1%88%D0%BE%D1%83-%D0%B1%D0%B8%D0%B7%D0%BD%D0%B5%D1%81/
+2024-09-09 09:53:55,019 INFO: Контент отсутствует для https://sn.kz/sn-tylsym
+2024-09-09 09:53:55,029 INFO: Контент отсутствует для https://sn.kz/adv
+2024-09-09 09:53:55,040 INFO: Контент отсутствует для https://uyguravazi.kazgazeta.kz/redactionnews?page=13
+2024-09-09 09:53:55,051 INFO: Контент отсутствует для https://bilimdiler.kz/index.php?do=lostpassword
+2024-09-09 09:53:55,067 INFO: Заголовок отсутствует для https://smartnews.kz/ru/tv
+2024-09-09 09:53:55,078 INFO: Заголовок отсутствует для https://www.kmg.kz/ru/press-center/press-releases/?PAGEN_1=5
+2024-09-09 09:53:55,100 INFO: Контент отсутствует для https://www.sb.by/en/tunnel-thinking.html
+2024-09-09 09:53:55,118 INFO: Заголовок отсутствует для https://zannews.kz/2024/
+2024-09-09 09:53:55,166 WARNING: Новость добавлена в базу: http://astanazan.kz/?p=6192
+2024-09-09 09:53:55,212 INFO: Ссылка уже существует в базе TEMP: http://edunews.kz/fotofacts/2438-bolasha-stipendiyasy-84-azamata-berld.html
+2024-09-09 09:53:55,251 INFO: Ссылка уже существует в базе TEMP: http://kzkazan.ru/ru/uvazhaemye-grazhdane-6/
+2024-09-09 09:53:55,268 INFO: Дата отсутствует для https://ayu.edu.kz/birimler/kz/4-spor-ve-sanat-fakultesi/etkinlikler/35
+2024-09-09 09:53:55,307 WARNING: Новость добавлена в базу: http://infotimes.kz/ru/alumnibook/
+2024-09-09 09:53:55,332 INFO: Дата отсутствует для http://al-bclegion.kz/club/press/
+2024-09-09 09:53:55,348 WARNING: Новость добавлена в базу: http://asiainfo.kz/A_kop/psxologiya/2017-08-22/898.html
+2024-09-09 09:53:55,364 INFO: Контент отсутствует для http://infotimes.kz/ru/tag/%d0%b2%d1%8b%d1%81%d1%88%d0%b8%d0%b9-%d1%81%d1%83%d0%b4%d0%b5%d0%b1%d0%bd%d1%8b%d0%b9-%d1%81%d0%be%d0%b2%d0%b5%d1%82/
+2024-09-09 09:53:55,380 WARNING: Новость добавлена в базу: https://www.5kanal.info/index.php/8-novosti/3261-doyarka-iz-krasnoyarskogo-kraya-e-semjonova-zanyala-chetvertoe-mesto-na-vserossijskom-konkurse-operatorov-mashinnogo-doeniya-korov
+2024-09-09 09:53:55,393 INFO: Заголовок отсутствует для https://www.ortcom.kz/?_locale=kk
+2024-09-09 09:53:55,455 INFO: Ссылка уже существует в базе TEMP: https://zhambylnews.kz/lentanews/57423-zh-mys-berushilerdi-nazaryna.html
+2024-09-09 09:53:55,483 INFO: Контент отсутствует для https://abai.kz/tos
+2024-09-09 09:53:55,519 INFO: Контент отсутствует для https://economy.kz/?author=247281839
+2024-09-09 09:53:55,542 INFO: Контент отсутствует для https://pospeliha.ru/page/60
+2024-09-09 09:53:55,572 INFO: Контент отсутствует для https://expert.ru/personal/?forgot_password=yes
+2024-09-09 09:53:55,607 WARNING: Новость добавлена в базу: https://jasqazaq.kz/ajgyl-khasymbekova-balalardyn-khykhygyn-khorgau-basty-mindet/
+2024-09-09 09:53:55,623 INFO: Ссылка уже существует в базе TEMP: http://kazniilha.kz/content/kruglyy-stol-po-rassmotreniyu-perspektivnyh-napravleniy-nauchnyh-issle
+2024-09-09 09:53:55,635 INFO: Ссылка уже существует в базе TEMP: http://kazniilha.kz/content/uchastie-v-nacionalynom-treninge-po-vsemirnomu-obzoru-prirodoohrannyh
+2024-09-09 09:53:55,660 INFO: Ссылка уже существует в базе TEMP: https://arna-news.kz/v-nomere/o-am-a-bejimdeu-shin/
+2024-09-09 09:53:55,676 INFO: Ссылка уже существует в базе TEMP: https://sn.kz/sn-akparat-agyny/116022-komandiri-ok-atty-prokuratura-mang-ystaudagy-sarbazdyn-olimine-katysty-tergeu-bastalganyn-m-limdedi
+2024-09-09 09:53:55,687 INFO: Заголовок отсутствует для https://kyzmet-gazeti.kz/page/3
+2024-09-09 09:53:55,701 INFO: Контент отсутствует для https://aigak.kz/bz-tural/
+2024-09-09 09:53:55,718 INFO: Ссылка уже существует в базе TEMP: https://sn.kz/sn-akparat-agyny/116033-kazakstandyk-baluan-lem-chempionatynda-kola-zhuldeger-atandy
+2024-09-09 09:53:55,734 INFO: Ссылка уже существует в базе TEMP: https://gp21.kz/blog.php?id=8
+2024-09-09 09:53:55,773 INFO: Контент отсутствует для https://kazbilim.kz/archives/category/e-learning
+2024-09-09 09:53:55,795 INFO: Ссылка уже существует в базе TEMP: https://bizmedia.kz/2024-09-05-kazahstan-zavoeval-pervoe-zoloto-na-paralimpiade-v-parizhe/
+2024-09-09 09:53:55,806 INFO: Заголовок отсутствует для https://bizmedia.kz/2024-09-05-pochti-polovina-oproshennyh-kazahstanczev-schitaet-korrupcziyu-prichinoj-slabyh-rezultatov-na-olimpiade/
+2024-09-09 09:53:55,835 INFO: Ссылка уже существует в базе TEMP: https://kazakbol.com/chem-grozit-kazahstanu-svoboda-veroispovedaniya-ot-gosdepartamenta-ssha/
+2024-09-09 09:53:55,858 INFO: Заголовок отсутствует для https://vlast.kz/
+2024-09-09 09:53:55,891 INFO: Контент отсутствует для https://fstrk.kz/category/news/page/19/
+2024-09-09 09:53:56,216 INFO: Контент отсутствует для https://kostacademy.kz/news?page=9
+2024-09-09 09:53:56,260 INFO: Дата отсутствует для https://k-company.kz/ru/news/pg/11/
+2024-09-09 09:53:56,453 WARNING: Новость добавлена в базу: https://infs.kz/news/oficialno-otkryto-dvizhenie-na-rekonstruirovannom-uchastke-avtodorogi-kurty-burylbaytal-dlinoy
+2024-09-09 09:53:56,461 INFO: Заголовок отсутствует для https://www.kdts.kz/ru/novosti/page/3/
+2024-09-09 09:53:56,490 WARNING: Новость добавлена в базу: http://astanazan.kz/?p=6168
+2024-09-09 09:53:56,497 INFO: Контент отсутствует для https://kaz-waste.kz/reestr-sertifitsirovannykh-predpriyatiy/
+2024-09-09 09:53:56,522 INFO: Ссылка уже существует в базе TEMP: https://aqtobetv.kz/kz/news/32158
+2024-09-09 09:53:56,536 INFO: Ссылка уже существует в базе TEMP: https://atyrautv.kz/kz/news/35643
+2024-09-09 09:53:56,548 INFO: Контент отсутствует для http://16news.kz/news/&f=&page=112
+2024-09-09 09:53:56,589 INFO: Контент отсутствует для https://dknews.kz/ru/dk-avto
+2024-09-09 09:53:56,616 INFO: Ссылка уже существует в базе TEMP: https://edu-tradeunion.kz/kk/press/press-area/10703/
+2024-09-09 09:53:56,626 INFO: Заголовок отсутствует для https://lenta.profinansy.ru/children-and-parents
+2024-09-09 09:53:56,654 WARNING: Новость добавлена в базу: https://tan.kz/archives/5710
+2024-09-09 09:53:56,688 WARNING: Новость добавлена в базу: https://umarovnews.kz/ru/blog/item/146-kak-v-uralske-zemelnyy-uchastok-ploshchadyu-2-2-gektara-za-steloy-okazalsya-v-chastnoy-sobstvennosti.html
+2024-09-09 09:53:56,694 INFO: Заголовок отсутствует для https://seykhuninfo.kz/kogam/
+2024-09-09 09:53:56,722 WARNING: Новость добавлена в базу: http://kerekinfo.kz/2019/01/22/resmi-astanasy-zho-tipti-astana-salatyn-zheri-zho-elderdi-bilesiz-be.html
+2024-09-09 09:53:56,736 INFO: Заголовок отсутствует для http://kk.ef-ca.kz/news/fond/page/10/
+2024-09-09 09:53:56,746 INFO: Контент отсутствует для https://sn.kz/bajlanys
+2024-09-09 09:53:56,757 INFO: Контент отсутствует для https://tv7.kz/ru/channel-news/page/2/
+2024-09-09 09:53:56,766 INFO: Контент отсутствует для https://tv7.kz/ru/projects/zdorove-s-ajnur-tazhinoj-ru/
+2024-09-09 09:53:56,776 INFO: Контент отсутствует для https://tv7.kz/ru/projects/ajnaonline/
+2024-09-09 09:53:56,787 INFO: Контент отсутствует для https://tv7.kz/ru/projects/late-night-show-with-dinara-satzhan-ru/
+2024-09-09 09:53:56,797 INFO: Контент отсутствует для https://tv7.kz/ru/projects/chto-eto-bylo-ru/
+2024-09-09 09:53:56,807 INFO: Контент отсутствует для https://tv7.kz/ru/projects/suozdin-kyskasy-ru/
+2024-09-09 09:53:56,860 INFO: Контент отсутствует для http://ayu.edu.kz/birimler/kz/4-muhendislik-fakultesi/
+2024-09-09 09:53:56,903 INFO: Контент отсутствует для https://tv7.kz/ru/projects/auyldone/
+2024-09-09 09:53:56,954 INFO: Ссылка уже существует в базе TEMP: https://bizmedia.kz/2024-09-04-chislo-passazhirov-flyarystan-dostiglo-15-millionov/
+2024-09-09 09:53:56,964 INFO: Контент отсутствует для https://tv7.kz/ru/projects/
+2024-09-09 09:53:56,975 INFO: Контент отсутствует для http://ayu.edu.kz/birimler/tr/4-muhendislik-fakultesi/
+2024-09-09 09:53:57,170 INFO: Ссылка уже существует в базе TEMP: https://sn.kz/sn-sport/116024-astanada-5-shi-duniezhuzilik-koshpendiler-oiyndarynyn-ashylu-saltanaty-bastaldy
+2024-09-09 09:53:57,249 INFO: Заголовок отсутствует для http://hordelo.kz/index.php/register/
+2024-09-09 09:53:57,269 INFO: Ссылка уже существует в базе TEMP: https://www.pravda.ru/news/travel/2092653-riviera-park/
+2024-09-09 09:53:57,298 INFO: Ссылка уже существует в базе TEMP: https://www.pravda.ru/news/gardening/2092677-razmnozhenie-pelargonii/
+2024-09-09 09:53:57,308 INFO: Заголовок отсутствует для https://www.pravda.ru/beauty/beautyandstyle/
+2024-09-09 09:53:57,733 INFO: Контент отсутствует для https://kostacademy.kz/news?page=7
+2024-09-09 09:53:57,744 INFO: Заголовок отсутствует для https://weproject.media/user_rules.php
+2024-09-09 09:53:57,772 INFO: Заголовок отсутствует для https://weproject.media/user_agreements.php
+2024-09-09 09:53:57,814 WARNING: Новость добавлена в базу: http://astanazan.kz/?p=6242
+2024-09-09 09:53:57,821 INFO: Заголовок отсутствует для https://kazembassy.ru/rus/press_centr/fotogalereya/?cid=442
+2024-09-09 09:53:57,838 INFO: Контент отсутствует для https://kokshetau.asia/inastana/page/1772/
+2024-09-09 09:53:57,861 INFO: Контент отсутствует для https://kokshetau.asia/inastana/page/3/
+2024-09-09 09:53:57,876 INFO: Контент отсутствует для https://qazaqstan.tv/videos/195882
+2024-09-09 09:53:57,892 INFO: Контент отсутствует для https://www.moscowtimes.io/rss/ft
+2024-09-09 09:53:57,899 INFO: Ссылка уже существует в базе TEMP: http://kazniilha.kz/content/kruglyy-stol-s-predstavitelyami-biznesa-i-gosudarstvennyh-uchreghdeniy
+2024-09-09 09:53:57,909 INFO: Ссылка уже существует в базе TEMP: http://kazniilha.kz/content/provedenie-nauchnyh-issledovaniy-v-lesnyh-nasaghdeniyah-too-astana-orm
+2024-09-09 09:53:57,933 WARNING: Новость добавлена в базу: https://www.pravda.ru/news/beauty/2091868-skrab-iz-fruktovykh-kostochek/
+2024-09-09 09:53:57,948 INFO: Дата отсутствует для http://al-bclegion.kz/club/sponsors/
+2024-09-09 09:53:57,956 INFO: Контент отсутствует для http://infotimes.kz/ru/category/%d0%b3%d0%be%d1%81%d1%83%d0%b4%d0%b0%d1%80%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d1%8b%d0%b5-%d0%bf%d1%80%d0%be%d0%b3%d1%80%d0%b0%d0%bc%d0%bc%d1%8b/page/2/
+2024-09-09 09:53:57,974 INFO: Дата отсутствует для http://www.al-bclegion.kz/media//photos/?id=309
+2024-09-09 09:53:57,985 INFO: Дата отсутствует для http://al-bclegion.kz/club/arena/
+2024-09-09 09:53:58,004 WARNING: Новость добавлена в базу: http://asiainfo.kz/A_adebiet/sin/2017-08-16/877.html
+2024-09-09 09:53:58,030 INFO: Заголовок отсутствует для https://www.minber.kz/
+2024-09-09 09:53:58,050 INFO: Заголовок отсутствует для https://www.pravda.ru/recipes/
+2024-09-09 09:53:58,486 INFO: Контент отсутствует для http://ayu.edu.kz/birimler/en/4-muhendislik-fakultesi/iletisim
+2024-09-09 09:53:58,498 INFO: Контент отсутствует для http://ayu.edu.kz/birimler/en/4-muhendislik-fakultesi/onemli-bilgiler
+2024-09-09 09:53:58,511 INFO: Заголовок отсутствует для https://arasha.kz/ru/kriminalnye-novosti/14-letnij-podrostok-ustroil-strelbu-v-shkole-ssha-4-pogibshih-30-ranenyh/
+2024-09-09 09:53:58,520 INFO: Заголовок отсутствует для https://vlast.kz/content/prajs-list-na-reklamu/
+2024-09-09 09:53:58,529 INFO: Заголовок отсутствует для https://www.tccb.gov.tr/assets/muzik/index.html
+2024-09-09 09:53:58,535 INFO: Ссылка уже существует в базе TEMP: https://astana-piramida.kz/news/view/korruptsiya
+2024-09-09 09:53:58,564 INFO: Ссылка уже существует в базе TEMP: https://kazakbol.com/dolgaya-doroga-domoj-ili-neispovedimye-puti-rossijskih-relokantov/
+2024-09-09 09:53:58,696 INFO: Контент отсутствует для https://smartnews.kz/ru/popular/week
+2024-09-09 09:53:58,709 INFO: Заголовок отсутствует для https://www.kmg.kz/ru/press-center/press-releases/?PAGEN_1=4
+2024-09-09 09:53:58,724 INFO: Контент отсутствует для https://www.sb.by/cooperation/advertising/publicity/?PAGEN_2=174
+2024-09-09 09:53:58,761 INFO: Ссылка уже существует в базе TEMP: https://zannews.kz/mnenie-eksperta-iz-kyrgyzstana-mozhno-perenyat-opyt-kazahstana-v-zashhite-predprinimatelej-i-investorov/
+2024-09-09 09:53:58,806 WARNING: Новость добавлена в базу: https://www.5kanal.info/index.php/8-novosti/3269-gubernator-kraya-a-uss-my-mozhem-gorditsya-tem-chto-prinadlezhim-krasnoyarskomu-narodu
+2024-09-09 09:53:58,822 INFO: Контент отсутствует для http://16news.kz/news/&f=&page=111
+2024-09-09 09:53:58,870 INFO: Ссылка уже существует в базе TEMP: https://economy.kz/?p=7170
+2024-09-09 09:53:58,877 INFO: Контент отсутствует для https://pospeliha.ru/page/50
+2024-09-09 09:53:58,894 INFO: Контент отсутствует для https://allbanks.kz/news/index/page:5586
+2024-09-09 09:53:58,904 INFO: Контент отсутствует для https://uyguravazi.kazgazeta.kz/redactionnews?page=12
+2024-09-09 09:53:58,923 INFO: Ссылка уже существует в базе TEMP: https://www.ortcom.kz/en/infografika/1724931135
+2024-09-09 09:53:58,934 INFO: Контент отсутствует для https://abai.kz/part/395?page=43
+2024-09-09 09:53:58,962 WARNING: Новость добавлена в базу: https://jasqazaq.kz/bir-zhagadan-bas-bir-zhennen-khol/
+2024-09-09 09:53:58,981 INFO: Ссылка уже существует в базе TEMP: https://arna-news.kz/arna_kz/krasota-jeto-prosto/
+2024-09-09 09:53:59,000 INFO: Ссылка уже существует в базе TEMP: https://expert.ru/avto/pervyy-elektromobil-mozhet-stat-poslednim/
+2024-09-09 09:53:59,018 INFO: Контент отсутствует для https://fstrk.kz/category/news/page/21/
+2024-09-09 09:53:59,038 INFO: Ссылка уже существует в базе TEMP: http://infotimes.kz/ru/%d0%bd%d0%b0%d1%86%d0%ba%d0%be%d0%bc%d0%b8%d1%81%d1%81%d0%b8%d1%8f-%d0%be%d0%b7%d0%b2%d1%83%d1%87%d0%b8%d0%bb%d0%b0-%d0%bf%d1%80%d0%b5%d0%b4%d0%bb%d0%be%d0%b6%d0%b5%d0%bd%d0%b8%d1%8f-%d0%bf%d0%be/
+2024-09-09 09:53:59,044 INFO: Заголовок отсутствует для http://hordelo.kz/radio
+2024-09-09 09:53:59,071 WARNING: Новость добавлена в базу: http://kerekinfo.kz/2019/01/22/zhldyznama-sizge-ay-asyl-tas-sttilik-keledi.html
+2024-09-09 09:53:59,123 WARNING: Новость добавлена в базу: http://kk.ef-ca.kz/news/fond/QOLDA_30__2021_zhyldy_1631_tamyz
+2024-09-09 09:53:59,171 INFO: Ссылка уже существует в базе TEMP: https://tv7.kz/ru/channel-news/18913-est-li-zhizn-bez-gadzhetov-premera-seriala-kanikuly-off-line-digital-detox-na-sedmom-kanale/
+2024-09-09 09:53:59,186 INFO: Ссылка уже существует в базе TEMP: https://tv7.kz/ru/channel-news/18928-sedmoj-kanal-predstavlyaet-nauryz-v-novom-formate/
+2024-09-09 09:53:59,207 WARNING: Новость добавлена в базу: https://tv7.kz/ru/channel-news/18975-eneshka-vs-kelinka-na-chej-storone-vy-premera-seriala-sen-bossyn-na-sedmom-kanale/
+2024-09-09 09:53:59,437 WARNING: Новость добавлена в базу: https://tv7.kz/ru/channel-news/19010-nacionalnyj-kolorit-sedmoj-kanal-dvazhdy-podderzhal-fleshmob-uolttyk-sezim/
+2024-09-09 09:53:59,446 INFO: Заголовок отсутствует для https://www.pravda.ru/sport/
+2024-09-09 09:53:59,471 INFO: Ссылка уже существует в базе TEMP: http://kzkazan.ru/ru/v-nacionalnoj-biblioteke-respubliki-tatarstan-otkrylas-fotovystavka-posvyashhennaya-kazahstanu/
+2024-09-09 09:53:59,491 INFO: Заголовок отсутствует для https://hantengrigazeti.kz/
+2024-09-09 09:53:59,530 WARNING: Новость добавлена в базу: https://agroinfo.kz/auyl-sharuashylygy-texnikasyn-zhanartu-%d2%afshin-zhyl-sajyn-fermerlerge-60-mlrd-tengege-dejin-karazhat-belu-zhosparlanuda/
+2024-09-09 09:53:59,543 INFO: Заголовок отсутствует для https://halaldamu.kz/kk/category/zhanalyqtar/2
+2024-09-09 09:53:59,565 INFO: Контент отсутствует для https://vecher.kz/ru/category/priemnyi-pokoi.html
+2024-09-09 09:53:59,701 INFO: Заголовок отсутствует для https://www.pravda.ru/news/accidents/
+2024-09-09 09:53:59,712 INFO: Заголовок отсутствует для https://www.pravda.ru/news/society/
+2024-09-09 09:53:59,723 INFO: Заголовок отсутствует для https://www.pravda.ru/news/districts/
+2024-09-09 09:53:59,746 WARNING: Новость добавлена в базу: https://etoday.kz/business-and-economy/111625-laboratoriya-stop-kontrafakt-uznajte-kak-legko-opredelit-poddelku-motornogo-masla/
+2024-09-09 09:53:59,770 INFO: Ссылка уже существует в базе TEMP: https://tv7.kz/ru/channel-news/18863-novaya-serebryanaya-knopka-youtube-u-sedmogo-kanala/
+2024-09-09 09:53:59,795 INFO: Ссылка уже существует в базе TEMP: https://tv7.kz/ru/channel-news/18708-ekskljuzivnoe-novogodnee-shou-so-zvezdami-tolko-na-sedmom-kanale/
+2024-09-09 09:53:59,812 INFO: Ссылка уже существует в базе TEMP: http://panorama.shymkala.kz/index.php/city/item/8703-klassy-zhas-sa-shy-posetili-politsejskie
+2024-09-09 09:53:59,825 INFO: Заголовок отсутствует для http://mygorod.kz/?page_id=1000
+2024-09-09 09:53:59,841 INFO: Заголовок отсутствует для https://www.pravda.ru/beauty/
+2024-09-09 09:54:00,202 INFO: Заголовок отсутствует для https://izdatelstvo-sk.kz/
+2024-09-09 09:54:00,216 INFO: Контент отсутствует для https://sn.kz/tag/%D2%93%D0%B0%D0%BB%D1%8B%D0%BC/
+2024-09-09 09:54:00,232 INFO: Ссылка уже существует в базе TEMP: https://aqtobetv.kz/kz/news/32157
+2024-09-09 09:54:00,246 INFO: Ссылка уже существует в базе TEMP: https://atyrautv.kz/kz/news/35639
+2024-09-09 09:54:00,254 INFO: Контент отсутствует для https://sn.kz/tag/%D0%9E%D0%BB%D0%B8%D0%BC%D0%BF%D0%B8%D0%B0%D0%B4%D0%B0/
+2024-09-09 09:54:00,270 INFO: Ссылка уже существует в базе TEMP: https://kaz-waste.kz/news/848/
+2024-09-09 09:54:00,280 INFO: Дата отсутствует для https://k-company.kz/ru/news/pg/14/
+2024-09-09 09:54:00,289 INFO: Заголовок отсутствует для https://bizmedia.kz/tag/medina/
+2024-09-09 09:54:00,303 INFO: Заголовок отсутствует для https://www.npr.org/
+2024-09-09 09:54:00,340 WARNING: Новость добавлена в базу: https://pricom.kz/obshhestvo/v-jasup-proshli-master-klassy-po-raketomodelirovaniyu-i-avtomodelirovaniyu.html
+2024-09-09 09:54:00,364 INFO: Контент отсутствует для https://al-isnad.kz/
+2024-09-09 09:54:00,394 INFO: Заголовок отсутствует для https://aqjolgazet.kz/page/gazet-tarihyi
+2024-09-09 09:54:00,406 INFO: Контент отсутствует для https://dknews.kz/ru/dk-life
+2024-09-09 09:54:00,436 INFO: Ссылка уже существует в базе TEMP: https://edu-tradeunion.kz/kk/press/press-area/10704/
+2024-09-09 09:54:00,479 INFO: Заголовок отсутствует для https://lenta.profinansy.ru/features
+2024-09-09 09:54:00,527 WARNING: Новость добавлена в базу: https://tan.kz/archives/5713
+2024-09-09 09:54:00,570 WARNING: Новость добавлена в базу: https://umarovnews.kz/ru/blog/item/74-v-zko-fermera-obvinyayut-v-nezakonnom-lishenii-svobody-treh-chelovek.html
+2024-09-09 09:54:00,579 INFO: Дата отсутствует для http://kazniilha.kz/content/otdellesovedeniya-i-lesovodstva
+2024-09-09 09:54:00,590 INFO: Дата отсутствует для http://www.al-bclegion.kz/media//photos/?id=310
+2024-09-09 09:54:00,613 WARNING: Новость добавлена в базу: http://asiainfo.kz/A_suhbat/2017-07-04/810.html
+2024-09-09 09:54:00,645 WARNING: Новость добавлена в базу: http://infotimes.kz/ru/%d0%b2%d1%8b%d1%81%d0%be%d0%ba%d0%be%d0%ba%d0%b0%d1%87%d0%b5%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%b5-%d1%80%d0%b0%d0%b7%d0%b2%d0%b8%d1%82%d0%b8%d0%b5-%d0%ba%d0%b8%d1%82%d0%b0%d0%b9%d1%81%d0%ba/
+2024-09-09 09:54:00,659 INFO: Контент отсутствует для https://shop.kz/personal/profiles/
+2024-09-09 09:54:00,732 INFO: Заголовок отсутствует для https://kyzmet-gazeti.kz/page/431
+2024-09-09 09:54:00,791 INFO: Контент отсутствует для https://www.economist.com/
+2024-09-09 09:54:00,814 INFO: Заголовок отсутствует для https://ayu.edu.kz/ru/haberler/123
+2024-09-09 09:54:00,846 INFO: Ссылка уже существует в базе TEMP: https://gp21.kz/blog.php?id=9
+2024-09-09 09:54:00,884 INFO: Заголовок отсутствует для https://bizmedia.kz/tag/shymkent/
+2024-09-09 09:54:00,916 WARNING: Новость добавлена в базу: https://zhambylnews.kz/news/respublik/125849-asym-zhomart-to-aev-zhe-is-k-nine-arnal-an-skeri-parad-a-atysty.html
+2024-09-09 09:54:00,942 INFO: Дата отсутствует для https://atr.sud.kz/kaz/news
+2024-09-09 09:54:01,185 INFO: Ссылка уже существует в базе TEMP: http://kzkazan.ru/ru/pozdravlenie-glavy-gosudarstva-kasym-zhomarta-tokaeva-s-dnem-konstitucii-4/
+2024-09-09 09:54:01,412 INFO: Ссылка уже существует в базе TEMP: https://aigak.kz/2024/04/03/trkstan-rne-kelgen-shetel-turistern-san-5-ese-artt/
+2024-09-09 09:54:01,431 INFO: Контент отсутствует для https://tenderbot.kz/pages/tendernoe-soprovozhdenie
+2024-09-09 09:54:01,435 INFO: Контент отсутствует для http://asiainfo.kz/A_sanat/bailanys/
+2024-09-09 09:54:01,466 INFO: Ссылка уже существует в базе TEMP: http://kzkazan.ru/ru/kazahstanskie-filmy-voshli-v-programmu-xx-kazanskogo-mezhdunarodnogo-kinofestivalya-altyn-minbar/
+2024-09-09 09:54:01,495 INFO: Контент отсутствует для https://gatob.kz/kz/o-teatre/novosti/
+2024-09-09 09:54:01,505 INFO: Контент отсутствует для https://kazservice.kz/info/news/?PAGEN_1=6
+2024-09-09 09:54:01,525 WARNING: Новость добавлена в базу: https://kostacademy.kz/news/24562
+2024-09-09 09:54:01,533 INFO: Контент отсутствует для https://kokshetau.asia/inastana/page/2/
+2024-09-09 09:54:01,557 WARNING: Новость добавлена в базу: https://kokshetau.asia/inastana/mejdy-astanoi-i-selom-otemis-nachal-kyrsirovat-avtobys-6/
+2024-09-09 09:54:01,573 INFO: Ссылка уже существует в базе TEMP: https://seykhuninfo.kz/video/6578-poyyz-astyna-tspek-bolan-adamdy-taryp-aldy-video.html
+2024-09-09 09:54:01,602 INFO: Контент отсутствует для http://ayu.edu.kz/birimler/en/4-muhendislik-fakultesi/egitim-ve-ogretim
+2024-09-09 09:54:01,621 INFO: Ссылка уже существует в базе TEMP: http://kazniilha.kz/content/sotrudnikami-otdela-selekcii-too-kazniilha-byli-provedeny-raboty-po-ti
+2024-09-09 09:54:01,660 WARNING: Новость добавлена в базу: http://kk.ef-ca.kz/news/fond/QOLDA_30__2021_zhyldy_115_yrkyeg
+2024-09-09 09:54:01,684 WARNING: Новость добавлена в базу: http://astanazan.kz/?p=6236
+2024-09-09 09:54:01,701 WARNING: Новость добавлена в базу: http://16news.kz/news/town/REKORDYI-EST-7666
+2024-09-09 09:54:01,724 WARNING: Новость добавлена в базу: http://kerekinfo.kz/2019/01/23/zhalyzdytan-tylu-shin-ne-isteu-kerek.html
+2024-09-09 09:54:01,755 WARNING: Новость добавлена в базу: http://infotimes.kz/ru/%d1%81%d0%b5%d0%bc%d1%8c%d1%8f-%d1%8d%d1%82%d0%be-%d0%b2%d0%b0%d0%b6%d0%bd%d0%be/
+2024-09-09 09:54:01,766 INFO: Заголовок отсутствует для https://astana.citypass.kz/ru/segodnya-dostupno-s-nur-sultan-pass/
+2024-09-09 09:54:02,447 INFO: Ссылка уже существует в базе TEMP: https://sn.kz/sn-akparat-agyny/116032-bugin-olimpiada-chempiony-eldos-smetovtyn-tugan-kuni-video
+2024-09-09 09:54:02,501 INFO: Дата отсутствует для https://k-company.kz/ru/news/pg/8/
+2024-09-09 09:54:02,581 WARNING: Новость добавлена в базу: https://infozakon.kz/gov/25512-v-sko-policeyskie-presekli-krupnoe-hischenie-gerbicidov.html
+2024-09-09 09:54:02,740 WARNING: Новость добавлена в базу: http://16news.kz/tv/obschestvo/V8y8THafKhg
+2024-09-09 09:54:02,755 WARNING: Новость добавлена в базу: https://tv7.kz/ru/channel-news/13398-kadrovye-perestanovki-i-izmeneniya-v-efirnoj-setke-sedmogo-kanala/
+2024-09-09 09:54:02,775 WARNING: Новость добавлена в базу: https://tv7.kz/ru/channel-news/13753-novyj-teleproekt-zhana-kezen-na-sedmom-kanale/
+2024-09-09 09:54:02,795 WARNING: Новость добавлена в базу: https://tv7.kz/ru/channel-news/13863-sedmoj-kanal-zapuskaet-novyj-proekt-reformator/
+2024-09-09 09:54:02,814 INFO: Контент отсутствует для https://www.tccb.gov.tr/ata_ozel/fotograf/
+2024-09-09 09:54:02,840 INFO: Контент отсутствует для https://vecher.kz/ru/category/dejurnyi-po-gorodu.html
+2024-09-09 09:54:02,868 INFO: Ссылка уже существует в базе TEMP: https://economy.kz/?p=2981
+2024-09-09 09:54:02,880 INFO: Ссылка уже существует в базе TEMP: https://www.gismeteo.kz/news/klimat/pogoda-v-kazahstane-7-sentyabrya-ozhidajutsya-dozhdi-sneg-i-zamorozki/
+2024-09-09 09:54:02,886 INFO: Контент отсутствует для https://uyguravazi.kazgazeta.kz/redactionnews?page=11
+2024-09-09 09:54:02,904 INFO: Ссылка уже существует в базе TEMP: https://www.ortcom.kz/ru/infografika/1724931135
+2024-09-09 09:54:02,914 INFO: Контент отсутствует для https://abai.kz/lt/tos
+2024-09-09 09:54:02,922 INFO: Контент отсутствует для https://infs.kz/informacionnye-partnery
+2024-09-09 09:54:02,947 INFO: Ссылка уже существует в базе TEMP: https://kazakbol.com/sigarety-brut-raznoobrazie-vkusov-i-osobennosti-vybora/
+2024-09-09 09:54:02,965 INFO: Контент отсутствует для https://smartnews.kz/ru/popular/today
+2024-09-09 09:54:02,985 WARNING: Новость добавлена в базу: https://www.5kanal.info/index.php/8-novosti/3271-deputat-zakonodatelnogo-sobraniya-kraya-a-gliskov-partiya-ldpr-predlagaet-obyazat-glav-mestnogo-samoupravleniya-vesti-lichnyj-priem-zhitelej
+2024-09-09 09:54:02,995 INFO: Заголовок отсутствует для https://halaldamu.kz/kk/category/zhanalyqtar/5
+2024-09-09 09:54:03,006 INFO: Заголовок отсутствует для https://kazembassy.ru/rus/perepis_naseleniya_2021/
+2024-09-09 09:54:03,057 INFO: Дата отсутствует для https://www.prnewswire.co.uk/resources/
+2024-09-09 09:54:03,113 WARNING: Новость добавлена в базу: https://arna-news.kz/v-nomere/otbasy-ba-yt-mekeni/
+2024-09-09 09:54:03,141 INFO: Ссылка уже существует в базе TEMP: https://expert.ru/nauka/petr-chumakov-onkoliticheskie-virusy-mogut-v-korne-reshit-problemu-raka/
+2024-09-09 09:54:03,169 INFO: Дата отсутствует для http://www.al-bclegion.kz/media//photos/?id=311
+2024-09-09 09:54:03,199 WARNING: Новость добавлена в базу: http://asiainfo.kz/A_adebiet/proza/2017-09-25/947.html
+2024-09-09 09:54:03,221 INFO: Ссылка уже существует в базе TEMP: http://kazniilha.kz/content/raboty-po-mikroklonalynomu-razmnogheniyu-drevesno-kustarnikovyh-vidov
+2024-09-09 09:54:03,240 INFO: Ссылка уже существует в базе TEMP: https://kazbilim.kz/archives/2841
+2024-09-09 09:54:03,262 INFO: Заголовок отсутствует для https://ozgepikir.kz/
+2024-09-09 09:54:03,286 INFO: Контент отсутствует для http://hordelo.kz/?ccm_paging_p=17
+2024-09-09 09:54:03,298 INFO: Контент отсутствует для https://rudnyi-altai.kz/category/reklama/
+2024-09-09 09:54:03,341 INFO: Заголовок отсутствует для http://mygorod.kz/?tag=%d0%b2%d0%bb%d0%b0%d1%81%d1%82%d1%8c
+2024-09-09 09:54:03,519 INFO: Контент отсутствует для https://fstrk.kz/category/news/
+2024-09-09 09:54:03,529 INFO: Контент отсутствует для https://uyguravazi.kazgazeta.kz/redactionnews?page=2716
+2024-09-09 09:54:03,563 INFO: Заголовок отсутствует для https://astanazan.kz/
+2024-09-09 09:54:03,616 INFO: Контент отсутствует для https://sayasat.kz/contacts
+2024-09-09 09:54:03,701 INFO: Заголовок отсутствует для https://kazbar.org.kz/komissiya-po-kontrolyu-za-deyatelnostyu-chlenov-palaty-kazbar-copy/
+2024-09-09 09:54:03,782 INFO: Контент отсутствует для http://ayu.edu.kz/birimler/en/4-muhendislik-fakultesi/akademik-personel
+2024-09-09 09:54:03,814 INFO: Заголовок отсутствует для http://www.asiainfo.kz
+2024-09-09 09:54:04,014 INFO: Контент отсутствует для http://16news.kz/news/&f=&page=113
+2024-09-09 09:54:04,068 WARNING: Новость добавлена в базу: http://kerekinfo.kz/2019/01/22/bl-picca-basasynan-zgerek-shzhyshamen-dayyndaudy-erekshe-tsili.html
+2024-09-09 09:54:04,082 INFO: Заголовок отсутствует для http://kk.ef-ca.kz/news/fond/page/6/
+2024-09-09 09:54:04,097 INFO: Контент отсутствует для http://panorama.shymkala.kz/index.php/component/mailto/?tmpl=component&template=noo_noonews&link=b38567c88985b67ddfbc28113a471a99c6ba67b9
+2024-09-09 09:54:04,324 INFO: Контент отсутствует для https://sn.kz/tag/%D0%BA%D3%A9%D1%88%D0%BF%D0%B5%D0%BD%D0%B4%D1%96%D0%BB%D0%B5%D1%80%20%D0%BE%D0%B9%D1%8B%D0%BD%D1%8B/
+2024-09-09 09:54:04,340 INFO: Ссылка уже существует в базе TEMP: https://aqtobetv.kz/kz/news/32148
+2024-09-09 09:54:04,356 INFO: Ссылка уже существует в базе TEMP: https://atyrautv.kz/kz/news/35631
+2024-09-09 09:54:04,378 INFO: Дата отсутствует для https://akm.sud.kz/kaz/news
+2024-09-09 09:54:04,394 INFO: Контент отсутствует для https://al-isnad.kz/category/zhizneopisanie-proroka/
+2024-09-09 09:54:04,415 INFO: Заголовок отсутствует для https://ef-ca.kz/o_fonde/podhody
+2024-09-09 09:54:04,439 INFO: Ссылка уже существует в базе TEMP: http://kzkazan.ru/kk/memleket-basshysy-aza-stan-hal-yna-zholdauyn-zhariyalady/
+2024-09-09 09:54:04,451 INFO: Контент отсутствует для http://astanazan.kz/?cat=3&paged=48
+2024-09-09 09:54:04,467 INFO: Контент отсутствует для https://atr.sud.kz/rus/sudschedule
+2024-09-09 09:54:04,534 INFO: Контент отсутствует для https://dknews.kz/ru/shelkovyy-put
+2024-09-09 09:54:04,561 INFO: Ссылка уже существует в базе TEMP: https://edu-tradeunion.kz/kk/press/press-area/10705/
+2024-09-09 09:54:04,572 INFO: Заголовок отсутствует для https://lenta.profinansy.ru/youtube
+2024-09-09 09:54:04,586 INFO: Заголовок отсутствует для https://asylarna.kz/kk/news
+2024-09-09 09:54:04,599 INFO: Заголовок отсутствует для https://bizmedia.kz/tag/flyarystan/
+2024-09-09 09:54:04,610 INFO: Контент отсутствует для http://ayu.edu.kz/birimler/en/231-elektrik-muhendisligi-bolumu
+2024-09-09 09:54:04,627 INFO: Ссылка уже существует в базе TEMP: http://kazniilha.kz/content/uchastie-too-kazniilha-v-kachestve-soorganizatora-v-meghdunarodnom-sem
+2024-09-09 09:54:04,653 WARNING: Новость добавлена в базу: http://infotimes.kz/ru/%d0%b8%d0%bd%d1%81%d1%82%d0%b8%d1%82%d1%83%d1%82-%d0%bc%d0%b5%d0%b4%d0%b8%d0%b0%d1%86%d0%b8%d0%b8-%d1%81%d0%be%d1%81%d1%82%d0%be%d1%8f%d0%bd%d0%b8%d0%b5-%d0%b8-%d0%bf%d0%b5%d1%80%d1%81%d0%bf%d0%b5/
+2024-09-09 09:54:04,670 WARNING: Новость добавлена в базу: http://asiainfo.kz/A_news/2017-05-03/589.html
+2024-09-09 09:54:04,738 WARNING: Новость добавлена в базу: https://www.minber.kz/zhoba-zhane-esep/
+2024-09-09 09:54:04,748 INFO: Заголовок отсутствует для http://mygorod.kz/?tag=%d0%b2-%d0%bc%d0%b8%d1%80%d0%b5
+2024-09-09 09:54:04,768 INFO: Заголовок отсутствует для https://weproject.media/articles/obzory/?PAGEN_2=2
+2024-09-09 09:54:05,708 INFO: Контент отсутствует для https://kazbar.org.kz/farmaczevtika-zh%d3%99ne-mediczina-m%d3%99seleleri-zh%d3%a9nindegi-komiteti/
+2024-09-09 09:54:05,784 INFO: Ссылка уже существует в базе TEMP: https://sayasat.kz/post/aes-neobhodima-dlya-ukrepleniya-nezavisimosti
+2024-09-09 09:54:05,800 INFO: Заголовок отсутствует для https://halaldamu.kz/kk/category/zhanalyqtar/143
+2024-09-09 09:54:05,810 INFO: Заголовок отсутствует для https://www.interfax.kz/?lang=rus&int_id=Vacancies
+2024-09-09 09:54:05,882 INFO: Заголовок отсутствует для https://bilimdiler.kz/janalyktar/
+2024-09-09 09:54:05,946 INFO: Дата отсутствует для http://al-bclegion.kz/club/history/
+2024-09-09 09:54:05,971 INFO: Дата отсутствует для http://al-bclegion.kz/club/index.html
+2024-09-09 09:54:06,006 INFO: Заголовок отсутствует для https://aqmeshit.kz/
+2024-09-09 09:54:06,171 INFO: Ссылка уже существует в базе TEMP: https://gatob.kz/o-teatre/novosti/byugin-maezhiliste-akhparatkha-khol-zhetkizu-zhaene-khoghamdykh-khatysuy-turaly-zan-zhobasy-tanystyryldy-/
+2024-09-09 09:54:06,181 INFO: Заголовок отсутствует для https://kerek-info.kz/?do=register
+2024-09-09 09:54:06,199 INFO: Ссылка уже существует в базе TEMP: http://edunews.kz/mainnews/195-bolasha-stipendiyasyn-kmder-ielend.html
+2024-09-09 09:54:06,222 INFO: Ссылка уже существует в базе TEMP: http://kzkazan.ru/ru/kazahstanskaya-delegaciya-prinyala-uchastie-v-tozhestvennyh-meropriyatiyah-po-sluchaju-450-letiya-osnovaniya-ufy/
+2024-09-09 09:54:06,233 INFO: Контент отсутствует для https://kazservice.kz/info/news/?PAGEN_1=5
+2024-09-09 09:54:06,254 WARNING: Новость добавлена в базу: https://kostacademy.kz/news/24591
+2024-09-09 09:54:06,272 WARNING: Новость добавлена в базу: https://kokshetau.asia/inastana/mejdy-astanoi-i-selom-otemis-nachal-kyrsirovat-avtobys-5/
+2024-09-09 09:54:06,300 WARNING: Новость добавлена в базу: https://kokshetau.asia/inastana/eshe-odin-paradzudoist-prines-medal-sbornoi-kazahstana/
+2024-09-09 09:54:06,311 INFO: Заголовок отсутствует для http://mygorod.kz/cdn-cgi/l/email-protection
+2024-09-09 09:54:06,332 WARNING: Новость добавлена в базу: http://16news.kz/news/proisshestviya/Avtovora-ugnavshego-i-podzhegshego-avtomobil-zaderzhali-politseyskie-v-Ust-Kamenogorske-8165
+2024-09-09 09:54:06,347 INFO: Дата отсутствует для http://www.al-bclegion.kz/media//photos/?id=312
+2024-09-09 09:54:06,367 WARNING: Новость добавлена в базу: http://asiainfo.kz/A_kop/Otbasy/2017-10-25/977.html
+2024-09-09 09:54:06,401 WARNING: Новость добавлена в базу: http://infotimes.kz/ru/%d0%b7%d0%b5%d0%bb%d0%b5%d0%bd%d0%b0%d1%8f-%d0%b8-%d1%86%d0%b8%d1%84%d1%80%d0%be%d0%b2%d0%b0%d1%8f-%d1%82%d1%80%d0%b0%d0%bd%d1%81%d1%84%d0%be%d1%80%d0%bc%d0%b0%d1%86%d0%b8%d1%8f-%d0%bd%d0%be/
+2024-09-09 09:54:06,412 INFO: Ссылка уже существует в базе TEMP: http://kazniilha.kz/content/obsledovanie-ozelenitelynyh-nasaghdeniy-g-nur-sultan
+2024-09-09 09:54:06,437 INFO: Заголовок отсутствует для https://kyzmet-gazeti.kz/page/6
+2024-09-09 09:54:06,473 WARNING: Новость добавлена в базу: https://hantengrigazeti.kz/archives/13937
+2024-09-09 09:54:06,509 WARNING: Новость добавлена в базу: http://16news.kz/news/town/V-Ust-Kamenogorske-iz-za-ugrozyi-podema-vodyi-zakryit-proezd-pod-Ulbinskim-mostom-6025
+2024-09-09 09:54:06,557 WARNING: Новость добавлена в базу: http://kk.ef-ca.kz/news/fond/QOLDA_30__2021_zhyldy_1630_yrkye
+2024-09-09 09:54:06,584 INFO: Ссылка уже существует в базе TEMP: https://akylkenes.kz/cases/tajny-i-mistika-gory-shasta/
+2024-09-09 09:54:06,594 INFO: Заголовок отсутствует для http://hordelo.kz/kassa24/
+2024-09-09 09:54:06,620 INFO: Контент отсутствует для https://www.pravda.ru/tags/domashnie-zhivotnye/
+2024-09-09 09:54:06,972 INFO: Контент отсутствует для https://kazakbol.com/category/kazak/page/2/
+2024-09-09 09:54:06,991 INFO: Контент отсутствует для https://ortcom.kz/press/baspasoz-ortalygy.html
+2024-09-09 09:54:07,010 WARNING: Новость добавлена в базу: https://www.tccb.gov.tr/cumhurbaskanligi-sozculugunden/1695/144252/cumhurbaskanligi-sozcusu-buyukelci-ibrahim-kalin-abd-ulusal-guvenlik-danismani-jake-sullivan-ve-abd-disisleri-bakanligi-siyasi-isler-mustesari-victoria-nuland-ile-gorustu
+2024-09-09 09:54:07,040 INFO: Заголовок отсутствует для https://arasha.kz/sample-page/
+2024-09-09 09:54:07,050 INFO: Контент отсутствует для http://ayu.edu.kz/birimler/en/231-bilgisayar-muhendisligi-bolumu
+2024-09-09 09:54:07,062 INFO: Заголовок отсутствует для https://kazembassy.ru/rus/konsulstvo/novosti_konsulstvo/
+2024-09-09 09:54:07,092 WARNING: Новость добавлена в базу: https://lsm.kz/nalogovyj-kodeks-predlagayut-prinyat-do-iyulya-sleduyushego-goda
+2024-09-09 09:54:07,104 INFO: Заголовок отсутствует для https://www.interfax.kz/?lang=rus&int_id=Advertising
+2024-09-09 09:54:07,138 WARNING: Новость добавлена в базу: https://tan.kz/archives/5699
+2024-09-09 09:54:07,167 WARNING: Новость добавлена в базу: https://umarovnews.kz/ru/blog/item/141-po-faktu-vydachi-chinovnikom-iz-akimata-uralska-sluzhebnoy-kvartiry-svoey-zhene-nachata-proverka-po-porucheniyu-akima-zko.html
+2024-09-09 09:54:07,173 INFO: Заголовок отсутствует для https://lsm.kz/terms
+2024-09-09 09:54:07,189 INFO: Ссылка уже существует в базе TEMP: https://halaldamu.kz/kk/p/tbe-ajs-zhne-milky-land-st-nimderi-tekserildi
+2024-09-09 09:54:07,220 INFO: Заголовок отсутствует для https://seykhuninfo.kz/sayasat/
+2024-09-09 09:54:07,233 INFO: Контент отсутствует для https://abai.kz/archive
+2024-09-09 09:54:07,262 INFO: Контент отсутствует для https://smartnews.kz/ru/pages/contacts
+2024-09-09 09:54:07,277 INFO: Ссылка уже существует в базе TEMP: https://dknews.kz/ru/sport/338385-paralimpiada-2024-v-parizhe-medali-sbornoy-kazahstana
+2024-09-09 09:54:07,294 INFO: Ссылка уже существует в базе TEMP: https://angime.kz/top-5-eurovision-songs-2021/
+2024-09-09 09:54:07,299 INFO: Контент отсутствует для https://abai.kz/part/67
+2024-09-09 09:54:07,310 INFO: Заголовок отсутствует для https://www.kmg.kz/ru/press-center/press-releases/?PAGEN_1=67
+2024-09-09 09:54:07,332 INFO: Ссылка уже существует в базе TEMP: https://angime.kz/kazakhstan-ukraine-10-facts/
+2024-09-09 09:54:07,345 INFO: Ссылка уже существует в базе TEMP: https://zannews.kz/nazar-salynyz-kazakstandyktar-arasynda-konkurs-zhariyalajmyz/
+2024-09-09 09:54:07,356 INFO: Заголовок отсутствует для https://www.kdts.kz/ru/novosti/page/14/
+2024-09-09 09:54:07,562 INFO: Ссылка уже существует в базе TEMP: https://aqtobetv.kz/kz/news/32159
+2024-09-09 09:54:07,571 INFO: Контент отсутствует для https://infs.kz/articles/vybor-idealnogo-pomoshchnika-dlya-uborki-doma
+2024-09-09 09:54:07,587 INFO: Ссылка уже существует в базе TEMP: https://atyrautv.kz/kz/news/35644
+2024-09-09 09:54:07,615 INFO: Контент отсутствует для https://bilimdiler.kz/index.php?do=feedback
+2024-09-09 09:54:07,634 INFO: Заголовок отсутствует для https://kazembassy.ru/rus/press_centr/fotogalereya/?cid=519
+2024-09-09 09:54:07,661 INFO: Ссылка уже существует в базе TEMP: https://infozakon.kz/global/10342-senator-s-aytpaeva-rasskazala-o-merah-podderzhki-sirot-i-mnogodetnyh-semey.html
+2024-09-09 09:54:07,697 INFO: Заголовок отсутствует для https://grr.kz/
+2024-09-09 09:54:07,733 INFO: Дата отсутствует для https://expert.ru/personal-data/
+2024-09-09 09:54:07,800 INFO: Контент отсутствует для https://www.sb.by/en/research-institute-for-ai-standardisation-created-in-china.html
+2024-09-09 09:54:07,821 WARNING: Новость добавлена в базу: https://www.5kanal.info/index.php/8-novosti/3260-gubernator-a-uss-proinspektiroval-rabotu-punkta-priema-i-pogruzki-drevesiny-ooo-tsentr-sibiri-v-bolshemurtinskom-rajone
+2024-09-09 09:54:07,842 INFO: Контент отсутствует для https://pospeliha.ru/page/1721
+2024-09-09 09:54:07,873 INFO: Ссылка уже существует в базе TEMP: https://economy.kz/?p=8154
+2024-09-09 09:54:07,889 INFO: Ссылка уже существует в базе TEMP: https://www.moscowtimes.io/2021/06/11/protiv-aktivista-pavla-krisevicha-vozbudili-delo-iz-za-aktsii-protiv-repressii-a105509
+2024-09-09 09:54:07,904 INFO: Ссылка уже существует в базе TEMP: https://astana-piramida.kz/news/view/sostoyalos-zasedanie-za-kruglym-stolom-s-uchastiem-spikerov-informatsionno-razyasnitelnoyi-gruppy-i-sotrudnikov-gkkp-dvortsa-mira-i-soglasiya-akimata-goroda-nur-sultan-po-obsuzhdeniyu-poslaniya-glavy-gosudarstva
+2024-09-09 09:54:07,910 INFO: Контент отсутствует для https://allbanks.kz/obmenniki/taldykorgan/limit:100/sort:ExchangeOffice.CNY_sale/direction:asc
+2024-09-09 09:54:07,927 INFO: Ссылка уже существует в базе TEMP: https://astana-piramida.kz/news/view/beyibitshilik-zhane-kelisim-sarayiynda-rukhani-kelisim-kunine-arnalgan-respublikalyq-konferentsiya-otti
+2024-09-09 09:54:07,957 INFO: Контент отсутствует для https://smartnews.kz/ru/popular/month
+2024-09-09 09:54:07,969 INFO: Контент отсутствует для https://sn.kz/tag/%D0%B0%D1%88%D1%8B%D0%BB%D1%83%20%D1%80%D3%99%D1%81%D1%96%D0%BC%D1%96/
+2024-09-09 09:54:08,007 WARNING: Новость добавлена в базу: https://www.5kanal.info/index.php/8-novosti/6442-na-press-konferentsii-a-uss-rasskazal-o-predstoyashchej-gazifikatsii-regiona
+2024-09-09 09:54:08,024 INFO: Ссылка уже существует в базе TEMP: https://halaldamu.kz/kk/p/halal-damu-ltty-akkreditteu-ortalyynan-saraptamadan-tudeg
+2024-09-09 09:54:08,336 INFO: Ссылка уже существует в базе TEMP: https://www.npr.org/about-npr/179878450/privacy-policy
+2024-09-09 09:54:08,386 INFO: Ссылка уже существует в базе TEMP: https://expert.ru/finance/vera-naseleniya-v-banki-rastet/
+2024-09-09 09:54:08,418 INFO: Дата отсутствует для https://k-company.kz/ru/news/pg/16/
+2024-09-09 09:54:08,437 INFO: Ссылка уже существует в базе TEMP: https://fstrk.kz/uchebno-trenirovochnye-sbory-afst-rk/
+2024-09-09 09:54:08,451 INFO: Ссылка уже существует в базе TEMP: https://k-company.kz/ru/news/756-ijunskije_prodazhi_nefti_v_mire_upali_do_minimuma_za_devat_let/
+2024-09-09 09:54:08,474 WARNING: Новость добавлена в базу: http://asiainfo.kz/A_adebiet/sin/2017-08-09/869.html
+2024-09-09 09:54:08,504 WARNING: Новость добавлена в базу: http://infotimes.kz/ru/2024-%d0%b3%d0%be%d0%b4-%d0%be%d0%b1%d1%8a%d1%8f%d0%b2%d0%bb%d0%b5%d0%bd-%d0%b3%d0%be%d0%b4%d0%be%d0%bc-%d1%82%d1%83%d1%80%d0%b8%d0%b7%d0%bc%d0%b0-%d0%ba%d0%b0%d0%b7%d0%b0%d1%85%d1%81%d1%82%d0%b0/
+2024-09-09 09:54:08,511 INFO: Заголовок отсутствует для https://www.kazenergy.com/ru/operation/ned/2117/
+2024-09-09 09:54:08,540 INFO: Ссылка уже существует в базе TEMP: https://economy.kz/?p=2986
+2024-09-09 09:54:08,562 WARNING: Новость добавлена в базу: https://ozgepikir.kz/?p=6335
+2024-09-09 09:54:08,578 INFO: Ссылка уже существует в базе TEMP: https://seykhuninfo.kz/video/8520-dieta-toby-aytatyn-lyla-n-zbekt-me.html
+2024-09-09 09:54:08,598 WARNING: Новость добавлена в базу: https://uyguravazi.kazgazeta.kz/news/51457
+2024-09-09 09:54:08,605 INFO: Контент отсутствует для https://www.gismeteo.kz/page/contacts/
+2024-09-09 09:54:08,619 INFO: Ссылка уже существует в базе TEMP: https://www.ortcom.kz/ru/infografika/1725351603
+2024-09-09 09:54:08,645 WARNING: Новость добавлена в базу: http://kerekinfo.kz/2019/01/23/3-knde-5-kg-a-arytatatyn-dietalar-top-10.html
+2024-09-09 09:54:08,677 WARNING: Новость добавлена в базу: http://kerekinfo.kz/2019/01/23/su-bolan-ayakiimdi-krish-pen-tz-p-stte-keptirip-beredi.html
+2024-09-09 09:54:08,693 INFO: Контент отсутствует для http://astanazan.kz/?cat=3&paged=49
+2024-09-09 09:54:08,727 WARNING: Новость добавлена в базу: http://astanazan.kz/?p=17
+2024-09-09 09:54:08,748 INFO: Ссылка уже существует в базе TEMP: http://kzkazan.ru/ru/poslanie-glavy-gosudarstva-kasym-zhomarta-tokaeva-narodu-kazahstana-spravedlivyj-kazahstan-zakon-i-poryadok-ekonomicheskij-rost-obshhestvennyj-optimizm/
+2024-09-09 09:54:08,763 INFO: Контент отсутствует для http://panorama.shymkala.kz/index.php/component/mailto/?tmpl=component&template=noo_noonews&link=ea0a6e6c14396bad54d53702d0c2c9b17523fe78
+2024-09-09 09:54:08,774 WARNING: Новость добавлена в базу: http://16news.kz/news/sport/Voleybolnaya-komanda-VKO-stala-pobeditelem-CHempionata-Kazahstana-3930
+2024-09-09 09:54:08,779 INFO: Контент отсутствует для http://ayu.edu.kz/birimler/en/4-muhendislik-fakultesi/kalite-komisyonu
+2024-09-09 09:54:08,798 INFO: Ссылка уже существует в базе TEMP: http://kazniilha.kz/content/izuchenie-fitopatologicheskogo-i-entomologicheskogo-sostoyaniya-seyanc
+2024-09-09 09:54:08,834 WARNING: Новость добавлена в базу: http://kk.ef-ca.kz/news/fond/QOLDA_30__2021_zhyldy_115_azany_
+2024-09-09 09:54:08,850 INFO: Ссылка уже существует в базе TEMP: https://bizmedia.kz/2024-08-19-flyarystan-otkryvaet-prodazhu-biletov-na-osenne-zimnyuyu-navigacziyu/
+2024-09-09 09:54:08,864 INFO: Контент отсутствует для http://hordelo.kz/?ccm_paging_p=6
+2024-09-09 09:54:09,336 INFO: Ссылка уже существует в базе TEMP: https://www.ortcom.kz/kk/infografika/1725351603
+2024-09-09 09:54:09,345 INFO: Контент отсутствует для https://ortcom.kz/press/index.html
+2024-09-09 09:54:09,350 INFO: Контент отсутствует для https://www.economist.com/newsletters
+2024-09-09 09:54:09,575 WARNING: Новость добавлена в базу: https://jasqazaq.kz/ardagerler-patriottykh-tarbienin-parmendiligin-arttyra-tyspek/
+2024-09-09 09:54:09,595 INFO: Дата отсутствует для https://www.interfax.kz/?lang=rus&int_id=About_Us
+2024-09-09 09:54:09,659 INFO: Контент отсутствует для https://al-isnad.kz/category/adab/
+2024-09-09 09:54:09,833 INFO: Ссылка уже существует в базе TEMP: https://spectr.com.kz/zhizn/zdorove/5737-bolgarskij-perecz-s-morkovyu-na-zimu.html
+2024-09-09 09:54:09,867 INFO: Ссылка уже существует в базе TEMP: https://kaz-waste.kz/news/850/
+2024-09-09 09:54:09,897 WARNING: Новость добавлена в базу: https://pricom.kz/obshhestvo/v-atyrau-podarili-radost-detyam-s-ogranichennymi-vozmozhnostyami.html

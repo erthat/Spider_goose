@@ -90,14 +90,18 @@ ROBOTSTXT_OBEY = False
 
 # Set settings whose default value is deprecated to a future-proof value
 REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
-TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
+# TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
+REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
 DEPTH_LIMIT = 2
-CONCURRENT_ITEMS = 200
+CONCURRENT_ITEMS = 50
 DOWNLOAD_TIMEOUT = 20
-CONCURRENT_REQUESTS = 200
-CONCURRENT_REQUESTS_PER_DOMAIN = 15
-REACTOR_THREADPOOL_MAXSIZE = 25
+CONCURRENT_REQUESTS = 50
+CONCURRENT_REQUESTS_PER_DOMAIN = 10
+REACTOR_THREADPOOL_MAXSIZE = 20
+RETRY_ENABLED = True
+RETRY_TIMES = 3
+
 # AUTOTHROTTLE_ENABLED = True
 # AUTOTHROTTLE_START_DELAY = 0.1  # начальная задержка между запросами в секундах
 # AUTOTHROTTLE_MAX_DELAY = 5  # максимальная задержка между запросами в секундах
@@ -105,9 +109,10 @@ REACTOR_THREADPOOL_MAXSIZE = 25
 # AUTOTHROTTLE_DEBUG = True
 # DOWNLOAD_DELAY = 10
 # В settings.py
+
 SCHEDULER_PRIORITY_QUEUE = "scrapy.pqueues.DownloaderAwarePriorityQueue"
 
-# LOG_LEVEL = 'INFO'
+LOG_LEVEL = 'INFO'
 # LOG_FORMAT = '%(levelname)s: %(message)s'
 
 # COOKIES_ENABLED = True

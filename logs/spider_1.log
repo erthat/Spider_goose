@@ -1,0 +1,101 @@
+2024-09-09 09:53:35,774 INFO: Есть подключение к БД: spider_1
+2024-09-09 09:53:35,774 INFO: Allowed domains: ['zonakz.net', 'interfax.kz', 'vlast.kz', 'tv7.kz', 'kazpravda.kz', 'kp.kz', 'vecher.kz', 'nv.kz', 'pricom.kz', 'belta.by', 'vb.kg', 'kabar.kg', 'podrobno.uz', 'vestikavkaza.ru', 'scmp.com', 'newsweek.com', 'edition.cnn.com', 'akorda.kz', 'tccb.gov.tr', 'uzdaily.com', 'sud.gov.kz', 'irstar.kz', 'kaztag.info', 'astana-motors.kz', 'flashpress.kz']
+2024-09-09 09:53:35,776 INFO: Enabled addons:
+[]
+2024-09-09 09:53:35,789 INFO: Telnet Password: f297150e716eaa9c
+2024-09-09 09:53:35,843 INFO: Enabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.memusage.MemoryUsage',
+ 'scrapy.extensions.logstats.LogStats']
+2024-09-09 09:53:35,843 INFO: Overridden settings:
+{'BOT_NAME': 'myproject',
+ 'CONCURRENT_ITEMS': 50,
+ 'CONCURRENT_REQUESTS': 50,
+ 'CONCURRENT_REQUESTS_PER_DOMAIN': 10,
+ 'DEPTH_LIMIT': 2,
+ 'DOWNLOAD_TIMEOUT': 20,
+ 'FEED_EXPORT_ENCODING': 'utf-8',
+ 'LOG_LEVEL': 'INFO',
+ 'NEWSPIDER_MODULE': 'myproject.spiders',
+ 'REACTOR_THREADPOOL_MAXSIZE': 20,
+ 'REQUEST_FINGERPRINTER_IMPLEMENTATION': '2.7',
+ 'RETRY_TIMES': 3,
+ 'SCHEDULER_PRIORITY_QUEUE': 'scrapy.pqueues.DownloaderAwarePriorityQueue',
+ 'SPIDER_MODULES': ['myproject.spiders'],
+ 'USER_AGENT': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+               '(KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
+2024-09-09 09:53:35,932 INFO: Enabled downloader middlewares:
+['scrapy.downloadermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.cookies.CookiesMiddleware',
+ 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats']
+2024-09-09 09:53:35,933 INFO: Enabled spider middlewares:
+['scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware']
+2024-09-09 09:53:35,934 INFO: Enabled item pipelines:
+[]
+2024-09-09 09:53:35,934 INFO: Spider opened
+2024-09-09 09:53:35,936 INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
+2024-09-09 09:53:35,938 INFO: Telnet console listening on 127.0.0.1:6024
+2024-09-09 09:53:39,486 INFO: Контент отсутствует для https://tv7.kz/ru/serials/
+2024-09-09 09:53:40,104 INFO: Заголовок отсутствует для https://tv7.kz/ru/schedule/
+2024-09-09 09:53:40,390 INFO: Контент отсутствует для https://tv7.kz/ru/live/
+2024-09-09 09:53:40,866 INFO: Заголовок отсутствует для https://tv7.kz/ru/
+2024-09-09 09:53:41,154 INFO: Ссылка уже существует в базе TEMP: https://www.kp.kz/online/news/5973606/
+2024-09-09 09:53:42,229 INFO: Заголовок отсутствует для https://vecher.kz/ru
+2024-09-09 09:53:42,405 INFO: Контент отсутствует для https://tv7.kz/ru/contacts/
+2024-09-09 09:53:43,011 WARNING: Новость добавлена в базу: https://www.kp.kz/online/news/5973682/
+2024-09-09 09:53:43,693 INFO: Заголовок отсутствует для https://www.tccb.gov.tr/
+2024-09-09 09:53:43,861 INFO: Контент отсутствует для https://vecher.kz/ru/ac/policy.html
+2024-09-09 09:53:45,382 INFO: Контент отсутствует для https://tv7.kz/ru/celebs-ru/
+2024-09-09 09:53:45,436 INFO: Дата отсутствует для https://www.tccb.gov.tr/ata_ozel/biyografi/
+2024-09-09 09:53:46,286 INFO: Заголовок отсутствует для https://www.kp.kz/go/https://t.me/+fZt4w7gp8dpmODNi
+2024-09-09 09:53:46,417 INFO: Контент отсутствует для https://vecher.kz/ru/ac/contactus.html
+2024-09-09 09:53:46,717 WARNING: Новость добавлена в базу: https://www.tccb.gov.tr/cumhurbaskanligi-sozculugunden/1695/144217/cumhurbaskanligi-sozcusu-buyukelci-ibrahim-kalin-jake-sullivan-ve-victoria-nuland-ile-gorusmeler
+2024-09-09 09:53:47,121 INFO: Контент отсутствует для https://tv7.kz/ru/about-us/
+2024-09-09 09:53:50,313 INFO: Контент отсутствует для https://vecher.kz/ru/ac/reporter.html
+2024-09-09 09:53:51,031 INFO: Заголовок отсутствует для https://www.kp.kz/go/https://dzen.ru/kp_kz
+2024-09-09 09:53:51,216 INFO: Контент отсутствует для https://tv7.kz/ru/channel-news/page/5/
+2024-09-09 09:53:54,025 INFO: Контент отсутствует для https://tv7.kz/ru/channel-news/page/3/
+2024-09-09 09:53:54,389 INFO: Контент отсутствует для https://tv7.kz/ru/projects/zhetinshi-studiya-ru/
+2024-09-09 09:53:54,398 INFO: Контент отсутствует для https://tv7.kz/ru/projects/aigerim-seifollanyn-syrlasuy/
+2024-09-09 09:53:55,858 INFO: Заголовок отсутствует для https://vlast.kz/
+2024-09-09 09:53:56,757 INFO: Контент отсутствует для https://tv7.kz/ru/channel-news/page/2/
+2024-09-09 09:53:56,766 INFO: Контент отсутствует для https://tv7.kz/ru/projects/zdorove-s-ajnur-tazhinoj-ru/
+2024-09-09 09:53:56,776 INFO: Контент отсутствует для https://tv7.kz/ru/projects/ajnaonline/
+2024-09-09 09:53:56,787 INFO: Контент отсутствует для https://tv7.kz/ru/projects/late-night-show-with-dinara-satzhan-ru/
+2024-09-09 09:53:56,797 INFO: Контент отсутствует для https://tv7.kz/ru/projects/chto-eto-bylo-ru/
+2024-09-09 09:53:56,807 INFO: Контент отсутствует для https://tv7.kz/ru/projects/suozdin-kyskasy-ru/
+2024-09-09 09:53:56,903 INFO: Контент отсутствует для https://tv7.kz/ru/projects/auyldone/
+2024-09-09 09:53:56,964 INFO: Контент отсутствует для https://tv7.kz/ru/projects/
+2024-09-09 09:53:58,520 INFO: Заголовок отсутствует для https://vlast.kz/content/prajs-list-na-reklamu/
+2024-09-09 09:53:58,529 INFO: Заголовок отсутствует для https://www.tccb.gov.tr/assets/muzik/index.html
+2024-09-09 09:53:59,171 INFO: Ссылка уже существует в базе TEMP: https://tv7.kz/ru/channel-news/18913-est-li-zhizn-bez-gadzhetov-premera-seriala-kanikuly-off-line-digital-detox-na-sedmom-kanale/
+2024-09-09 09:53:59,186 INFO: Ссылка уже существует в базе TEMP: https://tv7.kz/ru/channel-news/18928-sedmoj-kanal-predstavlyaet-nauryz-v-novom-formate/
+2024-09-09 09:53:59,207 WARNING: Новость добавлена в базу: https://tv7.kz/ru/channel-news/18975-eneshka-vs-kelinka-na-chej-storone-vy-premera-seriala-sen-bossyn-na-sedmom-kanale/
+2024-09-09 09:53:59,437 WARNING: Новость добавлена в базу: https://tv7.kz/ru/channel-news/19010-nacionalnyj-kolorit-sedmoj-kanal-dvazhdy-podderzhal-fleshmob-uolttyk-sezim/
+2024-09-09 09:53:59,565 INFO: Контент отсутствует для https://vecher.kz/ru/category/priemnyi-pokoi.html
+2024-09-09 09:53:59,770 INFO: Ссылка уже существует в базе TEMP: https://tv7.kz/ru/channel-news/18863-novaya-serebryanaya-knopka-youtube-u-sedmogo-kanala/
+2024-09-09 09:53:59,795 INFO: Ссылка уже существует в базе TEMP: https://tv7.kz/ru/channel-news/18708-ekskljuzivnoe-novogodnee-shou-so-zvezdami-tolko-na-sedmom-kanale/
+2024-09-09 09:54:00,340 WARNING: Новость добавлена в базу: https://pricom.kz/obshhestvo/v-jasup-proshli-master-klassy-po-raketomodelirovaniyu-i-avtomodelirovaniyu.html
+2024-09-09 09:54:02,755 WARNING: Новость добавлена в базу: https://tv7.kz/ru/channel-news/13398-kadrovye-perestanovki-i-izmeneniya-v-efirnoj-setke-sedmogo-kanala/
+2024-09-09 09:54:02,775 WARNING: Новость добавлена в базу: https://tv7.kz/ru/channel-news/13753-novyj-teleproekt-zhana-kezen-na-sedmom-kanale/
+2024-09-09 09:54:02,795 WARNING: Новость добавлена в базу: https://tv7.kz/ru/channel-news/13863-sedmoj-kanal-zapuskaet-novyj-proekt-reformator/
+2024-09-09 09:54:02,814 INFO: Контент отсутствует для https://www.tccb.gov.tr/ata_ozel/fotograf/
+2024-09-09 09:54:02,840 INFO: Контент отсутствует для https://vecher.kz/ru/category/dejurnyi-po-gorodu.html
+2024-09-09 09:54:05,810 INFO: Заголовок отсутствует для https://www.interfax.kz/?lang=rus&int_id=Vacancies
+2024-09-09 09:54:07,010 WARNING: Новость добавлена в базу: https://www.tccb.gov.tr/cumhurbaskanligi-sozculugunden/1695/144252/cumhurbaskanligi-sozcusu-buyukelci-ibrahim-kalin-abd-ulusal-guvenlik-danismani-jake-sullivan-ve-abd-disisleri-bakanligi-siyasi-isler-mustesari-victoria-nuland-ile-gorustu
+2024-09-09 09:54:07,104 INFO: Заголовок отсутствует для https://www.interfax.kz/?lang=rus&int_id=Advertising
+2024-09-09 09:54:09,595 INFO: Дата отсутствует для https://www.interfax.kz/?lang=rus&int_id=About_Us
+2024-09-09 09:54:09,897 WARNING: Новость добавлена в базу: https://pricom.kz/obshhestvo/v-atyrau-podarili-radost-detyam-s-ogranichennymi-vozmozhnostyami.html
