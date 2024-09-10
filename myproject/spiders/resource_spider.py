@@ -19,7 +19,7 @@ import os
 from mysql.connector import Error
 from logging.handlers import RotatingFileHandler
 from scrapy.utils.log import configure_logging
-from sqlalchemy import custom_op
+
 
 load_dotenv()
 class ResourceSpider(CrawlSpider):
