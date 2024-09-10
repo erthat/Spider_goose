@@ -19,19 +19,21 @@ import os
 from mysql.connector import Error
 from logging.handlers import RotatingFileHandler
 from scrapy.utils.log import configure_logging
-
+from sqlalchemy import custom_op
 
 load_dotenv()
 class ResourceSpider(CrawlSpider):
     name = 'resource_spider'
+    custom_settings = { }
 
     def __init__(self, resources=None,  spider_name=None, *args, **kwargs):
         self.spider_name = spider_name or self.name
         super().__init__(*args, **kwargs)
 
+
         log_file = f'logs/{spider_name}.log'
         handler = RotatingFileHandler(
-            log_file, maxBytes= 15 * 1024 * 1024, backupCount=1
+            log_file, maxBytes= 20 * 1024 * 1024, backupCount=1
         )
         formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
         handler.setFormatter(formatter)
@@ -42,8 +44,10 @@ class ResourceSpider(CrawlSpider):
         # Создаем логгер с именем паука
         self.custom_logger = logging.getLogger(spider_name)
         self.custom_logger.setLevel(logging.INFO)
-        self.custom_logger.addHandler(handler)
-        self.custom_logger.addHandler(console_handler)
+        # Проверяем, добавлены ли уже обработчики к логгеру
+        if not self.custom_logger.handlers:
+            self.custom_logger.addHandler(handler)
+            self.custom_logger.addHandler(console_handler)
 
         self.setup_scrapy_logging(spider_name, handler, console_handler)
 
@@ -94,7 +98,8 @@ class ResourceSpider(CrawlSpider):
                 self.allowed_domains = [urlparse(url).netloc.replace('www.', '') for url in self.start_urls]
                 self.custom_logger.info(f'Allowed domains: {self.allowed_domains}')
                 deny = [r'//kabar.kg/arkhiv-kategorii/', r'//kabar.kg/archive/', r'//bilimdiler.kz/tags/', r'//kerekinfo.kz/tag/',
-                        r'//abai.kz/archive/', r'//infor.kz/avto/', r'//shop.kz/catalog/', r'//shop.kz/offers/']
+                        r'//abai.kz/archive/', r'//infor.kz/avto/', r'//shop.kz/catalog/', r'//shop.kz/offers/', r'//allinsurance.kz/articles',
+                        r'//podrobnosty.kz/component/phocagallery/']
 
                 # Создание правил для каждого ресурса
                 self.rules = (
@@ -128,8 +133,9 @@ class ResourceSpider(CrawlSpider):
         scrapy_logger = logging.getLogger('scrapy')
         scrapy_logger.propagate = False
         scrapy_logger.setLevel(logging.INFO)
-        scrapy_logger.addHandler(handler)
-        scrapy_logger.addHandler(console_handler)
+        if not scrapy_logger.handlers:
+            scrapy_logger.addHandler(handler)
+            scrapy_logger.addHandler(console_handler)
 
     def parse_links(self, response):
         # Получаем текущий URL

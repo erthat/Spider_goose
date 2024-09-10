@@ -16,7 +16,7 @@ log_file = 'logs/logi.log'
 handler = RotatingFileHandler(
     log_file,           # Имя файла логов
     mode='a',           # Режим добавления ('a'), чтобы не перезаписывать сразу
-    maxBytes=15*1024*1024,  # Максимальный размер файла (в байтах), например, 5 МБ
+    maxBytes=20*1024*1024,  # Максимальный размер файла (в байтах), например, 5 МБ
     backupCount=1       # Количество резервных копий логов (если установить 0, то старый файл будет перезаписываться)
 )
 logging.basicConfig(
@@ -96,9 +96,9 @@ def run_spiders(runner, spider_name):
         resources = spider_resources.get(spider_name)  # Получаем актуальные ресурсы
         if resources:         # Проверяем, что ресурсы существуют
             yield runner.crawl(ResourceSpider, resources=resources, spider_name=spider_name)
-            print(f'{spider_name} завершил работу, перезапуск...')
+            logging.info(f'{spider_name} завершил работу, перезапуск...')
         else:
-            print(f'{spider_name} ожидает обновления ресурсов...')
+            logging.info(f'{spider_name} ожидает обновления ресурсов...')
             yield task.deferLater(reactor, 10, lambda: None)
 
 
@@ -134,7 +134,7 @@ if __name__ == '__main__':
     cursor_1.close()
     conn_1.close()
     resource_count = len([resource[0] for resource in resources])
-    print(resource_count)
-    n = max(1, (resource_count // 25))
-    print(n)
-    start_spiders(n)
+    logging.info(f'количество источников = {resource_count}')
+    num_parts = max(1, (resource_count // 25))
+    logging.info(f'количество пауков = {num_parts}')
+    start_spiders(num_parts)
