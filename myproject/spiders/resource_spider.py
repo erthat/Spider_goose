@@ -101,7 +101,8 @@ class ResourceSpider(CrawlSpider):
                 self.custom_logger.info(f'Allowed domains: {self.allowed_domains}')
                 deny = [r'//kabar.kg/arkhiv-kategorii/', r'//kabar.kg/archive/', r'//bilimdiler.kz/tags/', r'//kerekinfo.kz/tag/',
                         r'//abai.kz/archive/', r'//infor.kz/avto/', r'//shop.kz/catalog/', r'//shop.kz/offers/', r'//allinsurance.kz/articles',
-                        r'//podrobnosty.kz/component/phocagallery/', r'//news.rambler.ru/rss', r'//www.aljazeera.com/author']
+                        r'//podrobnosty.kz/component/phocagallery/', r'//news.rambler.ru/rss', r'//www.aljazeera.com/author',
+                        r'//newauto.kz/cars']
 
                 # Создание правил для каждого ресурса
                 self.rules = (
