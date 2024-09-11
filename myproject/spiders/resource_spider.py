@@ -1,5 +1,6 @@
 import logging
 
+
 import pytz
 import mysql.connector
 from mysql.connector.aio.logger import logger
@@ -19,6 +20,7 @@ import os
 from mysql.connector import Error
 from logging.handlers import RotatingFileHandler
 from scrapy.utils.log import configure_logging
+import unicodedata
 
 
 load_dotenv()
@@ -99,7 +101,7 @@ class ResourceSpider(CrawlSpider):
                 self.custom_logger.info(f'Allowed domains: {self.allowed_domains}')
                 deny = [r'//kabar.kg/arkhiv-kategorii/', r'//kabar.kg/archive/', r'//bilimdiler.kz/tags/', r'//kerekinfo.kz/tag/',
                         r'//abai.kz/archive/', r'//infor.kz/avto/', r'//shop.kz/catalog/', r'//shop.kz/offers/', r'//allinsurance.kz/articles',
-                        r'//podrobnosty.kz/component/phocagallery/']
+                        r'//podrobnosty.kz/component/phocagallery/', r'//news.rambler.ru/rss', r'//www.aljazeera.com/author']
 
                 # Создание правил для каждого ресурса
                 self.rules = (
@@ -140,7 +142,7 @@ class ResourceSpider(CrawlSpider):
     def parse_links(self, response):
         # Получаем текущий URL
         current_url = response.url
-        if any(current_url.endswith(ext) for ext in ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx', '.JPG']):
+        if any(current_url.endswith(ext) for ext in ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx', '.JPG', 'jfif']):
             # self.logger.info(f'Пропускаем неподходящий ссылку: {current_url}')
             return
         self.cursor_3.execute("SELECT 1 FROM temp_items_link WHERE link = %s", (current_url,))
@@ -165,33 +167,40 @@ class ResourceSpider(CrawlSpider):
                 break
 
         if resource_id:
-            title_t = response.xpath(f'normalize-space({resource_info[5]})').get() #получение заголовок новостей
+            # получение заголовок новостей
+            title_t = response.xpath(f'normalize-space({resource_info[5]})').get()
             if not title_t:
                 self.custom_logger.info(f"Заголовок отсутствует для {current_url}")
                 return
-            content = response.xpath(resource_info[4]).getall() #получение контента новостей
-            content = self.clean_text(content)
-            if not content or all(item.isspace() for item in content):
-                self.custom_logger.info(f"Контент отсутствует для {current_url}")
-                return
-            title = self.replace_unsupported_characters(title_t)
+            title = self.replace_unsupported_characters(title_t) # чистка текста
+
+           # Парсинг даты
             date = response.xpath(resource_info[6]).get()
             if not date:
                 self.custom_logger.info(f"Дата отсутствует для {current_url}")
                 return
-            #получение даты новостей
             date = self.parse_date(date, resource_info[7])
             if not date:
                 self.custom_logger.info(f"Дата отсутствует для {current_url}")
                 return
-
             n_date = date #дата публикаций новостей
             nd_date = int(time.mktime(date.timetuple())) #дата публикаций новостей UNIX формате
             not_date = date.strftime('%Y-%m-%d') #дата публикаций новостей
             s_date = int(time.time()) #дата поступление новостей в таблицу
+            one_year_in_seconds = 365 * 24 * 3600
+            if s_date - nd_date > one_year_in_seconds:
+                self.custom_logger.info(f"Дата {date} старее чем на год для {current_url}")
+                return
+
+            # получение контента новостей
+            content = response.xpath(resource_info[4]).getall()
+            content = self.clean_text(content) # чистка текста
+            if not content or all(item.isspace() for item in content):
+                self.custom_logger.info(f"Контент отсутствует для {current_url}")
+                return
 
 
-            self.store_news(resource_id, title, current_url, nd_date, content, n_date, s_date, not_date)
+            self.store_news(resource_id, title, current_url, nd_date, content, n_date, s_date, not_date) # отправка на сохранение в бд
 
 
     def store_news(self, resource_id, title, current_url, nd_date, content, n_date, s_date, not_date):
@@ -269,6 +278,7 @@ class ResourceSpider(CrawlSpider):
 
         content = re.sub(r"\s+", " ", content)
         content = emoji.demojize(content)
+        content = unicodedata.normalize('NFKD', content)
         return content
 
     def parse_date(self, date_str, convert_date):
