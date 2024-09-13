@@ -102,11 +102,12 @@ class ResourceSpider(CrawlSpider):
                 deny = [r'//kabar.kg/arkhiv-kategorii/', r'//kabar.kg/archive/', r'//bilimdiler.kz/tags/', r'//kerekinfo.kz/tag/',
                         r'//abai.kz/archive/', r'//infor.kz/avto/', r'//shop.kz/catalog/', r'//shop.kz/offers/', r'//allinsurance.kz/articles',
                         r'//podrobnosty.kz/component/phocagallery/', r'//news.rambler.ru/rss', r'//www.aljazeera.com/author',
-                        r'//newauto.kz/cars']
+                        r'//newauto.kz/cars', r'://zhanaqorgan-tynysy.kz/engine/']
+                self.top_tag = [resource[3] for resource in self.resources]
 
                 # Создание правил для каждого ресурса
                 self.rules = (
-                    Rule(LinkExtractor(restrict_xpaths="//a", deny=deny), callback='parse_links', follow=True),
+                    Rule(LinkExtractor(restrict_xpaths=self.top_tag, deny=deny), callback='parse_links', follow=True),
                 )
 
                 super()._compile_rules()

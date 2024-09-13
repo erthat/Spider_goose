@@ -57,7 +57,8 @@ def load_resources(cursor):
     cursor.execute(
         "SELECT RESOURCE_ID, RESOURCE_NAME, RESOURCE_URL, top_tag, bottom_tag, title_cut, date_cut, convert_date "
         "FROM resource "
-        "WHERE status = %s AND bottom_tag IS NOT NULL AND bottom_tag <> '' "
+        "WHERE status = %s AND top_tag IS NOT NULL AND top_tag <> '' "
+        "AND bottom_tag IS NOT NULL AND bottom_tag <> '' "
         "AND title_cut IS NOT NULL AND title_cut <> '' "
         "AND date_cut IS NOT NULL AND date_cut <> '' "
         "AND RESOURCE_STATUS = %s",
@@ -135,6 +136,6 @@ if __name__ == '__main__':
     conn_1.close()
     resource_count = len([resource[0] for resource in resources])
     logging.info(f'количество источников = {resource_count}')
-    num_parts = max(1, (resource_count // 25))
+    num_parts = max(1, (resource_count // 30))
     logging.info(f'количество пауков = {num_parts}')
     start_spiders(num_parts)
