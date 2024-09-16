@@ -21,6 +21,7 @@ from mysql.connector import Error
 from logging.handlers import RotatingFileHandler
 from scrapy.utils.log import configure_logging
 import unicodedata
+from scrapy import Request
 
 
 load_dotenv()
@@ -99,18 +100,7 @@ class ResourceSpider(CrawlSpider):
                 self.start_urls = [resource[2].split(',')[0].strip() for resource in self.resources]
                 self.allowed_domains = [urlparse(url).netloc.replace('www.', '') for url in self.start_urls]
                 self.custom_logger.info(f'Allowed domains: {self.allowed_domains}')
-                deny = [r'//kabar.kg/arkhiv-kategorii/', r'//kabar.kg/archive/', r'//bilimdiler.kz/tags/', r'//kerekinfo.kz/tag/',
-                        r'//abai.kz/archive/', r'//infor.kz/avto/', r'//shop.kz/catalog/', r'//shop.kz/offers/', r'//allinsurance.kz/articles',
-                        r'//podrobnosty.kz/component/phocagallery/', r'//news.rambler.ru/rss', r'//www.aljazeera.com/author',
-                        r'//newauto.kz/cars', r'://zhanaqorgan-tynysy.kz/engine/']
-                self.top_tag = [resource[3] for resource in self.resources]
-
-                # Создание правил для каждого ресурса
-                self.rules = (
-                    Rule(LinkExtractor(restrict_xpaths=self.top_tag, deny=deny), callback='parse_links', follow=True),
-                )
-
-                super()._compile_rules()
+                self.resource_map = {resource[0]: resource for resource in self.resources}
 
             else:
                 self.log("No resources found, spider will close.")
@@ -125,6 +115,34 @@ class ResourceSpider(CrawlSpider):
             self.start_urls = ["http://example.com"]
             self.rules = ()
             self._compile_rules()
+
+    def parse_start_url(self, response):
+        """Функция для парсинга стартовой страницы и начала парсинга ссылок"""
+        current_domain = urlparse(response.url).netloc.replace('www.', '')
+
+        # Найдем ресурс по домену через ресурсный маппинг
+        resource_info = next((res for res in self.resource_map.values() if
+                              urlparse(res[2].split(',')[0].strip()).netloc.replace('www.', '') == current_domain),
+                             None)
+
+        if resource_info:
+            # Извлекаем top_tag для текущего ресурса
+            top_tag = resource_info[3]
+            deny = [r'//kabar.kg/arkhiv-kategorii/', r'//kabar.kg/archive/', r'//bilimdiler.kz/tags/',
+                         r'//kerekinfo.kz/tag/',
+                         r'//abai.kz/archive/', r'//infor.kz/avto/',
+                         r'//allinsurance.kz/articles',
+                         r'//podrobnosty.kz/component/phocagallery/', r'//news.rambler.ru/rss',
+                         r'//www.aljazeera.com/author',
+                         r'//newauto.kz/cars', r'://zhanaqorgan-tynysy.kz/engine/']
+            deny_extensions = ['jpg', 'jpeg', 'png', 'gif', 'pdf', 'doc', 'docx', 'JPG', 'jfif', 'webp']
+            # Создаем LinkExtractor для этого домена
+            link_extractor = LinkExtractor(restrict_xpaths=top_tag, deny=deny, deny_extensions=deny_extensions)
+            # Извлекаем ссылки
+            links = link_extractor.extract_links(response)
+            # Следуем за каждой ссылкой и передаем в parse_links
+            for link in links:
+                yield Request(url=link.url, callback=self.parse_links, meta={'resource_info': resource_info, 'depth': 1, 'deny': deny, 'deny_extensions': deny_extensions })
 
     def setup_scrapy_logging(self, spider_name, handler, console_handler):
         """
@@ -142,67 +160,69 @@ class ResourceSpider(CrawlSpider):
             scrapy_logger.addHandler(console_handler)
 
     def parse_links(self, response):
+        if not response.headers.get('Content-Type', '').decode().startswith('text'):
+            self.logger.warning(f"Non-text content at {response.url}. Skipping...")
+            return
         # Получаем текущий URL
         current_url = response.url
-        if any(current_url.endswith(ext) for ext in ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx', '.JPG', 'jfif']):
-            # self.logger.info(f'Пропускаем неподходящий ссылку: {current_url}')
-            return
         self.cursor_3.execute("SELECT 1 FROM temp_items_link WHERE link = %s", (current_url,))
         if self.cursor_3.fetchone() is not None:
             self.custom_logger.info(f'ссылка существует {current_url}')
             return
+        resource_info = response.meta.get('resource_info')
+        resource_id = resource_info[0]
+        current_depth = response.meta.get('depth', 1)
+        deny_extensions = response.meta.get('deny_extensions')
+        deny = response.meta.get('deny')
+        max_depth = 2
 
-        parsed_current_url = urlparse(current_url)
-        current_netloc = parsed_current_url.netloc.replace('www.', '')
-
-        #Ищем RESOURCE_ID для текущего URL
-        resource_id = None
-        resource_info = None
-        for resource in self.resources:
-            first_url = resource[2].split(',')[0].strip()
-            parsed_first_url = urlparse(first_url)
-            first_netloc = parsed_first_url.netloc.replace('www.', '')
-
-            if first_netloc == current_netloc:
-                resource_id = resource[0]
-                resource_info = resource
-                break
-
-        if resource_id:
-            # получение заголовок новостей
-            title_t = response.xpath(f'normalize-space({resource_info[5]})').get()
-            if not title_t:
-                self.custom_logger.info(f"Заголовок отсутствует для {current_url}")
-                return
-            title = self.replace_unsupported_characters(title_t) # чистка текста
-
-           # Парсинг даты
-            date = response.xpath(resource_info[6]).get()
-            if not date:
-                self.custom_logger.info(f"Дата отсутствует для {current_url}")
-                return
-            date = self.parse_date(date, resource_info[7])
-            if not date:
-                self.custom_logger.info(f"Дата отсутствует для {current_url}")
-                return
-            n_date = date #дата публикаций новостей
-            nd_date = int(time.mktime(date.timetuple())) #дата публикаций новостей UNIX формате
-            not_date = date.strftime('%Y-%m-%d') #дата публикаций новостей
-            s_date = int(time.time()) #дата поступление новостей в таблицу
-            one_year_in_seconds = 365 * 24 * 3600
-            if s_date - nd_date > one_year_in_seconds:
-                self.custom_logger.info(f"Дата {date} старее чем на год для {current_url}")
-                return
-
-            # получение контента новостей
-            content = response.xpath(resource_info[4]).getall()
-            content = self.clean_text(content) # чистка текста
-            if not content or all(item.isspace() for item in content):
-                self.custom_logger.info(f"Контент отсутствует для {current_url}")
-                return
+        if current_depth < max_depth:
+            top_tag = resource_info[3]
+            link_extractor = LinkExtractor(restrict_xpaths=top_tag, deny=deny, deny_extensions=deny_extensions)
+            # Извлекаем ссылки для дальнейшего парсинга
+            links = link_extractor.extract_links(response)
+            for link in links:
+                # Увеличиваем глубину на 1 и следуем за ссылками
+                yield Request(
+                    url=link.url,
+                    callback=self.parse_links,
+                    meta={'resource_info': resource_info, 'depth': current_depth + 1, 'deny': deny,
+                          'deny_extensions': deny_extensions})
 
 
-            self.store_news(resource_id, title, current_url, nd_date, content, n_date, s_date, not_date) # отправка на сохранение в бд
+        # получение заголовок новостей
+        title_t = response.xpath(f'normalize-space({resource_info[5]})').get()
+        if not title_t:
+            self.custom_logger.info(f"Заголовок отсутствует для {current_url}")
+            return
+        title = self.replace_unsupported_characters(title_t) # чистка текста
+
+       # Парсинг даты
+        date = response.xpath(resource_info[6]).get()
+        if not date:
+            self.custom_logger.info(f"Дата отсутствует для {current_url}")
+            return
+        date = self.parse_date(date, resource_info[7])
+        if not date:
+            self.custom_logger.info(f"Дата отсутствует для {current_url}")
+            return
+        n_date = date #дата публикаций новостей
+        nd_date = int(time.mktime(date.timetuple())) #дата публикаций новостей UNIX формате
+        not_date = date.strftime('%Y-%m-%d') #дата публикаций новостей
+        s_date = int(time.time()) #дата поступление новостей в таблицу
+        one_year_in_seconds = 365 * 24 * 3600
+        if s_date - nd_date > one_year_in_seconds:
+            self.custom_logger.info(f"Дата {date} старее чем на год для {current_url}")
+            return
+        # получение контента новостей
+        content = response.xpath(resource_info[4]).getall()
+        content = self.clean_text(content) # чистка текста
+        if not content or all(item.isspace() for item in content):
+            self.custom_logger.info(f"Контент отсутствует для {current_url}")
+            return
+        self.store_news(resource_id, title, current_url, nd_date, content, n_date, s_date, not_date) # отправка на сохранение в бд
+
+
 
 
     def store_news(self, resource_id, title, current_url, nd_date, content, n_date, s_date, not_date):
