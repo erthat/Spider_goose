@@ -95,12 +95,12 @@ class ResourceSpider(CrawlSpider):
                 self.cursor_3 = self.conn_3.cursor()
                 self.custom_logger.info(f'Есть подключение к БД: {spider_name}')
 
-            if resources:
-                self.resources = resources
-                self.start_urls = [resource[2].split(',')[0].strip() for resource in self.resources]
-                self.allowed_domains = [urlparse(url).netloc.replace('www.', '') for url in self.start_urls]
-                self.custom_logger.info(f'Allowed domains: {self.allowed_domains}')
-                self.resource_map = {resource[0]: resource for resource in self.resources}
+                if resources:
+                    self.resources = resources
+                    self.start_urls = [resource[2].split(',')[0].strip() for resource in self.resources]
+                    self.allowed_domains = [urlparse(url).netloc.replace('www.', '') for url in self.start_urls]
+                    self.custom_logger.info(f'Allowed domains: {self.allowed_domains}')
+                    self.resource_map = {resource[0]: resource for resource in self.resources}
 
             else:
                 self.log("No resources found, spider will close.")
@@ -134,8 +134,10 @@ class ResourceSpider(CrawlSpider):
                          r'//allinsurance.kz/articles',
                          r'//podrobnosty.kz/component/phocagallery/', r'//news.rambler.ru/rss',
                          r'//www.aljazeera.com/author',
-                         r'//newauto.kz/cars', r'://zhanaqorgan-tynysy.kz/engine/']
-            deny_extensions = ['jpg', 'jpeg', 'png', 'gif', 'pdf', 'doc', 'docx', 'JPG', 'jfif', 'webp']
+                         r'//newauto.kz/cars', r'://zhanaqorgan-tynysy.kz/engine/', r'//www.ihsan.kz/kk/news',
+                         r'//www.ihsan.kz/ru/news']
+            deny_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx', '.JPG', '.jfif', '.mp3',
+                '.mp4']
             # Создаем LinkExtractor для этого домена
             link_extractor = LinkExtractor(restrict_xpaths=top_tag, deny=deny, deny_extensions=deny_extensions)
             # Извлекаем ссылки
@@ -160,11 +162,18 @@ class ResourceSpider(CrawlSpider):
             scrapy_logger.addHandler(console_handler)
 
     def parse_links(self, response):
+        current_url = response.url
+        if any(current_url.endswith(ext) for ext in
+               ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx', '.JPG', '.jfif', '.mp3',
+                '.mp4']):
+            self.custom_logger.info(f'Пропускаем неподходящий ссылку: {current_url}')
+            return
+
         if not response.headers.get('Content-Type', '').decode().startswith('text'):
-            self.logger.warning(f"Non-text content at {response.url}. Skipping...")
+            self.custom_logger.info(f'Пропускаем неподходящий ссылку: {current_url}')
             return
         # Получаем текущий URL
-        current_url = response.url
+
         self.cursor_3.execute("SELECT 1 FROM temp_items_link WHERE link = %s", (current_url,))
         if self.cursor_3.fetchone() is not None:
             self.custom_logger.info(f'ссылка существует {current_url}')
