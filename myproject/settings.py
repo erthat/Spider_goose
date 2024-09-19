@@ -125,3 +125,5 @@ ACCEPT = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image
 DOWNLOADER_MIDDLEWARES = {
     'myproject.CustomDownloaderMiddleware.CustomDownloaderMiddleware': 543,
 }
+DEFAULT_REQUEST_HEADERS = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                            'Accept-Language': 'ru,kz;q=0.9,en;q=0.8,*;q=0.7',}
