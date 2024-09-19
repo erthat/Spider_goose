@@ -138,7 +138,7 @@ class ResourceSpider(CrawlSpider):
             #              r'//newauto.kz/cars', r'://zhanaqorgan-tynysy.kz/engine/', r'//www.ihsan.kz/kk/news',
             #              r'//www.ihsan.kz/ru/news', r'islamsng.com/archive/']
             deny = resource_info[8]
-            max_depth = int(resource_info[9]) if resource_info[9] else 2
+            max_depth = int(resource_info[9]) if resource_info[9] else 1
             if deny:
                 denys = [rule.strip() for rule in deny.split(';')]
             else:
