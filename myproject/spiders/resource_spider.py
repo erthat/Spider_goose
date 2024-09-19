@@ -128,6 +128,7 @@ class ResourceSpider(CrawlSpider):
         if resource_info:
             # Извлекаем top_tag для текущего ресурса
             top_tag = resource_info[3]
+            top_tags = [xpath.strip() for xpath in top_tag.split(';')]
             deny = [r'//kabar.kg/arkhiv-kategorii/', r'//kabar.kg/archive/', r'//bilimdiler.kz/tags/',
                          r'//kerekinfo.kz/tag/',
                          r'//abai.kz/archive/', r'//infor.kz/avto/',
@@ -135,11 +136,11 @@ class ResourceSpider(CrawlSpider):
                          r'//podrobnosty.kz/component/phocagallery/', r'//news.rambler.ru/rss',
                          r'//www.aljazeera.com/author',
                          r'//newauto.kz/cars', r'://zhanaqorgan-tynysy.kz/engine/', r'//www.ihsan.kz/kk/news',
-                         r'//www.ihsan.kz/ru/news']
+                         r'//www.ihsan.kz/ru/news', r'islamsng.com/archive/']
             deny_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx', '.JPG', '.jfif', '.mp3',
                 '.mp4']
             # Создаем LinkExtractor для этого домена
-            link_extractor = LinkExtractor(restrict_xpaths=top_tag, deny=deny, deny_extensions=deny_extensions)
+            link_extractor = LinkExtractor(restrict_xpaths=top_tags, deny=deny, deny_extensions=deny_extensions)
             # Извлекаем ссылки
             links = link_extractor.extract_links(response)
             # Следуем за каждой ссылкой и передаем в parse_links
@@ -187,7 +188,8 @@ class ResourceSpider(CrawlSpider):
 
         if current_depth < max_depth:
             top_tag = resource_info[3]
-            link_extractor = LinkExtractor(restrict_xpaths=top_tag, deny=deny, deny_extensions=deny_extensions)
+            top_tags = [xpath.strip() for xpath in top_tag.split(';')]
+            link_extractor = LinkExtractor(restrict_xpaths=top_tags, deny=deny, deny_extensions=deny_extensions)
             # Извлекаем ссылки для дальнейшего парсинга
             links = link_extractor.extract_links(response)
             for link in links:
