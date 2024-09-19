@@ -176,10 +176,6 @@ class ResourceSpider(CrawlSpider):
                 '.mp4']):
             self.custom_logger.info(f'Пропускаем неподходящий ссылку: {current_url}')
             return
-
-        if not response.headers.get('Content-Type', '').decode().startswith('text'):
-            self.custom_logger.info(f'Пропускаем неподходящий ссылку: {current_url}')
-            return
         # Получаем текущий URL
 
         self.cursor_3.execute("SELECT 1 FROM temp_items_link WHERE link = %s", (current_url,))
