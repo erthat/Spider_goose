@@ -129,7 +129,7 @@ class ResourceSpider(CrawlSpider):
             # Извлекаем top_tag для текущего ресурса
             top_tag = resource_info[3]
             top_tags = [xpath.strip() for xpath in top_tag.split(';')]
-            # deny = [r'//kabar.kg/arkhiv-kategorii/', r'//kabar.kg/archive/', r'//bilimdiler.kz/tags/',
+            # deny =  r'//bilimdiler.kz/tags/',
             #              r'//kerekinfo.kz/tag/',
             #              r'//abai.kz/archive/', r'//infor.kz/avto/',
             #              r'//allinsurance.kz/articles',
