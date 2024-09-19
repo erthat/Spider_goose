@@ -55,7 +55,7 @@ def connect_to_database():
 
 def load_resources(cursor):
     cursor.execute(
-        "SELECT RESOURCE_ID, RESOURCE_NAME, RESOURCE_URL, top_tag, bottom_tag, title_cut, date_cut, convert_date "
+        "SELECT RESOURCE_ID, RESOURCE_NAME, RESOURCE_URL, top_tag, bottom_tag, title_cut, date_cut, convert_date, block_page, middle_tag "
         "FROM resource "
         "WHERE status = %s AND top_tag IS NOT NULL AND top_tag <> '' "
         "AND bottom_tag IS NOT NULL AND bottom_tag <> '' "

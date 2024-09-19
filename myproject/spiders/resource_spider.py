@@ -129,23 +129,30 @@ class ResourceSpider(CrawlSpider):
             # Извлекаем top_tag для текущего ресурса
             top_tag = resource_info[3]
             top_tags = [xpath.strip() for xpath in top_tag.split(';')]
-            deny = [r'//kabar.kg/arkhiv-kategorii/', r'//kabar.kg/archive/', r'//bilimdiler.kz/tags/',
-                         r'//kerekinfo.kz/tag/',
-                         r'//abai.kz/archive/', r'//infor.kz/avto/',
-                         r'//allinsurance.kz/articles',
-                         r'//podrobnosty.kz/component/phocagallery/', r'//news.rambler.ru/rss',
-                         r'//www.aljazeera.com/author',
-                         r'//newauto.kz/cars', r'://zhanaqorgan-tynysy.kz/engine/', r'//www.ihsan.kz/kk/news',
-                         r'//www.ihsan.kz/ru/news', r'islamsng.com/archive/']
-            deny_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx', '.JPG', '.jfif', '.mp3',
-                '.mp4']
+            # deny = [r'//kabar.kg/arkhiv-kategorii/', r'//kabar.kg/archive/', r'//bilimdiler.kz/tags/',
+            #              r'//kerekinfo.kz/tag/',
+            #              r'//abai.kz/archive/', r'//infor.kz/avto/',
+            #              r'//allinsurance.kz/articles',
+            #              r'//podrobnosty.kz/component/phocagallery/', r'//news.rambler.ru/rss',
+            #              r'//www.aljazeera.com/author',
+            #              r'//newauto.kz/cars', r'://zhanaqorgan-tynysy.kz/engine/', r'//www.ihsan.kz/kk/news',
+            #              r'//www.ihsan.kz/ru/news', r'islamsng.com/archive/']
+            deny = resource_info[8]
+            max_depth = int(resource_info[9]) if resource_info[9] else 2
+            if deny:
+                denys = [rule.strip() for rule in deny.split(';')]
+            else:
+                denys = []
+            deny_extensions = ['jpg', 'jpeg', 'png', 'gif', 'pdf', 'doc', 'docx', 'JPG', 'jfif', 'mp3',
+                'mp4', 'pptx', 'zip', 'rar']
             # Создаем LinkExtractor для этого домена
-            link_extractor = LinkExtractor(restrict_xpaths=top_tags, deny=deny, deny_extensions=deny_extensions)
+            link_extractor = LinkExtractor(restrict_xpaths=top_tags, deny=denys, deny_extensions=deny_extensions)
             # Извлекаем ссылки
             links = link_extractor.extract_links(response)
             # Следуем за каждой ссылкой и передаем в parse_links
             for link in links:
-                yield Request(url=link.url, callback=self.parse_links, meta={'resource_info': resource_info, 'depth': 1, 'deny': deny, 'deny_extensions': deny_extensions })
+                yield Request(url=link.url, callback=self.parse_links, meta={'resource_info': resource_info, 'depth': 1, 'denys': denys,
+                                                                             'deny_extensions': deny_extensions, 'max_depth': max_depth })
 
     def setup_scrapy_logging(self, spider_name, handler, console_handler):
         """
@@ -179,26 +186,28 @@ class ResourceSpider(CrawlSpider):
         if self.cursor_3.fetchone() is not None:
             self.custom_logger.info(f'ссылка существует {current_url}')
             return
+
         resource_info = response.meta.get('resource_info')
         resource_id = resource_info[0]
         current_depth = response.meta.get('depth', 1)
         deny_extensions = response.meta.get('deny_extensions')
-        deny = response.meta.get('deny')
-        max_depth = 2
+        denys = response.meta.get('denys')
+        max_depth = response.meta.get('max_depth')
 
         if current_depth < max_depth:
             top_tag = resource_info[3]
             top_tags = [xpath.strip() for xpath in top_tag.split(';')]
-            link_extractor = LinkExtractor(restrict_xpaths=top_tags, deny=deny, deny_extensions=deny_extensions)
+            link_extractor = LinkExtractor(restrict_xpaths=top_tags, deny=denys, deny_extensions=deny_extensions)
             # Извлекаем ссылки для дальнейшего парсинга
             links = link_extractor.extract_links(response)
+            # print(f'на второй круг {links}')
             for link in links:
                 # Увеличиваем глубину на 1 и следуем за ссылками
                 yield Request(
                     url=link.url,
                     callback=self.parse_links,
-                    meta={'resource_info': resource_info, 'depth': current_depth + 1, 'deny': deny,
-                          'deny_extensions': deny_extensions})
+                    meta={'resource_info': resource_info, 'depth': current_depth + 1, 'denys': denys,
+                          'deny_extensions': deny_extensions, 'max_depth': max_depth})
 
 
         # получение заголовок новостей
