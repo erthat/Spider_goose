@@ -118,12 +118,14 @@ class ResourceSpider(CrawlSpider):
 
     def parse_start_url(self, response):
         """Функция для парсинга стартовой страницы и начала парсинга ссылок"""
-        current_domain = urlparse(response.url).netloc.replace('www.', '')
 
-        # Найдем ресурс по домену через ресурсный маппинг
-        resource_info = next((res for res in self.resource_map.values() if
-                              urlparse(res[2].split(',')[0].strip()).netloc.replace('www.', '') == current_domain),
-                             None)
+        current_domain = urlparse(response.url).hostname.replace('www.', '')
+
+        resource_info = next(
+            (res for res in self.resource_map.values() if
+             urlparse(res[2].split(',')[0].strip()).hostname.replace('www.', '') == current_domain),
+            None
+        )
 
         if resource_info:
             # Извлекаем top_tag для текущего ресурса
@@ -139,6 +141,7 @@ class ResourceSpider(CrawlSpider):
             #              r'//www.ihsan.kz/ru/news', r'islamsng.com/archive/']
             deny = resource_info[8]
             max_depth = int(resource_info[9]) if resource_info[9] else 1
+
             if deny:
                 denys = [rule.strip() for rule in deny.split(';')]
             else:
@@ -151,23 +154,9 @@ class ResourceSpider(CrawlSpider):
             links = link_extractor.extract_links(response)
             # Следуем за каждой ссылкой и передаем в parse_links
             for link in links:
-                yield Request(url=link.url, callback=self.parse_links, meta={'resource_info': resource_info, 'depth': 1, 'denys': denys,
+                yield Request(url=link.url, callback=self.parse_links, meta={'resource_info': resource_info, 'top_tags': top_tags, 'depth': 1, 'denys': denys,
                                                                              'deny_extensions': deny_extensions, 'max_depth': max_depth })
 
-    def setup_scrapy_logging(self, spider_name, handler, console_handler):
-        """
-        Настраиваем Scrapy логгер для перенаправления всех сообщений в файл паука.
-        """
-        # Отключаем глобальное конфигурирование логирования Scrapy
-        configure_logging(install_root_handler=False)
-
-        # Перенаправляем стандартные логи Scrapy в наш кастомный логгер
-        scrapy_logger = logging.getLogger('scrapy')
-        scrapy_logger.propagate = False
-        scrapy_logger.setLevel(logging.INFO)
-        if not scrapy_logger.handlers:
-            scrapy_logger.addHandler(handler)
-            scrapy_logger.addHandler(console_handler)
 
     def parse_links(self, response):
         current_url = response.url
@@ -189,10 +178,10 @@ class ResourceSpider(CrawlSpider):
         deny_extensions = response.meta.get('deny_extensions')
         denys = response.meta.get('denys')
         max_depth = response.meta.get('max_depth')
+        top_tags = response.meta.get('top_tags')
+
 
         if current_depth < max_depth:
-            top_tag = resource_info[3]
-            top_tags = [xpath.strip() for xpath in top_tag.split(';')]
             link_extractor = LinkExtractor(restrict_xpaths=top_tags, deny=denys, deny_extensions=deny_extensions)
             # Извлекаем ссылки для дальнейшего парсинга
             links = link_extractor.extract_links(response)
@@ -202,7 +191,7 @@ class ResourceSpider(CrawlSpider):
                 yield Request(
                     url=link.url,
                     callback=self.parse_links,
-                    meta={'resource_info': resource_info, 'depth': current_depth + 1, 'denys': denys,
+                    meta={'resource_info': resource_info, 'top_tags':top_tags, 'depth': current_depth + 1, 'denys': denys,
                           'deny_extensions': deny_extensions, 'max_depth': max_depth})
 
 
@@ -216,11 +205,11 @@ class ResourceSpider(CrawlSpider):
        # Парсинг даты
         date = response.xpath(resource_info[6]).get()
         if not date:
-            self.custom_logger.info(f"Дата отсутствует для {current_url}")
+            self.custom_logger.info(f"Дата отсутствует {date}, {current_url}")
             return
         date = self.parse_date(date, resource_info[7])
         if not date:
-            self.custom_logger.info(f"Дата отсутствует для {current_url}")
+            self.custom_logger.info(f"Дата отсутствует {date}, {current_url}")
             return
         n_date = date #дата публикаций новостей
         nd_date = int(time.mktime(date.timetuple())) #дата публикаций новостей UNIX формате
@@ -267,7 +256,7 @@ class ResourceSpider(CrawlSpider):
                 (resource_id, title, current_url, nd_date, content, n_date, s_date, not_date, status)
             )
             self.conn_2.commit()
-            self.custom_logger.warning(f'Новость добавлена в базу: {current_url}')
+            self.custom_logger.warning(f'Новость добавлена в базу, дата: {n_date}, URL: {current_url} ')
         else:
             # Если ссылка уже существует
             self.custom_logger.info(f'Ссылка уже существует в базе TEMP: {current_url}')
@@ -343,6 +332,21 @@ class ResourceSpider(CrawlSpider):
                 if date_with_utc <= datetime.now().replace(tzinfo=UTC):
                     return date_with_utc
         return None
+
+    def setup_scrapy_logging(self, spider_name, handler, console_handler):
+        """
+        Настраиваем Scrapy логгер для перенаправления всех сообщений в файл паука.
+        """
+        # Отключаем глобальное конфигурирование логирования Scrapy
+        configure_logging(install_root_handler=False)
+
+        # Перенаправляем стандартные логи Scrapy в наш кастомный логгер
+        scrapy_logger = logging.getLogger('scrapy')
+        scrapy_logger.propagate = False
+        scrapy_logger.setLevel(logging.INFO)
+        if not scrapy_logger.handlers:
+            scrapy_logger.addHandler(handler)
+            scrapy_logger.addHandler(console_handler)
 
     def close(self, reason):
         if self.cursor_2:
