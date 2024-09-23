@@ -147,7 +147,7 @@ class ResourceSpider(CrawlSpider):
             else:
                 denys = []
             deny_extensions = ['jpg', 'jpeg', 'png', 'gif', 'pdf', 'doc', 'docx', 'JPG', 'jfif', 'mp3',
-                'mp4', 'pptx', 'zip', 'rar']
+                'mp4', 'pptx', 'zip', 'rar', 'xlsx', 'webp', 'wav']
             # Создаем LinkExtractor для этого домена
             link_extractor = LinkExtractor(restrict_xpaths=top_tags, deny=denys, deny_extensions=deny_extensions)
             # Извлекаем ссылки
