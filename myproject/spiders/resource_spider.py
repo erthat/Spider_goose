@@ -131,14 +131,6 @@ class ResourceSpider(CrawlSpider):
             # Извлекаем top_tag для текущего ресурса
             top_tag = resource_info[3]
             top_tags = [xpath.strip() for xpath in top_tag.split(';')]
-            # deny =  r'//bilimdiler.kz/tags/',
-            #              r'//kerekinfo.kz/tag/',
-            #              r'//abai.kz/archive/', r'//infor.kz/avto/',
-            #              r'//allinsurance.kz/articles',
-            #              r'//podrobnosty.kz/component/phocagallery/', r'//news.rambler.ru/rss',
-            #              r'//www.aljazeera.com/author',
-            #              r'//newauto.kz/cars', r'://zhanaqorgan-tynysy.kz/engine/', r'//www.ihsan.kz/kk/news',
-            #              r'//www.ihsan.kz/ru/news', r'islamsng.com/archive/']
             deny = resource_info[8]
             max_depth = int(resource_info[9]) if resource_info[9] else 1
 
@@ -147,7 +139,7 @@ class ResourceSpider(CrawlSpider):
             else:
                 denys = []
             deny_extensions = ['jpg', 'jpeg', 'png', 'gif', 'pdf', 'doc', 'docx', 'JPG', 'jfif', 'mp3',
-                'mp4', 'pptx', 'zip', 'rar', 'xlsx', 'webp', 'wav']
+                'mp4', 'pptx', 'zip', 'rar', 'xlsx', 'webp', 'wav', 'ppt']
             # Создаем LinkExtractor для этого домена
             link_extractor = LinkExtractor(restrict_xpaths=top_tags, deny=denys, deny_extensions=deny_extensions)
             # Извлекаем ссылки
