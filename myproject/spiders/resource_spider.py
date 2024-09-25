@@ -155,7 +155,7 @@ class ResourceSpider(CrawlSpider):
 
                 # Проверка ссылки в базе данных temp_items
                 self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s", (url_link,))
-                if self.cursor_2.fetchone()is not None:
+                if self.cursor_2.fetchone() is not None:
                     # self.custom_logger.info(f'Ссылка существует в temp_items: {url_link}')
                     continue  # Пропускаем, если ссылка уже существует
                 yield Request(url=link.url, callback=self.parse_links, meta={'resource_info': resource_info, 'top_tags': top_tags, 'depth': 1, 'denys': denys,
@@ -193,7 +193,7 @@ class ResourceSpider(CrawlSpider):
 
                 # Проверка ссылки в базе данных temp_items
                 self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s", (url_link,))
-                if self.cursor_2.fetchone()is not None:
+                if self.cursor_2.fetchone() is not None:
                     # self.custom_logger.info(f'Ссылка существует в temp_items: {url_link}')
                     continue  # Пропускаем, если ссылка уже существует
 
