@@ -136,6 +136,6 @@ if __name__ == '__main__':
     conn_1.close()
     resource_count = len([resource[0] for resource in resources])
     logging.info(f'количество источников = {resource_count}')
-    num_parts = max(1, (resource_count // 30))
+    num_parts = max(1, (resource_count // 35))
     logging.info(f'количество пауков = {num_parts}')
     start_spiders(num_parts)

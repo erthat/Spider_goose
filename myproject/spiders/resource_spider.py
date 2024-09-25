@@ -146,6 +146,18 @@ class ResourceSpider(CrawlSpider):
             links = link_extractor.extract_links(response)
             # Следуем за каждой ссылкой и передаем в parse_links
             for link in links:
+                url_link = link.url
+                # Проверка ссылки в базе данных temp_items_link
+                self.cursor_3.execute("SELECT 1 FROM temp_items_link WHERE link = %s", (url_link,))
+                if self.cursor_3.fetchone() is not None:
+                    self.custom_logger.info(f'Ссылка существует в temp_items_link: {url_link}')
+                    continue  # Пропускаем, если ссылка уже существует
+
+                # Проверка ссылки в базе данных temp_items
+                self.cursor_2.execute("SELECT COUNT(*) FROM temp_items WHERE link = %s", (url_link,))
+                if self.cursor_2.fetchone()[0] > 0:
+                    self.custom_logger.info(f'Ссылка существует в temp_items: {url_link}')
+                    continue  # Пропускаем, если ссылка уже существует
                 yield Request(url=link.url, callback=self.parse_links, meta={'resource_info': resource_info, 'top_tags': top_tags, 'depth': 1, 'denys': denys,
                                                                              'deny_extensions': deny_extensions, 'max_depth': max_depth })
 
@@ -156,14 +168,7 @@ class ResourceSpider(CrawlSpider):
                ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx', '.JPG', '.jfif', '.mp3',
                 '.mp4']):
             self.custom_logger.info(f'Пропускаем неподходящий ссылку: {current_url}')
-            return
-        # Получаем текущий URL
-
-        self.cursor_3.execute("SELECT 1 FROM temp_items_link WHERE link = %s", (current_url,))
-        if self.cursor_3.fetchone() is not None:
-            self.custom_logger.info(f'ссылка существует {current_url}')
-            return
-
+            return       # Получаем текущий URL
         resource_info = response.meta.get('resource_info')
         resource_id = resource_info[0]
         current_depth = response.meta.get('depth', 1)
@@ -179,13 +184,24 @@ class ResourceSpider(CrawlSpider):
             links = link_extractor.extract_links(response)
             # print(f'на второй круг {links}')
             for link in links:
-                # Увеличиваем глубину на 1 и следуем за ссылками
+                url_link = link.url
+                # Проверка ссылки в базе данных temp_items_link
+                self.cursor_3.execute("SELECT 1 FROM temp_items_link WHERE link = %s", (url_link,))
+                if self.cursor_3.fetchone() is not None:
+                    self.custom_logger.info(f'Ссылка существует в temp_items_link: {url_link}')
+                    continue  # Пропускаем, если ссылка уже существует
+
+                # Проверка ссылки в базе данных temp_items
+                self.cursor_2.execute("SELECT COUNT(*) FROM temp_items WHERE link = %s", (url_link,))
+                if self.cursor_2.fetchone()[0] > 0:
+                    self.custom_logger.info(f'Ссылка существует в temp_items: {url_link}')
+                    continue  # Пропускаем, если ссылка уже существует
+
                 yield Request(
                     url=link.url,
                     callback=self.parse_links,
                     meta={'resource_info': resource_info, 'top_tags':top_tags, 'depth': current_depth + 1, 'denys': denys,
                           'deny_extensions': deny_extensions, 'max_depth': max_depth})
-
 
         # получение заголовок новостей
         title_t = response.xpath(f'normalize-space({resource_info[5]})').get()
@@ -220,8 +236,6 @@ class ResourceSpider(CrawlSpider):
         self.store_news(resource_id, title, current_url, nd_date, content, n_date, s_date, not_date) # отправка на сохранение в бд
 
 
-
-
     def store_news(self, resource_id, title, current_url, nd_date, content, n_date, s_date, not_date):
         # Проверка соединения перед выполнением операций
         if not self.conn_2.is_connected():
@@ -232,26 +246,14 @@ class ResourceSpider(CrawlSpider):
             except mysql.connector.Error as err:
                 self.custom_logger.warning(f"Ошибка переподключения: {err}")
                 return  # Прекращаем выполнение, если не удалось переподключиться
-
-        # Проверка наличия ссылки в таблице
+        status = ''
         self.cursor_2.execute(
-            "SELECT COUNT(*) FROM temp_items WHERE link = %s",
-            (current_url,)
+            "INSERT INTO temp_items (res_id, title, link, nd_date, content, n_date, s_date, not_date, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+            (resource_id, title, current_url, nd_date, content, n_date, s_date, not_date, status)
         )
-        (count,) = self.cursor_2.fetchone()
+        self.conn_2.commit()
+        self.custom_logger.warning(f'Новость добавлена в базу, дата: {n_date}, URL: {current_url} ')
 
-        if count == 0:
-            # Если ссылка не найдена, добавляем её в таблицу
-            status = ''
-            self.cursor_2.execute(
-                "INSERT INTO temp_items (res_id, title, link, nd_date, content, n_date, s_date, not_date, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                (resource_id, title, current_url, nd_date, content, n_date, s_date, not_date, status)
-            )
-            self.conn_2.commit()
-            self.custom_logger.warning(f'Новость добавлена в базу, дата: {n_date}, URL: {current_url} ')
-        else:
-            # Если ссылка уже существует
-            self.custom_logger.info(f'Ссылка уже существует в базе TEMP: {current_url}')
 
     def replace_unsupported_characters(self, text):
         text = str(text) if text else ''
