@@ -154,7 +154,7 @@ class ResourceSpider(CrawlSpider):
                     continue  # Пропускаем, если ссылка уже существует
 
                 # Проверка ссылки в базе данных temp_items
-                self.cursor_2.execute("SELECT COUNT(*) FROM temp_items WHERE link = %s", (url_link,))
+                self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s", (url_link,))
                 if self.cursor_2.fetchone()is not None:
                     # self.custom_logger.info(f'Ссылка существует в temp_items: {url_link}')
                     continue  # Пропускаем, если ссылка уже существует
@@ -192,7 +192,7 @@ class ResourceSpider(CrawlSpider):
                     continue  # Пропускаем, если ссылка уже существует
 
                 # Проверка ссылки в базе данных temp_items
-                self.cursor_2.execute("SELECT COUNT(*) FROM temp_items WHERE link = %s", (url_link,))
+                self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s", (url_link,))
                 if self.cursor_2.fetchone()is not None:
                     # self.custom_logger.info(f'Ссылка существует в temp_items: {url_link}')
                     continue  # Пропускаем, если ссылка уже существует
