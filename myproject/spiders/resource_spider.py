@@ -147,15 +147,10 @@ class ResourceSpider(CrawlSpider):
             # Следуем за каждой ссылкой и передаем в parse_links
             for link in links:
                 url_link = link.url
-                # Проверка ссылки в базе данных temp_items_link
-                self.cursor_3.execute("SELECT 1 FROM temp_items_link WHERE link = %s", (url_link,))
-                if self.cursor_3.fetchone() is not None:
-                    # self.custom_logger.info(f'Ссылка существует в temp_items_link: {url_link}')
-                    continue  # Пропускаем, если ссылка уже существует
 
                 # Проверка ссылки в базе данных temp_items
                 self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s", (url_link,))
-                if self.cursor_2.fetchone() is not None:
+                if self.cursor_2.fetchone():
                     # self.custom_logger.info(f'Ссылка существует в temp_items: {url_link}')
                     continue  # Пропускаем, если ссылка уже существует
                 yield Request(url=link.url, callback=self.parse_links, meta={'resource_info': resource_info, 'top_tags': top_tags, 'depth': 1, 'denys': denys,
@@ -185,11 +180,6 @@ class ResourceSpider(CrawlSpider):
             # print(f'на второй круг {links}')
             for link in links:
                 url_link = link.url
-                # Проверка ссылки в базе данных temp_items_link
-                self.cursor_3.execute("SELECT 1 FROM temp_items_link WHERE link = %s", (url_link,))
-                if self.cursor_3.fetchone() is not None:
-                    # self.custom_logger.info(f'Ссылка существует в temp_items_link: {url_link}')
-                    continue  # Пропускаем, если ссылка уже существует
 
                 # Проверка ссылки в базе данных temp_items
                 self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s", (url_link,))
@@ -247,22 +237,14 @@ class ResourceSpider(CrawlSpider):
                 self.custom_logger.warning(f"Ошибка переподключения: {err}")
                 return  # Прекращаем выполнение, если не удалось переподключиться
 
+        status = ''
         self.cursor_2.execute(
-            "SELECT COUNT(*) FROM temp_items WHERE link = %s",
-            (current_url,)
+            "INSERT INTO temp_items (res_id, title, link, nd_date, content, n_date, s_date, not_date, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+            (resource_id, title, current_url, nd_date, content, n_date, s_date, not_date, status)
         )
-        (count,) = self.cursor_2.fetchone()
-        if count == 0:
-            status = ''
-            self.cursor_2.execute(
-                "INSERT INTO temp_items (res_id, title, link, nd_date, content, n_date, s_date, not_date, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                (resource_id, title, current_url, nd_date, content, n_date, s_date, not_date, status)
-            )
-            self.conn_2.commit()
-            self.custom_logger.warning(f'Новость добавлена в базу, дата: {n_date}, URL: {current_url} ')
-        else:
-            # Если ссылка уже существует
-            self.custom_logger.info(f'Ссылка уже существует в базе TEMP: Дата {n_date} ({nd_date}) url: {current_url}')
+        self.conn_2.commit()
+        self.custom_logger.warning(f'Новость добавлена в базу, дата: {n_date}, URL: {current_url} ')
+
 
 
     def replace_unsupported_characters(self, text):
