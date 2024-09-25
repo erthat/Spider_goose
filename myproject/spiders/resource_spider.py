@@ -150,13 +150,13 @@ class ResourceSpider(CrawlSpider):
                 # Проверка ссылки в базе данных temp_items_link
                 self.cursor_3.execute("SELECT 1 FROM temp_items_link WHERE link = %s", (url_link,))
                 if self.cursor_3.fetchone() is not None:
-                    self.custom_logger.info(f'Ссылка существует в temp_items_link: {url_link}')
+                    # self.custom_logger.info(f'Ссылка существует в temp_items_link: {url_link}')
                     continue  # Пропускаем, если ссылка уже существует
 
                 # Проверка ссылки в базе данных temp_items
                 self.cursor_2.execute("SELECT COUNT(*) FROM temp_items WHERE link = %s", (url_link,))
                 if self.cursor_2.fetchone()[0] > 0:
-                    self.custom_logger.info(f'Ссылка существует в temp_items: {url_link}')
+                    # self.custom_logger.info(f'Ссылка существует в temp_items: {url_link}')
                     continue  # Пропускаем, если ссылка уже существует
                 yield Request(url=link.url, callback=self.parse_links, meta={'resource_info': resource_info, 'top_tags': top_tags, 'depth': 1, 'denys': denys,
                                                                              'deny_extensions': deny_extensions, 'max_depth': max_depth })
@@ -188,13 +188,13 @@ class ResourceSpider(CrawlSpider):
                 # Проверка ссылки в базе данных temp_items_link
                 self.cursor_3.execute("SELECT 1 FROM temp_items_link WHERE link = %s", (url_link,))
                 if self.cursor_3.fetchone() is not None:
-                    self.custom_logger.info(f'Ссылка существует в temp_items_link: {url_link}')
+                    # self.custom_logger.info(f'Ссылка существует в temp_items_link: {url_link}')
                     continue  # Пропускаем, если ссылка уже существует
 
                 # Проверка ссылки в базе данных temp_items
                 self.cursor_2.execute("SELECT COUNT(*) FROM temp_items WHERE link = %s", (url_link,))
                 if self.cursor_2.fetchone()[0] > 0:
-                    self.custom_logger.info(f'Ссылка существует в temp_items: {url_link}')
+                    # self.custom_logger.info(f'Ссылка существует в temp_items: {url_link}')
                     continue  # Пропускаем, если ссылка уже существует
 
                 yield Request(
@@ -305,7 +305,7 @@ class ResourceSpider(CrawlSpider):
     def parse_date(self, date_str, convert_date):
         date_str = str(date_str) if date_str else ''
         date_str = re.sub(r'-го|г\.|\bPublish\w*|\bжыл\w*|тому|\bавтор\w*|\bUTC\w*', '', date_str)
-        languages = ['ru', 'kk', 'en']
+        languages = ['ru', 'kk', 'en', 'uz']
         if not convert_date:  # Присваиваем список по умолчанию
             DATE_ORDERS = ["YMD", "DMY", "MYD"]
         else:
