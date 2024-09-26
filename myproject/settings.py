@@ -96,7 +96,7 @@ FEED_EXPORT_ENCODING = "utf-8"
 DEPTH_LIMIT = 3
 CONCURRENT_ITEMS = 20
 DOWNLOAD_TIMEOUT = 40
-CONCURRENT_REQUESTS = 25
+CONCURRENT_REQUESTS = 20
 CONCURRENT_REQUESTS_PER_DOMAIN = 5
 REACTOR_THREADPOOL_MAXSIZE = 30
 RETRY_ENABLED = True
@@ -108,7 +108,7 @@ AUTOTHROTTLE_MAX_DELAY = 20  # максимальная задержка меж�
 AUTOTHROTTLE_TARGET_CONCURRENCY = 5.0  # ожидаемое количество одновременных запросов к каждому серверу
 # AUTOTHROTTLE_DEBUG = True
 # DOWNLOAD_DELAY = 10
-# В settings.py
+
 RETRY_HTTP_CODES = [500, 502, 503, 504, 408]
 
 RETRY_EXCEPTIONS = [
@@ -118,7 +118,8 @@ RETRY_EXCEPTIONS = [
 ]
 SCHEDULER_PRIORITY_QUEUE = "scrapy.pqueues.DownloaderAwarePriorityQueue"
 LOG_LEVEL = 'INFO'
-# LOG_FORMAT = '%(levelname)s: %(message)s'
+
+
 COOKIES_ENABLED = True
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
 ACCEPT = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7'
