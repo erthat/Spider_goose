@@ -292,7 +292,7 @@ class ResourceSpider(CrawlSpider):
 
     def parse_date(self, date_str, convert_date):
         date_str = str(date_str) if date_str else ''
-        date_str = re.sub(r'-го|г\.|\bPublish\w*|\bжыл\w*|тому|\bавтор\w*|\bUTC\w*', '', date_str)
+        date_str = re.sub(r'-го|г\.|\bPublish\w*|\bжыл\w*|тому|\bавтор\w*|\bUTC\w*|\bпросмотр\w*|', '', date_str)
         languages = ['ru', 'kk', 'en', 'uz']
         if not convert_date:  # Присваиваем список по умолчанию
             DATE_ORDERS = ["YMD", "DMY", "MYD"]
