@@ -60,8 +60,6 @@ class ResourceSpider(CrawlSpider):
         self.cursor_1 = None
         self.conn_2 = None
         self.cursor_2 = None
-        self.conn_3 = None
-        self.cursor_3 = None
         self.start_urls = []
 
 
@@ -78,21 +76,8 @@ class ResourceSpider(CrawlSpider):
                 autocommit=True
 
             )
-            self.conn_3 = mysql.connector.connect(
-                host=os.getenv("DB_HOST_3"),
-                user=os.getenv("DB_USER_3"),
-                password=os.getenv("DB_PASSWORD_3"),
-                database=os.getenv("DB_DATABASE_3"),
-                port=os.getenv("DB_PORT_3"),
-                charset='utf8mb4',
-                collation='utf8mb4_general_ci',
-                connection_timeout=300,
-                autocommit=True
-
-            )
-            if self.conn_2.is_connected() and self.conn_3.is_connected():
+            if self.conn_2.is_connected():
                 self.cursor_2 = self.conn_2.cursor()
-                self.cursor_3 = self.conn_3.cursor()
                 self.custom_logger.info(f'Есть подключение к БД: {spider_name}')
 
                 if resources:
@@ -147,12 +132,10 @@ class ResourceSpider(CrawlSpider):
             # Следуем за каждой ссылкой и передаем в parse_links
             for link in links:
                 url_link = link.url
-
-                # Проверка ссылки в базе данных temp_items
                 self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s", (url_link,))
-                if self.cursor_2.fetchone():
+                if self.cursor_2.fetchone() is not None:
                     # self.custom_logger.info(f'Ссылка существует в temp_items: {url_link}')
-                    continue  # Пропускаем, если ссылка уже существует
+                    continue
                 yield Request(url=link.url, callback=self.parse_links, meta={'resource_info': resource_info, 'top_tags': top_tags, 'depth': 1, 'denys': denys,
                                                                              'deny_extensions': deny_extensions, 'max_depth': max_depth })
 
@@ -163,7 +146,13 @@ class ResourceSpider(CrawlSpider):
                ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx', '.JPG', '.jfif', '.mp3',
                 '.mp4']):
             self.custom_logger.info(f'Пропускаем неподходящий ссылку: {current_url}')
-            return       # Получаем текущий URL
+            return
+
+        self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s", (current_url,))
+        if self.cursor_2.fetchone() is not None:
+            # self.custom_logger.info(f'Ссылка существует в temp_items: {url_link}')
+             return
+
         resource_info = response.meta.get('resource_info')
         resource_id = resource_info[0]
         current_depth = response.meta.get('depth', 1)
@@ -180,13 +169,10 @@ class ResourceSpider(CrawlSpider):
             # print(f'на второй круг {links}')
             for link in links:
                 url_link = link.url
-
-                # Проверка ссылки в базе данных temp_items
                 self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s", (url_link,))
                 if self.cursor_2.fetchone() is not None:
                     # self.custom_logger.info(f'Ссылка существует в temp_items: {url_link}')
-                    continue  # Пропускаем, если ссылка уже существует
-
+                    continue
                 yield Request(
                     url=link.url,
                     callback=self.parse_links,
@@ -329,6 +315,13 @@ class ResourceSpider(CrawlSpider):
                     return date_with_utc
         return None
 
+    class IgnoreUrlLengthWarnings(logging.Filter):
+        def filter(self, record):
+            # Игнорируем сообщения, содержащие "Ignoring link (url length >"
+            if "Ignoring link (url length >" in record.getMessage():
+                return False
+            return True
+
     def setup_scrapy_logging(self, spider_name, handler, console_handler):
         """
         Настраиваем Scrapy логгер для перенаправления всех сообщений в файл паука.
@@ -338,8 +331,12 @@ class ResourceSpider(CrawlSpider):
 
         # Перенаправляем стандартные логи Scrapy в наш кастомный логгер
         scrapy_logger = logging.getLogger('scrapy')
+
+        # Отключаем передачу логов в корневой логгер
         scrapy_logger.propagate = False
         scrapy_logger.setLevel(logging.INFO)
+
+        # Добавляем обработчики, если они еще не добавлены
         if not scrapy_logger.handlers:
             scrapy_logger.addHandler(handler)
             scrapy_logger.addHandler(console_handler)
@@ -347,11 +344,7 @@ class ResourceSpider(CrawlSpider):
     def close(self, reason):
         if self.cursor_2:
             self.cursor_2.close()
-        if self.cursor_3:
-            self.cursor_3.close()
         if self.conn_2:
             self.conn_2.close()
-        if self.conn_3:
-            self.conn_3.close()
 
 
