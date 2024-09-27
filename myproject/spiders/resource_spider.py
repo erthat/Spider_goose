@@ -158,7 +158,7 @@ class ResourceSpider(CrawlSpider):
                 normalized_url = self.normalize_url(url_link)
                 self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s", (normalized_url,))
                 if self.cursor_2.fetchone() is not None:
-                    # self.custom_logger.info(f'Ссылка существует в temp_items: {url_link}')
+                    self.custom_logger.info(f'Ссылка существует в temp_items: {url_link}')
                     continue
                 yield Request(url=link.url, callback=self.parse_links, meta={'resource_info': resource_info, 'top_tags': top_tags, 'depth': 1, 'denys': denys,
                                                                              'deny_extensions': deny_extensions, 'max_depth': max_depth })
@@ -208,7 +208,7 @@ class ResourceSpider(CrawlSpider):
                 normalized_url = self.normalize_url(url_link)
                 self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s", (normalized_url,))
                 if self.cursor_2.fetchone() is not None:
-                    # self.custom_logger.info(f'Ссылка существует в temp_items: {url_link}')
+                    self.custom_logger.info(f'Ссылка существует в temp_items: {url_link}')
                     continue
                 yield Request(
                     url=link.url,
