@@ -7,7 +7,7 @@ from mysql.connector.aio.logger import logger
 from scrapy.settings.default_settings import LOG_FILE
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
-from urllib.parse import urlparse
+
 from dateparser import parse
 import time
 from dotenv import load_dotenv
@@ -22,6 +22,7 @@ from logging.handlers import RotatingFileHandler
 from scrapy.utils.log import configure_logging
 import unicodedata
 from scrapy import Request
+from urllib.parse import urlparse, urlunparse
 
 
 load_dotenv()
@@ -101,6 +102,11 @@ class ResourceSpider(CrawlSpider):
             self.rules = ()
             self._compile_rules()
 
+    def remove_url_fragment(self, url):
+        parsed_url = urlparse(url)
+        # Собираем URL без фрагмента (части после #)
+        return urlunparse(parsed_url._replace(fragment=''))
+
     def parse_start_url(self, response):
         """Функция для парсинга стартовой страницы и начала парсинга ссылок"""
 
@@ -132,13 +138,19 @@ class ResourceSpider(CrawlSpider):
 
             filtered_links = []
 
+
             for link in links:
                 link_domain = urlparse(link.url).netloc.replace('www.', '')
                 if link_domain in self.allowed_domains:
                     filtered_links.append(link)
+
+            url_list = [link.url for link in filtered_links]
+
+            # Печатаем результат
+            # print(url_list)
             # Следуем за каждой ссылкой и передаем в parse_links
             for link in filtered_links:
-                url_link = link.url
+                url_link = self.remove_url_fragment(link.url)
                 self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s", (url_link,))
                 if self.cursor_2.fetchone() is not None:
                     # self.custom_logger.info(f'Ссылка существует в temp_items: {url_link}')
@@ -181,9 +193,14 @@ class ResourceSpider(CrawlSpider):
                 if link_domain in self.allowed_domains:
                     filtered_links.append(link)
 
+            url_list2 = [link.url for link in filtered_links]
+
+            # Печатаем результат
+            # print(url_list2)
+
             # print(f'на второй круг {links}')
             for link in filtered_links:
-                url_link = link.url
+                url_link = self.remove_url_fragment(link.url)
                 self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s", (url_link,))
                 if self.cursor_2.fetchone() is not None:
                     # self.custom_logger.info(f'Ссылка существует в temp_items: {url_link}')
