@@ -129,8 +129,15 @@ class ResourceSpider(CrawlSpider):
             link_extractor = LinkExtractor(restrict_xpaths=top_tags, deny=denys, deny_extensions=deny_extensions)
             # Извлекаем ссылки
             links = link_extractor.extract_links(response)
-            # Следуем за каждой ссылкой и передаем в parse_links
+
+            filtered_links = []
+
             for link in links:
+                link_domain = urlparse(link.url).netloc.replace('www.', '')
+                if link_domain in self.allowed_domains:
+                    filtered_links.append(link)
+            # Следуем за каждой ссылкой и передаем в parse_links
+            for link in filtered_links:
                 url_link = link.url
                 self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s", (url_link,))
                 if self.cursor_2.fetchone() is not None:
@@ -148,10 +155,10 @@ class ResourceSpider(CrawlSpider):
             self.custom_logger.info(f'Пропускаем неподходящий ссылку: {current_url}')
             return
 
-        self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s", (current_url,))
-        if self.cursor_2.fetchone() is not None:
-            # self.custom_logger.info(f'Ссылка существует в temp_items: {url_link}')
-             return
+        # self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s", (current_url,))
+        # if self.cursor_2.fetchone() is not None:
+        #     # self.custom_logger.info(f'Ссылка существует в temp_items: {url_link}')
+        #      return
 
         resource_info = response.meta.get('resource_info')
         resource_id = resource_info[0]
@@ -166,8 +173,16 @@ class ResourceSpider(CrawlSpider):
             link_extractor = LinkExtractor(restrict_xpaths=top_tags, deny=denys, deny_extensions=deny_extensions)
             # Извлекаем ссылки для дальнейшего парсинга
             links = link_extractor.extract_links(response)
-            # print(f'на второй круг {links}')
+
+            filtered_links = []
+            # Фильтруем ссылки по allowed_domains
             for link in links:
+                link_domain = urlparse(link.url).netloc.replace('www.', '')
+                if link_domain in self.allowed_domains:
+                    filtered_links.append(link)
+
+            # print(f'на второй круг {links}')
+            for link in filtered_links:
                 url_link = link.url
                 self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s", (url_link,))
                 if self.cursor_2.fetchone() is not None:
@@ -222,23 +237,23 @@ class ResourceSpider(CrawlSpider):
             except mysql.connector.Error as err:
                 self.custom_logger.warning(f"Ошибка переподключения: {err}")
                 return  # Прекращаем выполнение, если не удалось переподключиться
+        # self.cursor_2.execute(
+        #     "SELECT COUNT(*) FROM temp_items WHERE link = %s",
+        #     (current_url,)
+        # )
+        # (count,) = self.cursor_2.fetchone()
+        #
+        # if count == 0:
+        status = ''
         self.cursor_2.execute(
-            "SELECT COUNT(*) FROM temp_items WHERE link = %s",
-            (current_url,)
+            "INSERT INTO temp_items (res_id, title, link, nd_date, content, n_date, s_date, not_date, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+            (resource_id, title, current_url, nd_date, content, n_date, s_date, not_date, status)
         )
-        (count,) = self.cursor_2.fetchone()
-
-        if count == 0:
-            status = ''
-            self.cursor_2.execute(
-                "INSERT INTO temp_items (res_id, title, link, nd_date, content, n_date, s_date, not_date, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                (resource_id, title, current_url, nd_date, content, n_date, s_date, not_date, status)
-            )
-            self.conn_2.commit()
-            self.custom_logger.warning(f'Новость добавлена в базу, дата: {n_date}, URL: {current_url} ')
-        else:
-        # Если ссылка уже существует
-            self.logger.info(f'Ссылка уже существует в базе TEMP: Дата {n_date} ({nd_date}) url: {current_url}')
+        self.conn_2.commit()
+        self.custom_logger.warning(f'Новость добавлена в базу, дата: {n_date}, URL: {current_url} ')
+        # else:
+        # # Если ссылка уже существует
+        #     self.logger.info(f'Ссылка уже существует в базе TEMP: Дата {n_date} ({nd_date}) url: {current_url}')
 
 
 
@@ -292,7 +307,8 @@ class ResourceSpider(CrawlSpider):
 
     def parse_date(self, date_str, convert_date):
         date_str = str(date_str) if date_str else ''
-        date_str = re.sub(r'-го|г\.|\bPublish\w*|\bжыл\w*|тому|\bавтор\w*|\bUTC\w*|\bпросмотр\w*|\bДата создания:\w*|', '', date_str)
+        date_str = re.sub(r'-го|г\.|\bPublish\w*|\bжыл\w*|тому|\bавтор\w*|'
+                          r'\bUTC\w*|\bпросмотр\w*|\bДата создания:\w*|\bДобавлено\w*|', '', date_str)
         languages = ['ru', 'kk', 'en', 'uz']
         if not convert_date:  # Присваиваем список по умолчанию
             DATE_ORDERS = ["YMD", "DMY", "MYD"]
