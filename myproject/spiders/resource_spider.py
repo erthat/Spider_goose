@@ -23,6 +23,7 @@ from scrapy.utils.log import configure_logging
 import unicodedata
 from scrapy import Request
 from urllib.parse import urlparse, urlunparse
+import urllib.parse
 
 
 load_dotenv()
@@ -107,6 +108,9 @@ class ResourceSpider(CrawlSpider):
         # Собираем URL без фрагмента (части после #)
         return urlunparse(parsed_url._replace(fragment=''))
 
+    def normalize_url(self, url):
+        return urllib.parse.unquote(url)
+
     def parse_start_url(self, response):
         """Функция для парсинга стартовой страницы и начала парсинга ссылок"""
 
@@ -144,14 +148,15 @@ class ResourceSpider(CrawlSpider):
                 if link_domain in self.allowed_domains:
                     filtered_links.append(link)
 
-            url_list = [link.url for link in filtered_links]
-
+            # url_list = [link.url for link in filtered_links]
             # Печатаем результат
             # print(url_list)
+
             # Следуем за каждой ссылкой и передаем в parse_links
             for link in filtered_links:
                 url_link = self.remove_url_fragment(link.url)
-                self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s", (url_link,))
+                normalized_url = self.normalize_url(url_link)
+                self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s", (normalized_url,))
                 if self.cursor_2.fetchone() is not None:
                     # self.custom_logger.info(f'Ссылка существует в temp_items: {url_link}')
                     continue
@@ -193,15 +198,15 @@ class ResourceSpider(CrawlSpider):
                 if link_domain in self.allowed_domains:
                     filtered_links.append(link)
 
-            url_list2 = [link.url for link in filtered_links]
-
+            # url_list2 = [link.url for link in filtered_links]
             # Печатаем результат
             # print(url_list2)
 
             # print(f'на второй круг {links}')
             for link in filtered_links:
                 url_link = self.remove_url_fragment(link.url)
-                self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s", (url_link,))
+                normalized_url = self.normalize_url(url_link)
+                self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s", (normalized_url,))
                 if self.cursor_2.fetchone() is not None:
                     # self.custom_logger.info(f'Ссылка существует в temp_items: {url_link}')
                     continue
