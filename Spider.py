@@ -123,7 +123,7 @@ def start_spiders(num_parts):
     for i in range(num_parts):
         run_spiders(runner, f'spider_{i + 1}')
 
-    update_interval = 3600  # Интервал обновления в секундах (можно изменить)
+    update_interval = 3000  # Интервал обновления в секундах (можно изменить)
     task.LoopingCall(update_resources_every_hour, update_interval, num_parts).start(0)
     reactor.run()
 
