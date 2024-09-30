@@ -141,24 +141,24 @@ class ResourceSpider(CrawlSpider):
             links = link_extractor.extract_links(response)
 
             filtered_links = []
-
-
             for link in links:
                 link_domain = urlparse(link.url).netloc.replace('www.', '')
                 if link_domain in self.allowed_domains:
                     filtered_links.append(link)
 
-            # url_list = [link.url for link in filtered_links]
-            # Печатаем результат
-            # print(url_list)
-
-            # Следуем за каждой ссылкой и передаем в parse_links
+            valid_links = []
             for link in filtered_links:
                 url_link = self.remove_url_fragment(link.url)
-                self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s", (url_link,))
-                if self.cursor_2.fetchone() is not None:
-                    # self.custom_logger.info(f'Ссылка существует в temp_items')
-                    continue
+                self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s LIMIT 1", (url_link,))
+
+                # Если ссылка не найдена в базе, добавляем её в список валидных ссылок
+                if self.cursor_2.fetchone() is None:
+                    valid_links.append(link)
+
+            # print(filtered_links)
+
+            # Следуем за каждой ссылкой и передаем в parse_links
+            for link in valid_links:
                 yield Request(url=link.url, callback=self.parse_links, meta={'resource_info': resource_info, 'top_tags': top_tags, 'depth': 1, 'denys': denys,
                                                                              'deny_extensions': deny_extensions, 'max_depth': max_depth })
 
@@ -170,11 +170,6 @@ class ResourceSpider(CrawlSpider):
                 '.mp4']):
             self.custom_logger.info(f'Пропускаем неподходящий ссылку: {current_url}')
             return
-
-        # self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s", (current_url,))
-        # if self.cursor_2.fetchone() is not None:
-        #     # self.custom_logger.info(f'Ссылка существует в temp_items: {url_link}')
-        #      return
 
         resource_info = response.meta.get('resource_info')
         resource_id = resource_info[0]
@@ -196,18 +191,17 @@ class ResourceSpider(CrawlSpider):
                 link_domain = urlparse(link.url).netloc.replace('www.', '')
                 if link_domain in self.allowed_domains:
                     filtered_links.append(link)
-
             # url_list2 = [link.url for link in filtered_links]
-            # Печатаем результат
             # print(url_list2)
-
-            # print(f'на второй круг {links}')
+            valid_links = []
             for link in filtered_links:
                 url_link = self.remove_url_fragment(link.url)
-                self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s", (url_link,))
-                if self.cursor_2.fetchone() is not None:
-                    # self.custom_logger.info(f'Ссылка существует в temp_items')
-                    continue
+                self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s LIMIT 1", (url_link,))
+                # Если ссылка не найдена в базе, добавляем её в список валидных ссылок
+                if self.cursor_2.fetchone() is None:
+                    valid_links.append(link)
+
+            for link in valid_links:
                 yield Request(
                     url=link.url,
                     callback=self.parse_links,
