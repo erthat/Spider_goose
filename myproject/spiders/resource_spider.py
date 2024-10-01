@@ -225,7 +225,7 @@ class ResourceSpider(CrawlSpider):
             self.custom_logger.info(f"Дата отсутствует {date}, {current_url}")
             return
         n_date = date #дата публикаций новостей
-        nd_date = int(time.mktime(date.timetuple())) #дата публикаций новостей UNIX формате
+        nd_date = int(date.timestamp()) #дата публикаций новостей UNIX формате
         not_date = date.strftime('%Y-%m-%d') #дата публикаций новостей
         s_date = int(time.time()) #дата поступление новостей в таблицу
         one_year_in_seconds = 365 * 24 * 3600
@@ -331,17 +331,16 @@ class ResourceSpider(CrawlSpider):
                 DATE_ORDERS = [convert_date]
             else:
                 DATE_ORDERS = convert_date
-        date_formats = ['']
-        UTC = pytz.UTC
+        kazakhstan_tz = pytz.timezone('Asia/Almaty')
+        current_time_with_tz = datetime.now(kazakhstan_tz)
         for date_order in DATE_ORDERS:
             date = parse(date_str,
                          languages=languages,
-                         date_formats=date_formats,
                          settings={"DATE_ORDER": date_order},
                          )
             if date:
-                date_with_utc = date.replace(tzinfo=UTC)
-                if date_with_utc <= datetime.now().replace(tzinfo=UTC):
+                date_with_utc = date.replace(tzinfo=kazakhstan_tz)
+                if date_with_utc <= current_time_with_tz:
                     return date_with_utc
         return None
 
