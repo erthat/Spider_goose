@@ -264,7 +264,7 @@ class ResourceSpider(CrawlSpider):
                 (resource_id, title, current_url, nd_date, content, n_date, s_date, not_date, status)
             )
             self.conn_2.commit()
-            self.custom_logger.warning(f'Новость добавлена в базу, дата: {n_date} time: {}, URL: {current_url} ')
+            self.custom_logger.warning(f'Новость добавлена в базу, дата: {n_date} time: {nd_date}, URL: {current_url} ')
         else:
         # Если ссылка уже существует
             self.logger.info(f'Ссылка уже существует в базе TEMP: Дата {n_date} ({nd_date}) url: {current_url}')
