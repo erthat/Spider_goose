@@ -251,23 +251,23 @@ class ResourceSpider(CrawlSpider):
             except mysql.connector.Error as err:
                 self.custom_logger.warning(f"Ошибка переподключения: {err}")
                 return  # Прекращаем выполнение, если не удалось переподключиться
-        # self.cursor_2.execute(
-        #     "SELECT COUNT(*) FROM temp_items WHERE link = %s",
-        #     (current_url,)
-        # )
-        # (count,) = self.cursor_2.fetchone()
-        #
-        # if count == 0:
-        status = ''
         self.cursor_2.execute(
-            "INSERT INTO temp_items (res_id, title, link, nd_date, content, n_date, s_date, not_date, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
-            (resource_id, title, current_url, nd_date, content, n_date, s_date, not_date, status)
+            "SELECT COUNT(*) FROM temp_items WHERE link = %s",
+            (current_url,)
         )
-        self.conn_2.commit()
-        self.custom_logger.warning(f'Новость добавлена в базу, дата: {n_date}, URL: {current_url} ')
-        # else:
-        # # Если ссылка уже существует
-        #     self.logger.info(f'Ссылка уже существует в базе TEMP: Дата {n_date} ({nd_date}) url: {current_url}')
+        (count,) = self.cursor_2.fetchone()
+
+        if count == 0:
+            status = ''
+            self.cursor_2.execute(
+                "INSERT INTO temp_items (res_id, title, link, nd_date, content, n_date, s_date, not_date, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                (resource_id, title, current_url, nd_date, content, n_date, s_date, not_date, status)
+            )
+            self.conn_2.commit()
+            self.custom_logger.warning(f'Новость добавлена в базу, дата: {n_date}, URL: {current_url} ')
+        else:
+        # Если ссылка уже существует
+            self.logger.info(f'Ссылка уже существует в базе TEMP: Дата {n_date} ({nd_date}) url: {current_url}')
 
 
 
