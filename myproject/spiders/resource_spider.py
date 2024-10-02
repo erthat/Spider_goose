@@ -216,10 +216,17 @@ class ResourceSpider(CrawlSpider):
         title = self.replace_unsupported_characters(title_t) # чистка текста
 
        # Парсинг даты
-        date = response.xpath(resource_info[6]).get()
+        xpath_and_pattern = resource_info[6]  # Получаем строку из resource_info
+        parts = xpath_and_pattern.split('::::')
+        date_xpath = parts[0]  # XPath для парсинга даты
+        remove_patterns = parts[1] if len(parts) > 1 else None
+
+        date = response.xpath(date_xpath).get()
         if not date:
             self.custom_logger.info(f"Дата отсутствует {date}, {current_url}")
             return
+        if remove_patterns:
+            date = re.sub(remove_patterns, '', date)
         date = self.parse_date(date, resource_info[7])
         if not date:
             self.custom_logger.info(f"Дата отсутствует {date}, {current_url}")
