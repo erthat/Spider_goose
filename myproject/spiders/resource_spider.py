@@ -139,7 +139,6 @@ class ResourceSpider(CrawlSpider):
             link_extractor = LinkExtractor(restrict_xpaths=top_tags, deny=denys, deny_extensions=deny_extensions)
             # Извлекаем ссылки
             links = link_extractor.extract_links(response)
-
             filtered_links = []
             for link in links:
                 link_domain = urlparse(link.url).netloc.replace('www.', '')
@@ -149,6 +148,15 @@ class ResourceSpider(CrawlSpider):
             valid_links = []
             for link in filtered_links:
                 url_link = self.remove_url_fragment(link.url)
+                if not self.conn_2.is_connected():
+                    try:
+                        self.custom_logger.warning("Соединение с базой данных потеряно, пытаемся переподключиться...")
+                        self.conn_2.reconnect(attempts=3, delay=5)
+                        self.custom_logger.info("Соединение восстановлено")
+                    except mysql.connector.Error as err:
+                        self.custom_logger.warning(f"Ошибка переподключения: {err}")
+                        return  # Прекращаем выполнение, если не удалось переподключиться
+
                 self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s LIMIT 1", (url_link,))
 
                 # Если ссылка не найдена в базе, добавляем её в список валидных ссылок
@@ -196,6 +204,14 @@ class ResourceSpider(CrawlSpider):
             valid_links = []
             for link in filtered_links:
                 url_link = self.remove_url_fragment(link.url)
+                if not self.conn_2.is_connected():
+                    try:
+                        self.custom_logger.warning("Соединение с базой данных потеряно, пытаемся переподключиться...")
+                        self.conn_2.reconnect(attempts=3, delay=5)
+                        self.custom_logger.info("Соединение восстановлено")
+                    except mysql.connector.Error as err:
+                        self.custom_logger.warning(f"Ошибка переподключения: {err}")
+                        return
                 self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s LIMIT 1", (url_link,))
                 # Если ссылка не найдена в базе, добавляем её в список валидных ссылок
                 if self.cursor_2.fetchone() is None:
