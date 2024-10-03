@@ -248,7 +248,7 @@ class ResourceSpider(CrawlSpider):
             self.custom_logger.info(f"Дата отсутствует {date}, {current_url}")
             return
         n_date = date
-        print(date)#дата публикаций новостей
+        # print(date)#дата публикаций новостей
         nd_date = int(date.timestamp()) #дата публикаций новостей UNIX формате
         not_date = date.strftime('%Y-%m-%d') #дата публикаций новостей
         s_date = int(time.time()) #дата поступление новостей в таблицу
