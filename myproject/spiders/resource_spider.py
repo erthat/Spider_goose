@@ -247,7 +247,8 @@ class ResourceSpider(CrawlSpider):
         if not date:
             self.custom_logger.info(f"Дата отсутствует {date}, {current_url}")
             return
-        n_date = date #дата публикаций новостей
+        n_date = date
+        print(date)#дата публикаций новостей
         nd_date = int(date.timestamp()) #дата публикаций новостей UNIX формате
         not_date = date.strftime('%Y-%m-%d') #дата публикаций новостей
         s_date = int(time.time()) #дата поступление новостей в таблицу
@@ -354,7 +355,7 @@ class ResourceSpider(CrawlSpider):
                 DATE_ORDERS = [convert_date]
             else:
                 DATE_ORDERS = convert_date
-        kazakhstan_tz = pytz.timezone('Asia/Almaty')
+        kazakhstan_tz = pytz.timezone('Etc/GMT-5')
         current_time_with_tz = datetime.now(kazakhstan_tz)
         for date_order in DATE_ORDERS:
             date = parse(date_str,
@@ -362,10 +363,17 @@ class ResourceSpider(CrawlSpider):
                          settings={"DATE_ORDER": date_order},
                          )
             if date:
+                if date.hour == 0 and date.minute == 0 and date.second == 0:
+                    date = date.replace(hour=0, minute=0, second=0)
+
                 date_with_utc = date.replace(tzinfo=kazakhstan_tz)
+
+                # Проверка на актуальность даты
                 if date_with_utc <= current_time_with_tz:
                     return date_with_utc
+
         return None
+
 
     class IgnoreUrlLengthWarnings(logging.Filter):
         def filter(self, record):
