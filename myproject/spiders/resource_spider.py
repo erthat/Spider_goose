@@ -38,7 +38,7 @@ class ResourceSpider(CrawlSpider):
 
         log_file = f'logs/{spider_name}.log'
         handler = RotatingFileHandler(
-            log_file, maxBytes= 20 * 1024 * 1024, backupCount=1
+            log_file, maxBytes= 20 * 1024 * 1024, backupCount=0
         )
         formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
         handler.setFormatter(formatter)
