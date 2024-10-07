@@ -10,6 +10,7 @@ import time
 import os
 from dotenv import load_dotenv  # Импортируйте паука
 load_dotenv()
+from collections import deque
 import mysql.connector
 
 log_file = 'logs/logi.log'
@@ -66,76 +67,84 @@ def load_resources(cursor):
     )
     return cursor.fetchall()
 
-def load_and_divide_resources(cursor_1, num_parts):
-    # Загрузка ресурсов из базы данных
+def load_and_divide_resources(cursor_1, block_size=30):
     resources = load_resources(cursor_1)
-    # Разделение ресурсов на части
-    part_size = len(resources) // num_parts
-    remainder = len(resources) % num_parts
-    resources_spiders = []
-    start = 0
-    for i in range(num_parts):
-        end = start + part_size + (1 if i < remainder else 0)
-        resources_spiders.append(resources[start:end])
-        start = end
-    return resources_spiders
-
-def load_and_update_resources(num_parts):
-    print("Подключение к базе данных и загрузка ресурсов...")
-    conn_1 = connect_to_database()
-    cursor_1 = conn_1.cursor()
-    resources_spiders = load_and_divide_resources(cursor_1, num_parts)
-    cursor_1.close()
-    conn_1.close()# Получаем разделенные ресурсы
-    return resources_spiders
+    resource_blocks = [resources[i:i + block_size] for i in range(0, len(resources), block_size)]
+    return deque(resource_blocks)  # Используем deque для очереди блоков
 
 
 @inlineCallbacks
-def run_spiders(runner, spider_name):
+def run_spiders(runner, spider_name, resource_queue):
     while True:
-        global spider_resources
-        resources = spider_resources.get(spider_name)  # Получаем актуальные ресурсы
-        if resources:         # Проверяем, что ресурсы существуют
-            yield runner.crawl(ResourceSpider, resources=resources, spider_name=spider_name)
-            logging.info(f'{spider_name} завершил работу, перезапуск...')
+        if resource_queue:
+            # Получаем первый блок ресурсов
+            resources = resource_queue.popleft()
+            if resources:
+                # Запускаем паука с этим блоком
+                yield runner.crawl(ResourceSpider, resources=resources, spider_name=spider_name)
+                logging.info(f'{spider_name} завершил работу с блоком, переключается на следующий.')
+                # Возвращаем блок в конец очереди для повторной обработки
+                resource_queue.append(resources)
         else:
-            logging.info(f'{spider_name} ожидает обновления ресурсов...')
+            logging.info(f'{spider_name} ожидает ресурсы...')
             yield task.deferLater(reactor, 10, lambda: None)
 
 
-@inlineCallbacks
-def update_resources_every_hour(update_interval, num_parts):
-    global spider_resources
-    while True:
-        yield task.deferLater(reactor, update_interval, lambda: None)  # Ожидание заданного времени
-        new_resources = load_and_update_resources(num_parts)  # Обновление ресурсов
-        for i in range(num_parts):
-            spider_resources[f'spider_{i + 1}'] = new_resources[i]
-        logging.info(f"Ресурсы обновлены в {time.strftime('%Y-%m-%d %H:%M:%S')}")
+def update_resources_periodically(resource_queue, block_size=30):
+    def update():
+        logging.info("Обновление ресурсов из базы данных...")
+        conn_1 = connect_to_database()
+        cursor_1 = conn_1.cursor()
 
-def start_spiders(num_parts):
+        # Сохраняем текущие необработанные блоки
+        unprocessed_blocks = list(resource_queue)
+
+        # Очищаем очередь и загружаем новые данные
+        resource_queue.clear()
+        new_blocks = load_and_divide_resources(cursor_1, block_size)
+
+        # Возвращаем необработанные блоки в начало очереди
+        resource_queue.extend(unprocessed_blocks)
+
+        # Добавляем новые блоки в конец очереди
+        resource_queue.extend(new_blocks)
+
+        cursor_1.close()
+        conn_1.close()
+        logging.info("Ресурсы успешно обновлены.")
+
+    # Запускаем обновление ресурсов каждую 1 час (3600 секунд)
+    LoopingCall(update).start(3600)
+
+
+def start_spiders(num_spiders, resource_queue):
     runner = CrawlerRunner(get_project_settings())
-    initial_resources = load_and_update_resources(num_parts)
-    global spider_resources
 
-    spider_resources = {f'spider_{i + 1}': initial_resources[i] for i in range(num_parts)}
-
-    for i in range(num_parts):
-        run_spiders(runner, f'spider_{i + 1}')
-
-    update_interval = 3000  # Интервал обновления в секундах (можно изменить)
-    task.LoopingCall(update_resources_every_hour, update_interval, num_parts).start(0)
-    reactor.run()
+    # Запускаем указанное количество пауков
+    for i in range(num_spiders):
+        run_spiders(runner, f'spider_{i + 1}', resource_queue)
 
 
 if __name__ == '__main__':
     conn_1 = connect_to_database()
     cursor_1 = conn_1.cursor()
-    resources = load_resources(cursor_1)
+
+    # Создаем очередь ресурсов
+    resources_queue = load_and_divide_resources(cursor_1)
     cursor_1.close()
     conn_1.close()
-    resource_count = len([resource[0] for resource in resources])
-    logging.info(f'количество источников = {resource_count}')
-    num_parts = max(1, (resource_count // 50))
-    logging.info(f'количество пауков = {num_parts}')
-    start_spiders(num_parts)
+    num_blocks = len(resources_queue)
+    print(f"Количество блоков в очереди: {num_blocks}")
+
+    # Определяем количество пауков
+    num_spiders = min(num_blocks, 5)  # Если блоков меньше 5, используем это число, иначе 5 пауков
+
+    print(f"Количество пауков: {num_spiders}")
+
+    # Запускаем пауков
+    start_spiders(num_spiders, resources_queue)
+
+    # Запускаем обновление ресурсов каждые 60 минут
+    update_resources_periodically(resources_queue)
+
+    reactor.run()
