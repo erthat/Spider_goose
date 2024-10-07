@@ -243,7 +243,7 @@ class ResourceSpider(CrawlSpider):
             return
         if remove_patterns:
             date = re.sub(remove_patterns, '', date)
-        date = self.parse_date(date, resource_info[7])
+        date = self.parse_date(date, resource_info[7], resource_info[10])
         if not date:
             self.custom_logger.info(f"Дата отсутствует {date}, {current_url}")
             return
@@ -343,11 +343,22 @@ class ResourceSpider(CrawlSpider):
         content = unicodedata.normalize('NFKD', content)
         return content
 
-    def parse_date(self, date_str, convert_date):
+    def parse_date(self, date_str, convert_date, lang):
         date_str = str(date_str) if date_str else ''
         date_str = re.sub(r'-го|г\.|\bPublish\w*|\bжыл\w*|тому|\bавтор\w*|'
                           r'\bUTC\w*|\bпросмотр\w*|\bДата создания:\w*|\bДобавлено\w*|', '', date_str)
         languages = ['ru', 'kk', 'en', 'uz', 'de']
+
+        if lang:
+            # Если lang строка, проверяем на наличие точки с запятой
+            if isinstance(lang, str):
+                # Разбиваем по точке с запятой, если присутствует
+                additional_langs = lang.split(';')
+            else:
+                additional_langs = lang
+            # Удаляем возможные лишние пробелы и добавляем новые языки в список
+            languages += [l.strip() for l in additional_langs if l.strip() not in languages]
+
         if not convert_date:  # Присваиваем список по умолчанию
             DATE_ORDERS = ["YMD", "DMY", "MYD"]
         else:
@@ -394,7 +405,7 @@ class ResourceSpider(CrawlSpider):
 
         # Отключаем передачу логов в корневой логгер
         scrapy_logger.propagate = False
-        scrapy_logger.setLevel(logging.INFO)
+        scrapy_logger.setLevel(logging.DEBUG)
 
         # Добавляем обработчики, если они еще не добавлены
         if not scrapy_logger.handlers:
