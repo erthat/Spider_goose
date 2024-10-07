@@ -405,7 +405,7 @@ class ResourceSpider(CrawlSpider):
 
         # Отключаем передачу логов в корневой логгер
         scrapy_logger.propagate = False
-        scrapy_logger.setLevel(logging.DEBUG)
+        scrapy_logger.setLevel(logging.INFO)
 
         # Добавляем обработчики, если они еще не добавлены
         if not scrapy_logger.handlers:
