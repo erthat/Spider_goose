@@ -67,7 +67,7 @@ def load_resources(cursor):
     )
     return cursor.fetchall()
 
-def load_and_divide_resources(cursor_1, block_size=30):
+def load_and_divide_resources(cursor_1, block_size=40):
     resources = load_resources(cursor_1)
     resource_blocks = [resources[i:i + block_size] for i in range(0, len(resources), block_size)]
     return deque(resource_blocks)  # Используем deque для очереди блоков
@@ -114,7 +114,7 @@ def update_resources_periodically(resource_queue, block_size=30):
         logging.info("Ресурсы успешно обновлены.")
 
     # Запускаем обновление ресурсов каждую 1 час (3600 секунд)
-    LoopingCall(update).start(3600)
+    LoopingCall(update).start(9000)
 
 
 def start_spiders(num_spiders, resource_queue):
@@ -137,7 +137,7 @@ if __name__ == '__main__':
     print(f"Количество блоков в очереди: {num_blocks}")
 
     # Определяем количество пауков
-    num_spiders = min(num_blocks, 5)  # Если блоков меньше 5, используем это число, иначе 5 пауков
+    num_spiders = min(num_blocks, 6)  # Если блоков меньше 5, используем это число, иначе 5 пауков
 
     print(f"Количество пауков: {num_spiders}")
 
