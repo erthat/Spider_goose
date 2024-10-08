@@ -114,7 +114,7 @@ def update_resources_periodically(resource_queue, block_size=30):
         logging.info("Ресурсы успешно обновлены.")
 
     # Запускаем обновление ресурсов каждую 1 час (3600 секунд)
-    LoopingCall(update).start(9000)
+    LoopingCall(update).start(9100)
 
 
 def start_spiders(num_spiders, resource_queue):
@@ -137,14 +137,14 @@ if __name__ == '__main__':
     print(f"Количество блоков в очереди: {num_blocks}")
 
     # Определяем количество пауков
-    num_spiders = min(num_blocks, 6)  # Если блоков меньше 5, используем это число, иначе 5 пауков
+    num_spiders = min(num_blocks, 6)  # Если блоков меньше 6, используем это число, иначе 6 пауков
 
     print(f"Количество пауков: {num_spiders}")
 
     # Запускаем пауков
     start_spiders(num_spiders, resources_queue)
 
-    # Запускаем обновление ресурсов каждые 60 минут
+    # Запускаем обновление ресурсов каждые 120 минут
     update_resources_periodically(resources_queue)
 
     reactor.run()
