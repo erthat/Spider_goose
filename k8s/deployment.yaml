@@ -24,16 +24,16 @@ spec:
         imagePullPolicy: "Always"
         envFrom:
           - secretRef:
-              name: spider_secret
+            name: spider_secret
         resources:
           requests:
-            memory: "200Mi"
-            cpu: "0.2"
-          limits:
-            memory: "300Mi"
+            memory: "500Mi"
             cpu: "0.3"
+          limits:
+            memory: "600Mi"
+            cpu: "0.5"
 
-        imagePullSecrets:
+      imagePullSecrets:
           - name: regcred
 
 
