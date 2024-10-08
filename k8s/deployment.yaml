@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spider-scrapy
+  namespace: production
+spec:
+  selector:
+    matchLabels:
+      app: spider
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: spider-scrapy
+    spec:
+      terminationGracePeriodSeconds: 60
+      containers:
+        image: registry-gitlab.imas.kz/erzat/spider_scrapy:lastes
+        imagePullPolicy: "Always"
+        envFrom:
+          - secretRef:
+              name: spider_secret
+        resources:
+          requests:
+            memory: "200Mi"
+            cpu: "0.2"
+          limits:
+            memory: "300Mi"
+            cpu: "0.3"
+
+        imagePullSecrets:
+          - name: regcred
+
+
+

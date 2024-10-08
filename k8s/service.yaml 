@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: spider_scrapy
+  namespace: production
+spec:
+  selector:
+    app: spider_scrapy_api
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
