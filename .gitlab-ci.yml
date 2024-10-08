@@ -2,7 +2,7 @@ stages:
   - build
   - deploy
 
-build-spider:
+build:
   stage: build
   image:
     name: gcr.io/kaniko-project/executor:v1.14.0-debug
