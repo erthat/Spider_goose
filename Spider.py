@@ -114,7 +114,7 @@ def update_resources_periodically(resource_queue, block_size=30):
         logging.info("Ресурсы успешно обновлены.")
 
     # Запускаем обновление ресурсов каждую 1 час (3600 секунд)
-    LoopingCall(update).start(9100)
+    LoopingCall(update).start(9000)
 
 
 def start_spiders(num_spiders, resource_queue):
