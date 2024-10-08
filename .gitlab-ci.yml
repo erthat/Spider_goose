@@ -12,11 +12,7 @@ build:
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
       --destination "${CI_REGISTRY_IMAGE}:${CI_COMMIT_TAG}"
-  rules:
-    - changes:
-        - Dockerfile
-        - app/**/*
-        - requirements.txt
+
 
 deploy:
   stage: deploy
