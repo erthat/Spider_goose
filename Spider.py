@@ -12,6 +12,7 @@ from dotenv import load_dotenv  # Импортируйте паука
 load_dotenv()
 from collections import deque
 import mysql.connector
+import hashlib
 
 log_file = 'logs/logi.log'
 handler = RotatingFileHandler(
@@ -72,6 +73,11 @@ def load_and_divide_resources(cursor_1, block_size=40):
     resource_blocks = [resources[i:i + block_size] for i in range(0, len(resources), block_size)]
     return deque(resource_blocks)  # Используем deque для очереди блоков
 
+def calculate_resources_hash(cursor_1):
+    """Создаем хэш для ресурсов, чтобы отследить изменения."""
+    resources = load_resources(cursor_1)
+    resources_str = "".join(map(str, resources))  # Преобразуем ресурсы в строку
+    return hashlib.md5(resources_str.encode()).hexdigest()
 
 @inlineCallbacks
 def run_spiders(runner, spider_name, resource_queue):
@@ -90,31 +96,44 @@ def run_spiders(runner, spider_name, resource_queue):
             yield task.deferLater(reactor, 10, lambda: None)
 
 
-def update_resources_periodically(resource_queue, block_size=30):
+def update_resources_periodically(resource_queue, last_hash, block_size=40):
     def update():
+        nonlocal last_hash
+        print('проверка базы')
         logging.info("Обновление ресурсов из базы данных...")
         conn_1 = connect_to_database()
         cursor_1 = conn_1.cursor()
 
-        # Сохраняем текущие необработанные блоки
-        unprocessed_blocks = list(resource_queue)
+        new_hash = calculate_resources_hash(cursor_1)
+        if new_hash != last_hash:
+            logging.info("Обнаружены изменения ресурсов, перезагружаем очередь...")
 
-        # Очищаем очередь и загружаем новые данные
-        resource_queue.clear()
-        new_blocks = load_and_divide_resources(cursor_1, block_size)
+            # Обновляем последний хэш
+            last_hash = new_hash
 
-        # Возвращаем необработанные блоки в начало очереди
-        resource_queue.extend(unprocessed_blocks)
+            # Сохраняем текущие необработанные блоки
+            unprocessed_blocks = list(resource_queue)
 
-        # Добавляем новые блоки в конец очереди
-        resource_queue.extend(new_blocks)
+            # Очищаем очередь и загружаем новые данные
+            resource_queue.clear()
+            new_blocks = load_and_divide_resources(cursor_1, block_size)
+
+            # Возвращаем необработанные блоки в начало очереди
+            resource_queue.extend(unprocessed_blocks)
+
+            # Добавляем новые блоки в конец очереди
+            resource_queue.extend(new_blocks)
+            logging.info("Ресурсы успешно обновлены.")
+            print('обновление .....')
+        else:
+            print('нету ничего')
+            logging.info("Ресурсы не изменились, обновление не требуется.")
 
         cursor_1.close()
         conn_1.close()
-        logging.info("Ресурсы успешно обновлены.")
 
     # Запускаем обновление ресурсов каждую 1 час (3600 секунд)
-    LoopingCall(update).start(9100)
+    LoopingCall(update).start(15)
 
 
 def start_spiders(num_spiders, resource_queue):
@@ -131,6 +150,7 @@ if __name__ == '__main__':
 
     # Создаем очередь ресурсов
     resources_queue = load_and_divide_resources(cursor_1)
+    initial_hash = calculate_resources_hash(cursor_1)
     cursor_1.close()
     conn_1.close()
     num_blocks = len(resources_queue)
@@ -145,6 +165,6 @@ if __name__ == '__main__':
     start_spiders(num_spiders, resources_queue)
 
     # Запускаем обновление ресурсов каждые 120 минут
-    update_resources_periodically(resources_queue)
+    update_resources_periodically(resources_queue, initial_hash)
 
     reactor.run()
