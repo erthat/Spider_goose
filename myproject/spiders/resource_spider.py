@@ -243,6 +243,7 @@ class ResourceSpider(CrawlSpider):
             return
         if remove_patterns:
             date = re.sub(remove_patterns, '', date)
+            # print(date)
         date = self.parse_date(date, resource_info[7], resource_info[10])
         if not date:
             self.custom_logger.info(f"Дата отсутствует {date}, {current_url}")

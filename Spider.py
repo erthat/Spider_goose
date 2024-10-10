@@ -133,7 +133,7 @@ def update_resources_periodically(resource_queue, last_hash, block_size=40):
         conn_1.close()
 
     # Запускаем обновление ресурсов каждую 1 час (3600 секунд)
-    LoopingCall(update).start(15)
+    LoopingCall(update).start(3600)
 
 
 def start_spiders(num_spiders, resource_queue):
