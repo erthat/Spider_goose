@@ -124,16 +124,14 @@ def update_resources_periodically(resource_queue, last_hash, block_size=40):
             # Добавляем новые блоки в конец очереди
             resource_queue.extend(new_blocks)
             logging.info("Ресурсы успешно обновлены.")
-            print('обновление .....')
         else:
-            print('нету ничего')
             logging.info("Ресурсы не изменились, обновление не требуется.")
 
         cursor_1.close()
         conn_1.close()
 
     # Запускаем обновление ресурсов каждую 1 час (3600 секунд)
-    LoopingCall(update).start(3600)
+    LoopingCall(update).start(6600)
 
 
 def start_spiders(num_spiders, resource_queue):

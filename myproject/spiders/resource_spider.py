@@ -154,7 +154,7 @@ class ResourceSpider(CrawlSpider):
 
             valid_links = []
             for link in filtered_links:
-                url_link = self.remove_url_fragment(link.url)
+                url_link = self.remove_url_fragment(self.normalize_url(link.url))
                 url_link_2 = self.remove_url_fragment(link.url.rstrip('/'))
                 if not self.conn_2.is_connected():
                     try:
@@ -211,7 +211,7 @@ class ResourceSpider(CrawlSpider):
             # print(url_list2)
             valid_links = []
             for link in filtered_links:
-                url_link = self.remove_url_fragment(link.url)
+                url_link = self.remove_url_fragment(self.normalize_url(link.url))
                 url_link_2 = self.remove_url_fragment(link.url.rstrip('/'))
                 if not self.conn_2.is_connected():
                     try:
@@ -286,13 +286,12 @@ class ResourceSpider(CrawlSpider):
             except mysql.connector.Error as err:
                 self.custom_logger.warning(f"Ошибка переподключения: {err}")
                 return  # Прекращаем выполнение, если не удалось переподключиться
-        self.cursor_2.execute(
-            "SELECT COUNT(*) FROM temp_items WHERE link = %s",
-            (current_url,)
-        )
-        (count,) = self.cursor_2.fetchone()
 
-        if count == 0:
+        url_link = self.remove_url_fragment(self.normalize_url(current_url))
+        url_link_2 = self.remove_url_fragment(current_url.rstrip('/'))
+
+        self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s OR link = %s LIMIT 1", (url_link, url_link_2))
+        if self.cursor_2.fetchone() is None:
             status = ''
             self.cursor_2.execute(
                 "INSERT INTO temp_items (res_id, title, link, nd_date, content, n_date, s_date, not_date, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
@@ -302,9 +301,7 @@ class ResourceSpider(CrawlSpider):
             self.custom_logger.warning(f'Новость добавлена в базу, дата: {n_date} time: {nd_date}, URL: {current_url} ')
         else:
         # Если ссылка уже существует
-            self.logger.info(f'Ссылка уже существует в базе TEMP: Дата {n_date} ({nd_date}) url: {current_url}')
-
-
+            self.custom_logger.info(f'Ссылка уже существует в базе TEMP: Дата {n_date} ({nd_date}) url: {current_url}')
 
 
     def replace_unsupported_characters(self, text):
