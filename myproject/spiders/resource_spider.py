@@ -109,7 +109,14 @@ class ResourceSpider(CrawlSpider):
         return urlunparse(parsed_url._replace(fragment=''))
 
     def normalize_url(self, url):
-        return urllib.parse.unquote(url)
+        parsed_url = urlparse(url)
+        # Проверяем, что путь не является пустым и не является корневым ('/')
+        if parsed_url.path and not parsed_url.path.endswith('/'):
+            # Добавляем слэш в конец пути
+            normalized_url = parsed_url._replace(path=parsed_url.path + '/').geturl()
+        else:
+            normalized_url = parsed_url.geturl()
+        return normalized_url
 
 
     def parse_start_url(self, response):
@@ -148,6 +155,7 @@ class ResourceSpider(CrawlSpider):
             valid_links = []
             for link in filtered_links:
                 url_link = self.remove_url_fragment(link.url)
+                url_link_2 = self.remove_url_fragment(link.url.rstrip('/'))
                 if not self.conn_2.is_connected():
                     try:
                         self.custom_logger.warning("Соединение с базой данных потеряно, пытаемся переподключиться...")
@@ -157,8 +165,8 @@ class ResourceSpider(CrawlSpider):
                         self.custom_logger.warning(f"Ошибка переподключения: {err}")
                         return  # Прекращаем выполнение, если не удалось переподключиться
 
-                self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s LIMIT 1", (url_link,))
-
+                self.cursor_2.execute("SELECT 1 FROM temp_items_link WHERE link = %s OR link = %s LIMIT 1",
+                                      (url_link, url_link_2))
                 # Если ссылка не найдена в базе, добавляем её в список валидных ссылок
                 if self.cursor_2.fetchone() is None:
                     valid_links.append(link)
@@ -204,6 +212,7 @@ class ResourceSpider(CrawlSpider):
             valid_links = []
             for link in filtered_links:
                 url_link = self.remove_url_fragment(link.url)
+                url_link_2 = self.remove_url_fragment(link.url.rstrip('/'))
                 if not self.conn_2.is_connected():
                     try:
                         self.custom_logger.warning("Соединение с базой данных потеряно, пытаемся переподключиться...")
@@ -212,7 +221,8 @@ class ResourceSpider(CrawlSpider):
                     except mysql.connector.Error as err:
                         self.custom_logger.warning(f"Ошибка переподключения: {err}")
                         return
-                self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s LIMIT 1", (url_link,))
+                self.cursor_2.execute("SELECT 1 FROM temp_items_link WHERE link = %s OR link = %s LIMIT 1",
+                                      (url_link, url_link_2))
                 # Если ссылка не найдена в базе, добавляем её в список валидных ссылок
                 if self.cursor_2.fetchone() is None:
                     valid_links.append(link)
