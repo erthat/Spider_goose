@@ -1,6 +1,6 @@
 import logging
 
-
+import psutil
 import pytz
 import mysql.connector
 from mysql.connector.aio.logger import logger
@@ -111,11 +111,23 @@ class ResourceSpider(CrawlSpider):
     def normalize_url(self, url):
         return urllib.parse.unquote(url)
 
+    def monitor_resources(self):
+        def log_resource_usage():
+            while True:
+                mem_used_mb = psutil.virtual_memory().used / (1024 ** 2)
+                cpu = psutil.cpu_percent(interval=1)
+                self.custom_logger.info(f'CPU Usage: {cpu}%, Memory Usage:  {mem_used_mb:.2f} MB')
+                time.sleep(5)  # Интервал между проверками
+
+        import threading
+        thread = threading.Thread(target=log_resource_usage)
+        thread.daemon = True
+        thread.start()
+
     def parse_start_url(self, response):
         """Функция для парсинга стартовой страницы и начала парсинга ссылок"""
-
+        self.monitor_resources()
         current_domain = urlparse(response.url).hostname.replace('www.', '')
-
         resource_info = next(
             (res for res in self.resource_map.values() if
              urlparse(res[2].split(',')[0].strip()).hostname.replace('www.', '') == current_domain),
