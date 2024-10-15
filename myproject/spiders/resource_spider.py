@@ -1,13 +1,10 @@
 import logging
-
-
 import pytz
 import mysql.connector
 from mysql.connector.aio.logger import logger
 from scrapy.settings.default_settings import LOG_FILE
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
-
 from dateparser import parse
 import time
 from dotenv import load_dotenv
@@ -265,7 +262,7 @@ class ResourceSpider(CrawlSpider):
         s_date = int(time.time()) #дата поступление новостей в таблицу
         one_year_in_seconds = 365 * 24 * 3600
         if s_date - nd_date > one_year_in_seconds:
-            self.custom_logger.info(f"Дата {date} старее чем на год для {current_url}")
+            # self.custom_logger.info(f"Дата {date} старее чем на год для {current_url}")
             return
         # получение контента новостей
         content = response.xpath(resource_info[4]).getall()
