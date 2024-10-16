@@ -1,5 +1,6 @@
 import pytz
 import mysql.connector
+import scrapy
 from scrapy.spiders import CrawlSpider
 from scrapy.linkextractors import LinkExtractor
 from dateparser import parse
@@ -155,6 +156,12 @@ class ResourceSpider(CrawlSpider):
         content_xpath = resource_info[4]
         content = response.xpath(content_xpath).getall()
         return self.clean_text(content) if content and not all(item.isspace() for item in content) else None
+
+    # def start_requests(self):
+    #     for url in self.start_urls:
+    #         request = scrapy.Request(url, callback=self.parse_start_url)
+    #         self.logger.info(f"Sending request to {url} with headers: {request.headers}")
+    #         yield request
 
     def parse_start_url(self, response):
         """Функция для парсинга стартовой страницы и начала парсинга ссылок"""
