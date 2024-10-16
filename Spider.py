@@ -15,17 +15,26 @@ import mysql.connector
 import hashlib
 
 log_file = 'logs/logi.log'
+log_dir = os.path.dirname(log_file)
+
+# Проверяем, существует ли директория, и если нет — создаем её
+if not os.path.exists(log_dir):
+    os.makedirs(log_dir)
+
+# Настройка RotatingFileHandler
 handler = RotatingFileHandler(
     log_file,           # Имя файла логов
     mode='a',           # Режим добавления ('a'), чтобы не перезаписывать сразу
     maxBytes=20*1024*1024,  # Максимальный размер файла (в байтах), например, 20 МБ
-    backupCount=0       # Количество резервных копий логов (если установить 0, то старый файл будет перезаписываться)
+    backupCount=1       # Количество резервных копий логов (если установить 0, то старый файл будет перезаписываться)
 )
+
+# Настройка логгирования
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s %(levelname)s: %(message)s',
     handlers=[
-        handler   # Используем RotatingFileHandler
+        handler, logging.StreamHandler()   # Используем RotatingFileHandler
     ]
 )
 
@@ -99,7 +108,6 @@ def run_spiders(runner, spider_name, resource_queue):
 def update_resources_periodically(resource_queue, last_hash, block_size=40):
     def update():
         nonlocal last_hash
-        print('проверка базы')
         logging.info("Обновление ресурсов из базы данных...")
         conn_1 = connect_to_database()
         cursor_1 = conn_1.cursor()
@@ -131,7 +139,7 @@ def update_resources_periodically(resource_queue, last_hash, block_size=40):
         conn_1.close()
 
     # Запускаем обновление ресурсов каждую 1 час (3600 секунд)
-    LoopingCall(update).start(6600)
+    LoopingCall(update).start(9600)
 
 
 def start_spiders(num_spiders, resource_queue):
@@ -152,12 +160,12 @@ if __name__ == '__main__':
     cursor_1.close()
     conn_1.close()
     num_blocks = len(resources_queue)
-    print(f"Количество блоков в очереди: {num_blocks}")
+    # print(f"Количество блоков в очереди: {num_blocks}")
 
     # Определяем количество пауков
     num_spiders = min(num_blocks, 6)  # Если блоков меньше 6, используем это число, иначе 6 пауков
 
-    print(f"Количество пауков: {num_spiders}")
+    # print(f"Количество пауков: {num_spiders}")
 
     # Запускаем пауков
     start_spiders(num_spiders, resources_queue)

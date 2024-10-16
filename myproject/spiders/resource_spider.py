@@ -1,29 +1,22 @@
-import logging
 import pytz
 import mysql.connector
-from mysql.connector.aio.logger import logger
-from scrapy.settings.default_settings import LOG_FILE
-from scrapy.spiders import CrawlSpider, Rule
+from scrapy.spiders import CrawlSpider
 from scrapy.linkextractors import LinkExtractor
 from dateparser import parse
 import time
 from dotenv import load_dotenv
 import emoji
-from datetime import datetime
+from datetime import datetime, timedelta
 import re
 from lxml.html import fromstring
 import bs4
 import os
 from mysql.connector import Error
-from logging.handlers import RotatingFileHandler
-from scrapy.utils.log import configure_logging
 import unicodedata
 from scrapy import Request
 from urllib.parse import urlparse, urlunparse
-import urllib.parse
-
-
 load_dotenv()
+
 class ResourceSpider(CrawlSpider):
     name = 'resource_spider'
     custom_settings = { }
@@ -31,37 +24,11 @@ class ResourceSpider(CrawlSpider):
     def __init__(self, resources=None,  spider_name=None, *args, **kwargs):
         self.spider_name = spider_name or self.name
         super().__init__(*args, **kwargs)
-
-
-        log_file = f'logs/{spider_name}.log'
-        handler = RotatingFileHandler(
-            log_file, maxBytes= 10 * 1024 * 1024, backupCount=0
-        )
-        formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
-        handler.setFormatter(formatter)
-
-        console_handler = logging.StreamHandler()
-        console_handler.setFormatter(formatter)
-
-        # Создаем логгер с именем паука
-        self.custom_logger = logging.getLogger(spider_name)
-        self.custom_logger.setLevel(logging.INFO)
-        # Проверяем, добавлены ли уже обработчики к логгеру
-        if not self.custom_logger.handlers:
-            self.custom_logger.addHandler(handler)
-            self.custom_logger.addHandler(console_handler)
-
-        self.setup_scrapy_logging(spider_name, handler, console_handler)
-
         # Передача ресурсов
         self.resources = resources
-
-        self.cursor_1 = None
         self.conn_2 = None
         self.cursor_2 = None
         self.start_urls = []
-
-
         try: # подключение к таблице temp_items и temp_items_link
             self.conn_2 = mysql.connector.connect(
                 host=os.getenv("DB_HOST_2"),
@@ -73,17 +40,16 @@ class ResourceSpider(CrawlSpider):
                 collation='utf8mb4_general_ci',
                 connection_timeout=300,
                 autocommit=True
-
             )
             if self.conn_2.is_connected():
                 self.cursor_2 = self.conn_2.cursor(buffered=True)
-                self.custom_logger.info(f'Есть подключение к БД: {spider_name}')
+                self.logger.info(f'Есть подключение к БД: {spider_name}')
 
                 if resources:
                     self.resources = resources
                     self.start_urls = [resource[2].split(',')[0].strip() for resource in self.resources]
                     self.allowed_domains = [urlparse(url).netloc.replace('www.', '') for url in self.start_urls]
-                    self.custom_logger.info(f'Allowed domains: {self.allowed_domains}')
+                    self.logger.info(f'Allowed domains: {self.allowed_domains}')
                     self.resource_map = {resource[0]: resource for resource in self.resources}
 
             else:
@@ -93,7 +59,7 @@ class ResourceSpider(CrawlSpider):
 
         except Error as e:
             self.log(f"Error connecting to MySQL: {e}")
-            self.custom_logger.info('Нет подключение к БД')
+            self.logger.info('Нет подключение к БД')
             # Переключаемся на временный паук чтобы закрыть паука и запустить через 30 мин
             self.name = "temporary_spider"
             self.start_urls = ["http://example.com"]
@@ -115,24 +81,95 @@ class ResourceSpider(CrawlSpider):
             normalized_url = parsed_url.geturl()
         return normalized_url
 
+    def filter_valid_links(self, links):
+        filtered_links = []
+        # Фильтрация по доменам
+        for link in links:
+            link_domain = urlparse(link.url).netloc.replace('www.', '')
+            if link_domain in self.allowed_domains:
+                filtered_links.append(link)
+        valid_links = []
+        for link in filtered_links:
+            url_link = self.remove_url_fragment(self.normalize_url(link.url))
+            url_link_2 = self.remove_url_fragment(link.url.rstrip('/'))
+            # Проверка соединения с базой данных
+            if not self.conn_2.is_connected():
+                try:
+                    self.logger.warning("Соединение с базой данных потеряно, пытаемся переподключиться...")
+                    self.conn_2.reconnect(attempts=3, delay=5)
+                    self.logger.info("Соединение восстановлено")
+                except mysql.connector.Error as err:
+                    self.logger.warning(f"Ошибка переподключения: {err}")
+                    return []  # Прекращаем выполнение и возвращаем пустой список, если не удалось переподключиться
+            # Проверка ссылки в базе данных
+            query = """
+                (SELECT 1 FROM temp_items_link WHERE link = %s OR link = %s LIMIT 1)
+                UNION
+                (SELECT 1 FROM temp_items WHERE link = %s OR link = %s LIMIT 1)
+                LIMIT 1
+            """
+            self.cursor_2.execute(query, (url_link, url_link_2, url_link, url_link_2))
+            # Если ссылка не найдена ни в одной из таблиц, добавляем её в список валидных ссылок
+            if self.cursor_2.fetchone() is None:
+                valid_links.append(link)
+        return valid_links
+
+    def is_unwanted_link(self, url):
+        unwanted_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx', '.JPG', '.jfif', '.mp3',
+                               '.mp4']
+        return any(url.endswith(ext) for ext in unwanted_extensions)
+
+    def parse_title(self, response, resource_info):
+        title_xpath = resource_info[5]
+        title = response.xpath(f'normalize-space({title_xpath})').get()
+        return self.replace_unsupported_characters(title) if title else None
+
+    def parse_news_date(self, response, resource_info):
+        xpath_and_pattern = resource_info[6]
+        parts = xpath_and_pattern.split('::::')
+        date_xpath = parts[0]
+        remove_patterns = parts[1] if len(parts) > 1 else None
+
+        date = response.xpath(date_xpath).get()
+        if not date:
+            return None, None, None, None
+
+        if remove_patterns:
+            date = re.sub(remove_patterns, '', date)
+        date = self.parse_date(date, resource_info[7], resource_info[10])
+
+        if not date:
+            return None, None, None, None
+
+        n_date = date
+        nd_date = int(date.timestamp())
+        not_date = date.strftime('%Y-%m-%d')
+        s_date = int(time.time())
+        return n_date, nd_date, not_date, s_date
+
+    def is_outdated(self, nd_date, s_date):
+        one_year_in_seconds = 365 * 24 * 3600
+        return s_date - nd_date > one_year_in_seconds
+
+    def parse_content(self, response, resource_info):
+        content_xpath = resource_info[4]
+        content = response.xpath(content_xpath).getall()
+        return self.clean_text(content) if content and not all(item.isspace() for item in content) else None
 
     def parse_start_url(self, response):
         """Функция для парсинга стартовой страницы и начала парсинга ссылок"""
-
         current_domain = urlparse(response.url).hostname.replace('www.', '')
         resource_info = next(
             (res for res in self.resource_map.values() if
              urlparse(res[2].split(',')[0].strip()).hostname.replace('www.', '') == current_domain),
             None
         )
-
         if resource_info:
             # Извлекаем top_tag для текущего ресурса
             top_tag = resource_info[3]
             top_tags = [xpath.strip() for xpath in top_tag.split(';')]
             deny = resource_info[8]
             max_depth = int(resource_info[9]) if resource_info[9] else 1
-
             if deny:
                 denys = [rule.strip() for rule in deny.split(';')]
             else:
@@ -143,45 +180,20 @@ class ResourceSpider(CrawlSpider):
             link_extractor = LinkExtractor(restrict_xpaths=top_tags, deny=denys, deny_extensions=deny_extensions)
             # Извлекаем ссылки
             links = link_extractor.extract_links(response)
-            filtered_links = []
-            for link in links:
-                link_domain = urlparse(link.url).netloc.replace('www.', '')
-                if link_domain in self.allowed_domains:
-                    filtered_links.append(link)
-
-            valid_links = []
-            for link in filtered_links:
-                url_link = self.remove_url_fragment(self.normalize_url(link.url))
-                url_link_2 = self.remove_url_fragment(link.url.rstrip('/'))
-                if not self.conn_2.is_connected():
-                    try:
-                        self.custom_logger.warning("Соединение с базой данных потеряно, пытаемся переподключиться...")
-                        self.conn_2.reconnect(attempts=3, delay=5)
-                        self.custom_logger.info("Соединение восстановлено")
-                    except mysql.connector.Error as err:
-                        self.custom_logger.warning(f"Ошибка переподключения: {err}")
-                        return  # Прекращаем выполнение, если не удалось переподключиться
-
-                self.cursor_2.execute("SELECT 1 FROM temp_items_link WHERE link = %s OR link = %s LIMIT 1",
-                                      (url_link, url_link_2))
-                # Если ссылка не найдена в базе, добавляем её в список валидных ссылок
-                if self.cursor_2.fetchone() is None:
-                    valid_links.append(link)
-
-            # print(filtered_links)
-
-            # Следуем за каждой ссылкой и передаем в parse_links
+            valid_links = self.filter_valid_links(links)
             for link in valid_links:
-                yield Request(url=link.url, callback=self.parse_links, meta={'resource_info': resource_info, 'top_tags': top_tags, 'depth': 1, 'denys': denys,
+                try:
+                    yield Request(url=link.url, callback=self.parse_links, meta={'resource_info': resource_info, 'top_tags': top_tags, 'depth': 1, 'denys': denys,
                                                                              'deny_extensions': deny_extensions, 'max_depth': max_depth })
+                except Exception as e:
+                    self.logger.warning(f"Ошибка при отправке запроса для ссылки {link.url}: {e}")
 
 
     def parse_links(self, response):
         current_url = response.url
-        if any(current_url.endswith(ext) for ext in
-               ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx', '.JPG', '.jfif', '.mp3',
-                '.mp4']):
-            self.custom_logger.info(f'Пропускаем неподходящий ссылку: {current_url}')
+
+        if self.is_unwanted_link(current_url):
+            # self.logger.info(f'Пропускаем неподходящий ссылку: {current_url}')
             return
 
         resource_info = response.meta.get('resource_info')
@@ -192,84 +204,41 @@ class ResourceSpider(CrawlSpider):
         max_depth = response.meta.get('max_depth')
         top_tags = response.meta.get('top_tags')
 
-
         if current_depth < max_depth:
             link_extractor = LinkExtractor(restrict_xpaths=top_tags, deny=denys, deny_extensions=deny_extensions)
             # Извлекаем ссылки для дальнейшего парсинга
             links = link_extractor.extract_links(response)
-
-            filtered_links = []
-            # Фильтруем ссылки по allowed_domains
-            for link in links:
-                link_domain = urlparse(link.url).netloc.replace('www.', '')
-                if link_domain in self.allowed_domains:
-                    filtered_links.append(link)
-            # url_list2 = [link.url for link in filtered_links]
-            # print(url_list2)
-            valid_links = []
-            for link in filtered_links:
-                url_link = self.remove_url_fragment(self.normalize_url(link.url))
-                url_link_2 = self.remove_url_fragment(link.url.rstrip('/'))
-                if not self.conn_2.is_connected():
-                    try:
-                        self.custom_logger.warning("Соединение с базой данных потеряно, пытаемся переподключиться...")
-                        self.conn_2.reconnect(attempts=3, delay=5)
-                        self.custom_logger.info("Соединение восстановлено")
-                    except mysql.connector.Error as err:
-                        self.custom_logger.warning(f"Ошибка переподключения: {err}")
-                        return
-                self.cursor_2.execute("SELECT 1 FROM temp_items_link WHERE link = %s OR link = %s LIMIT 1",
-                                      (url_link, url_link_2))
-                # Если ссылка не найдена в базе, добавляем её в список валидных ссылок
-                if self.cursor_2.fetchone() is None:
-                    valid_links.append(link)
-
+            valid_links = self.filter_valid_links(links)
             for link in valid_links:
-                yield Request(
-                    url=link.url,
-                    callback=self.parse_links,
-                    meta={'resource_info': resource_info, 'top_tags':top_tags, 'depth': current_depth + 1, 'denys': denys,
-                          'deny_extensions': deny_extensions, 'max_depth': max_depth})
+                try:
+                    yield Request(
+                        url=link.url,
+                        callback=self.parse_links,
+                        meta={'resource_info': resource_info, 'top_tags':top_tags, 'depth': current_depth + 1, 'denys': denys,
+                              'deny_extensions': deny_extensions, 'max_depth': max_depth})
+                except Exception as e:
+                    # Обработка ошибки (например, запись в лог)
+                    self.logger.warning(f"Ошибка при отправке запроса для ссылки {link.url}: {e}")
+        title = self.parse_title(response, resource_info)
+        if not title:
+            # self.logger.debug(f"Заголовок отсутствует для {current_url}")
+            return
 
-        # получение заголовок новостей
-        title_t = response.xpath(f'normalize-space({resource_info[5]})').get()
-        if not title_t:
-            self.custom_logger.info(f"Заголовок отсутствует для {current_url}")
+        n_date, nd_date, not_date, s_date = self.parse_news_date(response, resource_info)
+        if not n_date:
+            self.logger.debug(f"Дата отсутствует для {current_url}")
             return
-        title = self.replace_unsupported_characters(title_t) # чистка текста
 
-       # Парсинг даты
-        xpath_and_pattern = resource_info[6]  # Получаем строку из resource_info
-        parts = xpath_and_pattern.split('::::')
-        date_xpath = parts[0]  # XPath для парсинга даты
-        remove_patterns = parts[1] if len(parts) > 1 else None
+        if self.is_outdated(nd_date, s_date):
+            # self.logger.info(f"Дата {n_date} старее чем на год для {current_url}")
+            return
 
-        date = response.xpath(date_xpath).get()
-        if not date:
-            self.custom_logger.info(f"Дата отсутствует {date}, {current_url}")
+        content = self.parse_content(response, resource_info)
+        if not content:
+            self.logger.debug(f"Контент отсутствует для {current_url}")
             return
-        if remove_patterns:
-            date = re.sub(remove_patterns, '', date)
-            # print(date)
-        date = self.parse_date(date, resource_info[7], resource_info[10])
-        if not date:
-            self.custom_logger.info(f"Дата отсутствует {date}, {current_url}")
-            return
-        n_date = date
-        # print(date)#дата публикаций новостей
-        nd_date = int(date.timestamp()) #дата публикаций новостей UNIX формате
-        not_date = date.strftime('%Y-%m-%d') #дата публикаций новостей
-        s_date = int(time.time()) #дата поступление новостей в таблицу
-        one_year_in_seconds = 365 * 24 * 3600
-        if s_date - nd_date > one_year_in_seconds:
-            # self.custom_logger.info(f"Дата {date} старее чем на год для {current_url}")
-            return
-        # получение контента новостей
-        content = response.xpath(resource_info[4]).getall()
-        content = self.clean_text(content) # чистка текста
-        if not content or all(item.isspace() for item in content):
-            self.custom_logger.info(f"Контент отсутствует для {current_url}")
-            return
+
+
         self.store_news(resource_id, title, current_url, nd_date, content, n_date, s_date, not_date) # отправка на сохранение в бд
 
 
@@ -277,28 +246,29 @@ class ResourceSpider(CrawlSpider):
         # Проверка соединения перед выполнением операций
         if not self.conn_2.is_connected():
             try:
-                self.custom_logger.warning("Соединение с базой данных потеряно, пытаемся переподключиться...")
+                self.logger.warning("Соединение с базой данных потеряно, пытаемся переподключиться...")
                 self.conn_2.reconnect(attempts=3, delay=5)
-                self.custom_logger.info("Соединение восстановлено")
+                self.logger.info("Соединение восстановлено")
             except mysql.connector.Error as err:
-                self.custom_logger.warning(f"Ошибка переподключения: {err}")
+                self.logger.warning(f"Ошибка переподключения: {err}")
                 return  # Прекращаем выполнение, если не удалось переподключиться
+        self.cursor_2.execute(
+            "SELECT COUNT(*) FROM temp_items WHERE link = %s",
+            (current_url,)
+        )
+        (count,) = self.cursor_2.fetchone()
 
-        url_link = self.remove_url_fragment(self.normalize_url(current_url))
-        url_link_2 = self.remove_url_fragment(current_url.rstrip('/'))
-
-        self.cursor_2.execute("SELECT 1 FROM temp_items WHERE link = %s OR link = %s LIMIT 1", (url_link, url_link_2))
-        if self.cursor_2.fetchone() is None:
+        if count == 0:
             status = ''
             self.cursor_2.execute(
                 "INSERT INTO temp_items (res_id, title, link, nd_date, content, n_date, s_date, not_date, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
                 (resource_id, title, current_url, nd_date, content, n_date, s_date, not_date, status)
             )
             self.conn_2.commit()
-            self.custom_logger.warning(f'Новость добавлена в базу, дата: {n_date} time: {nd_date}, URL: {current_url} ')
+            self.logger.warning(f'Новость добавлена в базу, дата: {n_date} time: {nd_date}, URL: {current_url} ')
         else:
-        # Если ссылка уже существует
-            self.custom_logger.info(f'Ссылка уже существует в базе TEMP: Дата {n_date} ({nd_date}) url: {current_url}')
+            pass
+            #self.logger.info(f'Ссылка уже существует в базе TEMP: Дата {n_date} ({nd_date}) url: {current_url}')
 
 
     def replace_unsupported_characters(self, text):
@@ -383,44 +353,38 @@ class ResourceSpider(CrawlSpider):
                     date = date.replace(hour=0, minute=0, second=0)
 
                 date_with_utc = date.replace(tzinfo=kazakhstan_tz)
+                tolerance = timedelta(minutes=10)
 
                 # Проверка на актуальность даты
-                if date_with_utc <= current_time_with_tz:
+                if date_with_utc <= current_time_with_tz + tolerance:
                     return date_with_utc
 
         return None
 
-
-    class IgnoreUrlLengthWarnings(logging.Filter):
-        def filter(self, record):
-            # Игнорируем сообщения, содержащие "Ignoring link (url length >"
-            if "Ignoring link (url length >" in record.getMessage():
-                return False
-            return True
-
-    def setup_scrapy_logging(self, spider_name, handler, console_handler):
-        """
-        Настраиваем Scrapy логгер для перенаправления всех сообщений в файл паука.
-        """
-        # Отключаем глобальное конфигурирование логирования Scrapy
-        configure_logging(install_root_handler=False)
-
-        # Перенаправляем стандартные логи Scrapy в наш кастомный логгер
-        scrapy_logger = logging.getLogger('scrapy')
-
-        # Отключаем передачу логов в корневой логгер
-        scrapy_logger.propagate = False
-        scrapy_logger.setLevel(logging.INFO)
-
-        # Добавляем обработчики, если они еще не добавлены
-        if not scrapy_logger.handlers:
-            scrapy_logger.addHandler(handler)
-            scrapy_logger.addHandler(console_handler)
-
     def close(self, reason):
+        # Закрытие курсора и соединения с базой данных
+
         if self.cursor_2:
             self.cursor_2.close()
+            self.logger.info('подключение закрыто')
+
         if self.conn_2:
             self.conn_2.close()
 
+        # Очистка кэша или других временных данных
+        if hasattr(self, 'cache'):
+            self.cache.clear()
+            self.logger.info("Кэш очищен после завершения работы паука.")
 
+        # Другие действия по освобождению ресурсов
+        if hasattr(self, 'temp_files'):
+            for temp_file in self.temp_files:
+                try:
+                    os.remove(temp_file)
+                except OSError as e:
+                    self.logger.warning(f"Не удалось удалить временный файл {temp_file}: {e}")
+
+        self.logger.info(f"Паука {self.name} завершил работу. Причина: {reason}")
+
+        # Вызов родительского метода с передачей аргумента reason
+        return super().close(self, reason)
