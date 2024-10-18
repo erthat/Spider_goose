@@ -14,6 +14,7 @@ from collections import deque
 import mysql.connector
 import hashlib
 
+
 log_file = 'logs/logi.log'
 log_dir = os.path.dirname(log_file)
 
@@ -73,7 +74,7 @@ def load_resources(cursor):
         "AND title_cut IS NOT NULL AND title_cut <> '' "
         "AND date_cut IS NOT NULL AND date_cut <> '' "
         "AND RESOURCE_STATUS = %s",
-        ('spider_scrapy', 'WORK')
+        ('SP', 'WORK')
     )
     return cursor.fetchall()
 

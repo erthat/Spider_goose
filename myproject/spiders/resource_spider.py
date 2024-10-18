@@ -17,6 +17,9 @@ import unicodedata
 from scrapy import Request
 from urllib.parse import urlparse, urlunparse
 load_dotenv()
+import requests
+from extractnet import Extractor
+from goose3 import Goose
 
 class ResourceSpider(CrawlSpider):
     name = 'resource_spider'
@@ -184,14 +187,14 @@ class ResourceSpider(CrawlSpider):
             deny_extensions = ['jpg', 'jpeg', 'png', 'gif', 'pdf', 'doc', 'docx', 'JPG', 'jfif', 'mp3',
                 'mp4', 'pptx', 'zip', 'rar', 'xlsx', 'webp', 'wav', 'ppt']
             # Создаем LinkExtractor для этого домена
-            link_extractor = LinkExtractor(restrict_xpaths=top_tags, deny=denys, deny_extensions=deny_extensions)
+            link_extractor = LinkExtractor(restrict_xpaths=top_tags,  deny=denys, deny_extensions=deny_extensions)
             # Извлекаем ссылки
             links = link_extractor.extract_links(response)
             valid_links = self.filter_valid_links(links)
             for link in valid_links:
                 try:
                     yield Request(url=link.url, callback=self.parse_links, meta={'resource_info': resource_info, 'top_tags': top_tags, 'depth': 1, 'denys': denys,
-                                                                             'deny_extensions': deny_extensions, 'max_depth': max_depth })
+                                                                             'deny_extensions': deny_extensions, 'max_depth': max_depth})
                 except Exception as e:
                     self.logger.warning(f"Ошибка при отправке запроса для ссылки {link.url}: {e}")
 
@@ -226,24 +229,39 @@ class ResourceSpider(CrawlSpider):
                 except Exception as e:
                     # Обработка ошибки (например, запись в лог)
                     self.logger.warning(f"Ошибка при отправке запроса для ссылки {link.url}: {e}")
-        title = self.parse_title(response, resource_info)
-        if not title:
-            # self.logger.debug(f"Заголовок отсутствует для {current_url}")
+
+        g = Goose()
+        article = g.extract(raw_html=response.text)
+
+        html_content = response.text
+        # Настройки для парсинга основного контента
+        content_extractor = Extractor()
+        result = content_extractor.extract(html_content)
+
+        title = article.title
+        if title is None:
+            self.logger.info(f"Title отсутствует для {current_url}")
             return
 
-        n_date, nd_date, not_date, s_date = self.parse_news_date(response, resource_info)
-        if not n_date:
-            self.logger.debug(f"Дата отсутствует для {current_url}")
+        content = article.cleaned_text
+        if content is None:
+            self.logger.info(f"Сontent отсутствует для {current_url}")
             return
 
-        if self.is_outdated(nd_date, s_date):
-            # self.logger.info(f"Дата {n_date} старее чем на год для {current_url}")
+        date = article.publish_date
+        if date is None:
+            date = result.get('rawDate')
+            if date is None:
+                date = result.get('date')
+        date = self.parse_date(date, resource_info[7], resource_info[10])
+        if date is None:
+            self.logger.info(f"Дата отсутствует для {current_url}")
             return
 
-        content = self.parse_content(response, resource_info)
-        if not content:
-            self.logger.debug(f"Контент отсутствует для {current_url}")
-            return
+        n_date = date
+        nd_date = int(date.timestamp())
+        not_date = date.strftime('%Y-%m-%d')
+        s_date = int(time.time())
 
 
         self.store_news(resource_id, title, current_url, nd_date, content, n_date, s_date, not_date) # отправка на сохранение в бд
@@ -281,6 +299,37 @@ class ResourceSpider(CrawlSpider):
     def replace_unsupported_characters(self, text):
         text = str(text) if text else ''
         return emoji.replace_emoji(text, replace='?')
+
+    def convert_python_syntax(self, val: str):
+        method, expr = val.split("::del::")
+        values = expr.split(":::")
+
+        if len(values) < 2 or len(values) > 4:
+            self.logger.info(
+                f"Value must have between two and four values. got {values}"
+            )
+        if method == "1":
+            # 1::del::div:::class:::post-meta-author
+            tag, attr, attr_val = values
+            xpath = f"(//{tag}[contains(@{attr},'{attr_val}')])[1]"
+            regex = ""
+
+        elif method == "2":
+            # 2::del::<time class="date" datetime=":::"
+            from_str, to_str = values
+            xpath = "//html"
+            regex = f"(?s)(?<={re.escape(from_str)})(.*?)(?={re.escape(to_str)})"
+
+        elif method == "3":
+            # 3::del::meta:::name:::article:published_time:::content
+            tag, attr, attr_val, extr_attr = values
+            xpath = f"(//{tag}[contains(@{attr},'{attr_val}')]/@{extr_attr})[1]"
+            regex = ""
+        else:
+            self.logger.info(
+                f"Value must have between two and four values. got {values}"
+            )
+        return xpath, regex
 
     def clean_text(self, parsed_fields: list[str]) -> str | int:
         """Function that removes junk html tags and performs some text normalization
