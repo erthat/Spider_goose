@@ -74,7 +74,7 @@ def load_resources(cursor):
         "AND title_cut IS NOT NULL AND title_cut <> '' "
         "AND date_cut IS NOT NULL AND date_cut <> '' "
         "AND RESOURCE_STATUS = %s",
-        ('SP', 'WORK')
+        ('r_bsoup_parser_2', 'WORK')
     )
     return cursor.fetchall()
 
