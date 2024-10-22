@@ -123,48 +123,26 @@ class ResourceSpider(CrawlSpider):
                                '.mp4']
         return any(url.endswith(ext) for ext in unwanted_extensions)
 
-    def parse_title(self, response, resource_info):
-        title_xpath = resource_info[5]
-        title = response.xpath(f'normalize-space({title_xpath})').get()
-        return self.replace_unsupported_characters(title) if title else None
-
-    def parse_news_date(self, response, resource_info):
-        xpath_and_pattern = resource_info[6]
-        parts = xpath_and_pattern.split('::::')
-        date_xpath = parts[0]
-        remove_patterns = parts[1] if len(parts) > 1 else None
-
-        date = response.xpath(date_xpath).get()
-        if not date:
-            return None, None, None, None
-
-        if remove_patterns:
-            date = re.sub(remove_patterns, '', date)
-        date = self.parse_date(date, resource_info[7], resource_info[10])
-
-        if not date:
-            return None, None, None, None
-
-        n_date = date
-        nd_date = int(date.timestamp())
-        not_date = date.strftime('%Y-%m-%d')
-        s_date = int(time.time())
-        return n_date, nd_date, not_date, s_date
-
     def is_outdated(self, nd_date, s_date):
         one_year_in_seconds = 365 * 24 * 3600
         return s_date - nd_date > one_year_in_seconds
 
-    def parse_content(self, response, resource_info):
-        content_xpath = resource_info[4]
-        content = response.xpath(content_xpath).getall()
-        return self.clean_text(content) if content and not all(item.isspace() for item in content) else None
+    def convert_to_xpath(self, selector):
+        # Разделяем строку по разделителю ':::'
+        parts = selector.split(':::')
 
-    # def start_requests(self):
-    #     for url in self.start_urls:
-    #         request = scrapy.Request(url, callback=self.parse_start_url)
-    #         self.logger.info(f"Sending request to {url} with headers: {request.headers}")
-    #         yield request
+        # Проверяем, что у нас достаточно частей для формирования XPath
+        if len(parts) != 3:
+            raise ValueError("Неверный формат селектора.")
+
+        # Извлекаем элементы
+        tag = parts[0]  # 'a'
+        attr_name = parts[1]  # 'class'
+        attr_value = parts[2]  # 'post-index-title'
+
+        # Формируем XPath
+        xpath = f"//{tag}[@{attr_name}='{attr_value}']"
+        return xpath
 
     def parse_start_url(self, response):
         """Функция для парсинга стартовой страницы и начала парсинга ссылок"""
@@ -177,6 +155,7 @@ class ResourceSpider(CrawlSpider):
         if resource_info:
             # Извлекаем top_tag для текущего ресурса
             top_tag = resource_info[3]
+            top_tag = self.convert_to_xpath(top_tag)
             top_tags = [xpath.strip() for xpath in top_tag.split(';')]
             deny = resource_info[8]
             max_depth = int(resource_info[9]) if resource_info[9] else 1
@@ -188,6 +167,7 @@ class ResourceSpider(CrawlSpider):
                 'mp4', 'pptx', 'zip', 'rar', 'xlsx', 'webp', 'wav', 'ppt']
             # Создаем LinkExtractor для этого домена
             link_extractor = LinkExtractor(restrict_xpaths=top_tags,  deny=denys, deny_extensions=deny_extensions)
+
             # Извлекаем ссылки
             links = link_extractor.extract_links(response)
             valid_links = self.filter_valid_links(links)
@@ -239,11 +219,13 @@ class ResourceSpider(CrawlSpider):
         result = content_extractor.extract(html_content)
 
         title = article.title
+        self.replace_unsupported_characters(title) if title else None
         if title is None:
             self.logger.info(f"Title отсутствует для {current_url}")
             return
 
         content = article.cleaned_text
+        self.clean_text(content) if content and not all(item.isspace() for item in content) else None
         if content is None:
             self.logger.info(f"Сontent отсутствует для {current_url}")
             return
@@ -263,9 +245,7 @@ class ResourceSpider(CrawlSpider):
         not_date = date.strftime('%Y-%m-%d')
         s_date = int(time.time())
 
-
         self.store_news(resource_id, title, current_url, nd_date, content, n_date, s_date, not_date) # отправка на сохранение в бд
-
 
     def store_news(self, resource_id, title, current_url, nd_date, content, n_date, s_date, not_date):
         # Проверка соединения перед выполнением операций
@@ -294,7 +274,6 @@ class ResourceSpider(CrawlSpider):
         else:
             pass
             #self.logger.info(f'Ссылка уже существует в базе TEMP: Дата {n_date} ({nd_date}) url: {current_url}')
-
 
     def replace_unsupported_characters(self, text):
         text = str(text) if text else ''
