@@ -69,12 +69,8 @@ def load_resources(cursor):
     cursor.execute(
         "SELECT RESOURCE_ID, RESOURCE_NAME, RESOURCE_URL, top_tag, bottom_tag, title_cut, date_cut, convert_date, block_page, middle_tag, LANG "
         "FROM resource "
-        "WHERE status = %s AND top_tag IS NOT NULL AND top_tag <> '' "
-        "AND bottom_tag IS NOT NULL AND bottom_tag <> '' "
-        "AND title_cut IS NOT NULL AND title_cut <> '' "
-        "AND date_cut IS NOT NULL AND date_cut <> '' "
-        "AND RESOURCE_STATUS = %s",
-        ('SP', 'WORK')
+        "WHERE status = %s",
+        ('SP',)
     )
     return cursor.fetchall()
 
