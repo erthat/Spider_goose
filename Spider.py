@@ -69,8 +69,9 @@ def load_resources(cursor):
     cursor.execute(
         "SELECT RESOURCE_ID, RESOURCE_NAME, RESOURCE_URL, top_tag, bottom_tag, title_cut, date_cut, convert_date, block_page, middle_tag, LANG "
         "FROM resource "
-        "WHERE status = %s",
-        ('SP',)
+        "WHERE status = %s"
+        "AND RESOURCE_STATUS = %s",
+        ('SP', 'WORK')
     )
     return cursor.fetchall()
 
