@@ -214,22 +214,16 @@ class ResourceSpider(CrawlSpider):
         article = g.extract(raw_html=response.text)
 
         html_content = response.text
-        # Настройки для парсинга основного контента
+
         content_extractor = Extractor()
         result = content_extractor.extract(html_content)
-
+        # Парсинг заголовка
         title = article.title
         self.replace_unsupported_characters(title) if title else None
         if title is None:
             self.logger.info(f"Title отсутствует для {current_url}")
             return
-
-        content = article.cleaned_text
-        self.clean_text(content) if content and not all(item.isspace() for item in content) else None
-        if content is None:
-            self.logger.info(f"Сontent отсутствует для {current_url}")
-            return
-
+        # Парсинг даты
         date = article.publish_date
         if date is None:
             date = result.get('rawDate')
@@ -239,11 +233,20 @@ class ResourceSpider(CrawlSpider):
         if date is None:
             self.logger.info(f"Дата отсутствует для {current_url}")
             return
-
         n_date = date
         nd_date = int(date.timestamp())
         not_date = date.strftime('%Y-%m-%d')
         s_date = int(time.time())
+        if self.is_outdated(nd_date, s_date):
+            # self.logger.info(f"Дата {n_date} старее чем на год для {current_url}")
+            return
+        # Парсинг основного контента
+        content = article.cleaned_text
+        # self.clean_text(content) if content and not all(item.isspace() for item in content) else None
+        content = content if content and not all(item.isspace() for item in content) else None
+        if content is None:
+            self.logger.info(f"Сontent отсутствует для {current_url}")
+            return
 
         self.store_news(resource_id, title, current_url, nd_date, content, n_date, s_date, not_date) # отправка на сохранение в бд
 
