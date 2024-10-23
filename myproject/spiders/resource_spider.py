@@ -242,9 +242,9 @@ class ResourceSpider(CrawlSpider):
         if self.is_outdated(nd_date, s_date):
             # self.logger.info(f"Дата {n_date} старее чем на год для {current_url}")
             return
-        # Парсинг основного контента
 
-        content = trafilatura.extract(html_content, include_formatting=True)
+        # Парсинг основного контента
+        content = trafilatura.extract(html_content, include_formatting=False)
         # content = article.cleaned_text
         # self.clean_text(content) if content and not all(item.isspace() for item in content) else None
         content = content if content and not all(item.isspace() for item in content) else None
