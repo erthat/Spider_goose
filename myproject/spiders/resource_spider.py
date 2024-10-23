@@ -141,7 +141,7 @@ class ResourceSpider(CrawlSpider):
         attr_value = parts[2]  # 'post-index-title'
 
         # Формируем XPath
-        xpath = f"//{tag}[@{attr_name}='{attr_value}']"
+        xpath = f'//{tag}[@{attr_name}="{attr_value}"]'
         return xpath
 
     def parse_start_url(self, response):
@@ -282,36 +282,6 @@ class ResourceSpider(CrawlSpider):
         text = str(text) if text else ''
         return emoji.replace_emoji(text, replace='?')
 
-    def convert_python_syntax(self, val: str):
-        method, expr = val.split("::del::")
-        values = expr.split(":::")
-
-        if len(values) < 2 or len(values) > 4:
-            self.logger.info(
-                f"Value must have between two and four values. got {values}"
-            )
-        if method == "1":
-            # 1::del::div:::class:::post-meta-author
-            tag, attr, attr_val = values
-            xpath = f"(//{tag}[contains(@{attr},'{attr_val}')])[1]"
-            regex = ""
-
-        elif method == "2":
-            # 2::del::<time class="date" datetime=":::"
-            from_str, to_str = values
-            xpath = "//html"
-            regex = f"(?s)(?<={re.escape(from_str)})(.*?)(?={re.escape(to_str)})"
-
-        elif method == "3":
-            # 3::del::meta:::name:::article:published_time:::content
-            tag, attr, attr_val, extr_attr = values
-            xpath = f"(//{tag}[contains(@{attr},'{attr_val}')]/@{extr_attr})[1]"
-            regex = ""
-        else:
-            self.logger.info(
-                f"Value must have between two and four values. got {values}"
-            )
-        return xpath, regex
 
     def clean_text(self, parsed_fields: list[str]) -> str | int:
         """Function that removes junk html tags and performs some text normalization
