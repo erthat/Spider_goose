@@ -228,9 +228,9 @@ class ResourceSpider(CrawlSpider):
         # Парсинг даты
         date = article.publish_date
         if date is None:
-            date = result.get('rawDate')
+            date = result.get('date')
             if date is None:
-                date = result.get('date')
+                date = result.get('rawDate')
         date = self.parse_date(date, resource_info[7], resource_info[10])
         if date is None:
             self.logger.info(f"Дата отсутствует для {current_url}")
