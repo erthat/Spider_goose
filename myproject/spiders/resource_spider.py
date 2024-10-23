@@ -20,6 +20,7 @@ load_dotenv()
 import requests
 from extractnet import Extractor
 from goose3 import Goose
+import trafilatura
 
 class ResourceSpider(CrawlSpider):
     name = 'resource_spider'
@@ -220,6 +221,7 @@ class ResourceSpider(CrawlSpider):
         # Парсинг заголовка
         title = article.title
         self.replace_unsupported_characters(title) if title else None
+        title = title if title and not all(item.isspace() for item in title) else None
         if title is None:
             self.logger.info(f"Title отсутствует для {current_url}")
             return
@@ -241,7 +243,9 @@ class ResourceSpider(CrawlSpider):
             # self.logger.info(f"Дата {n_date} старее чем на год для {current_url}")
             return
         # Парсинг основного контента
-        content = article.cleaned_text
+
+        content = trafilatura.extract(html_content, include_formatting=True)
+        # content = article.cleaned_text
         # self.clean_text(content) if content and not all(item.isspace() for item in content) else None
         content = content if content and not all(item.isspace() for item in content) else None
         if content is None:
