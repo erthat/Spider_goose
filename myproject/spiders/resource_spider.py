@@ -127,23 +127,23 @@ class ResourceSpider(CrawlSpider):
     def is_outdated(self, nd_date, s_date):
         one_year_in_seconds = 365 * 24 * 3600
         return s_date - nd_date > one_year_in_seconds
-
-    def convert_to_xpath(self, selector):
-        # Разделяем строку по разделителю ':::'
-        parts = selector.split(':::')
-
-        # Проверяем, что у нас достаточно частей для формирования XPath
-        if len(parts) != 3:
-            raise ValueError("Неверный формат селектора.")
-
-        # Извлекаем элементы
-        tag = parts[0]  # 'a'
-        attr_name = parts[1]  # 'class'
-        attr_value = parts[2]  # 'post-index-title'
-
-        # Формируем XPath
-        xpath = f'//{tag}[@{attr_name}="{attr_value}"]'
-        return xpath
+    #
+    # def convert_to_xpath(self, selector):
+    #     # Разделяем строку по разделителю ':::'
+    #     parts = selector.split(':::')
+    #
+    #     # Проверяем, что у нас достаточно частей для формирования XPath
+    #     if len(parts) != 3:
+    #         raise ValueError("Неверный формат селектора.")
+    #
+    #     # Извлекаем элементы
+    #     tag = parts[0]  # 'a'
+    #     attr_name = parts[1]  # 'class'
+    #     attr_value = parts[2]  # 'post-index-title'
+    #
+    #     # Формируем XPath
+    #     xpath = f'//{tag}[@{attr_name}="{attr_value}"]'
+    #     return xpath
 
     def parse_start_url(self, response):
         """Функция для парсинга стартовой страницы и начала парсинга ссылок"""
@@ -156,7 +156,7 @@ class ResourceSpider(CrawlSpider):
         if resource_info:
             # Извлекаем top_tag для текущего ресурса
             top_tag = resource_info[3]
-            top_tag = self.convert_to_xpath(top_tag)
+            # top_tag = self.convert_to_xpath(top_tag)
             top_tags = [xpath.strip() for xpath in top_tag.split(';')]
             deny = resource_info[8]
             max_depth = int(resource_info[9]) if resource_info[9] else 1

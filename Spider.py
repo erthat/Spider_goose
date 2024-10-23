@@ -71,7 +71,7 @@ def load_resources(cursor):
         "FROM resource "
         "WHERE status = %s"
         "AND RESOURCE_STATUS = %s",
-        ('SP', 'WORK')
+        ('spider_goose', 'WORK')
     )
     return cursor.fetchall()
 
