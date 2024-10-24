@@ -127,23 +127,39 @@ class ResourceSpider(CrawlSpider):
     def is_outdated(self, nd_date, s_date):
         one_year_in_seconds = 365 * 24 * 3600
         return s_date - nd_date > one_year_in_seconds
-    #
-    # def convert_to_xpath(self, selector):
-    #     # Разделяем строку по разделителю ':::'
-    #     parts = selector.split(':::')
-    #
-    #     # Проверяем, что у нас достаточно частей для формирования XPath
-    #     if len(parts) != 3:
-    #         raise ValueError("Неверный формат селектора.")
-    #
-    #     # Извлекаем элементы
-    #     tag = parts[0]  # 'a'
-    #     attr_name = parts[1]  # 'class'
-    #     attr_value = parts[2]  # 'post-index-title'
-    #
-    #     # Формируем XPath
-    #     xpath = f'//{tag}[@{attr_name}="{attr_value}"]'
-    #     return xpath
+
+    def parse_title(self, response, resource_info):
+        title_xpath = resource_info[5]
+        title = response.xpath(f'normalize-space({title_xpath})').get()
+        return self.replace_unsupported_characters(title) if title else None
+
+    def parse_news_date(self, response, resource_info):
+        xpath_and_pattern = resource_info[6]
+        parts = xpath_and_pattern.split('::::')
+        date_xpath = parts[0]
+        remove_patterns = parts[1] if len(parts) > 1 else None
+
+        date = response.xpath(date_xpath).get()
+        if not date:
+            return None, None, None, None
+
+        if remove_patterns:
+            date = re.sub(remove_patterns, '', date)
+        date = self.parse_date(date, resource_info[7], resource_info[10])
+
+        if not date:
+            return None, None, None, None
+
+        n_date = date
+        nd_date = int(date.timestamp())
+        not_date = date.strftime('%Y-%m-%d')
+        s_date = int(time.time())
+        return n_date, nd_date, not_date, s_date
+
+    def parse_content(self, response, resource_info):
+        content_xpath = resource_info[4]
+        content = response.xpath(content_xpath).getall()
+        return self.clean_text(content) if content and not all(item.isspace() for item in content) else None
 
     def parse_start_url(self, response):
         """Функция для парсинга стартовой страницы и начала парсинга ссылок"""
@@ -183,6 +199,7 @@ class ResourceSpider(CrawlSpider):
     def parse_links(self, response):
         current_url = response.url
 
+
         if self.is_unwanted_link(current_url):
             # self.logger.info(f'Пропускаем неподходящий ссылку: {current_url}')
             return
@@ -194,6 +211,16 @@ class ResourceSpider(CrawlSpider):
         denys = response.meta.get('denys')
         max_depth = response.meta.get('max_depth')
         top_tags = response.meta.get('top_tags')
+
+        bottom_tag = resource_info[4]
+        title_cut = resource_info[5]
+        date_cut = resource_info[6]
+
+        g = Goose()
+        article = g.extract(raw_html=response.text)
+        html_content = response.text
+        content_extractor = Extractor()
+        result = content_extractor.extract(html_content)
 
         if current_depth < max_depth:
             link_extractor = LinkExtractor(restrict_xpaths=top_tags, deny=denys, deny_extensions=deny_extensions)
@@ -211,37 +238,52 @@ class ResourceSpider(CrawlSpider):
                     # Обработка ошибки (например, запись в лог)
                     self.logger.warning(f"Ошибка при отправке запроса для ссылки {link.url}: {e}")
 
-        g = Goose()
-        article = g.extract(raw_html=response.text)
+        if title_cut:
+            title = self.parse_title(response, resource_info)
+            if not title:
+                self.logger.debug(f"Заголовок отсутствует для {current_url}")
+                return
+        else:
+            # Парсинг заголовка
+            title = article.title
+            self.replace_unsupported_characters(title) if title else None
+            title = title if title and not all(item.isspace() for item in title) else None
+            if title is None:
+                self.logger.info(f"Title отсутствует для {current_url}")
+                return
 
-        html_content = response.text
 
-        content_extractor = Extractor()
-        result = content_extractor.extract(html_content)
-        # Парсинг заголовка
-        title = article.title
-        self.replace_unsupported_characters(title) if title else None
-        title = title if title and not all(item.isspace() for item in title) else None
-        if title is None:
-            self.logger.info(f"Title отсутствует для {current_url}")
-            return
-        # Парсинг даты
-        date = article.publish_date
-        if date is None:
-            date = result.get('date')
+        if date_cut:
+            n_date, nd_date, not_date, s_date = self.parse_news_date(response, resource_info)
+            if not n_date:
+                self.logger.debug(f"Дата отсутствует для {current_url}")
+                return
+        else:
+            # Парсинг даты
+            date = article.publish_date
             if date is None:
-                date = result.get('rawDate')
-        date = self.parse_date(date, resource_info[7], resource_info[10])
-        if date is None:
-            self.logger.info(f"Дата отсутствует для {current_url}")
-            return
-        n_date = date
-        nd_date = int(date.timestamp())
-        not_date = date.strftime('%Y-%m-%d')
-        s_date = int(time.time())
+                date = result.get('date')
+                if date is None:
+                    date = result.get('rawDate')
+            date = self.parse_date(date, resource_info[7], resource_info[10])
+            if date is None:
+                self.logger.info(f"Дата отсутствует для {current_url}")
+                return
+            n_date = date
+            nd_date = int(date.timestamp())
+            not_date = date.strftime('%Y-%m-%d')
+            s_date = int(time.time())
+
         if self.is_outdated(nd_date, s_date):
             # self.logger.info(f"Дата {n_date} старее чем на год для {current_url}")
             return
+
+        if bottom_tag:
+            content = self.parse_content(response, resource_info)
+            content = content if content and not all(item.isspace() for item in content) else None
+            if not content:
+                self.logger.debug(f"Контент отсутствует для {current_url}")
+                return
 
         # Парсинг основного контента
         content = trafilatura.extract(html_content, include_formatting=False, favor_precision=True, include_comments=False)
