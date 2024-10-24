@@ -244,7 +244,7 @@ class ResourceSpider(CrawlSpider):
             return
 
         # Парсинг основного контента
-        content = trafilatura.extract(html_content, include_formatting=False)
+        content = trafilatura.extract(html_content, include_formatting=False, favor_precision=True, include_comments=False)
         # content = article.cleaned_text
         # self.clean_text(content) if content and not all(item.isspace() for item in content) else None
         content = content if content and not all(item.isspace() for item in content) else None

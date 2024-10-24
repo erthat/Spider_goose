@@ -13,7 +13,7 @@ load_dotenv()
 from collections import deque
 import mysql.connector
 import hashlib
-
+from trafilatura.meta import reset_caches
 
 log_file = 'logs/logi.log'
 log_dir = os.path.dirname(log_file)
@@ -98,6 +98,7 @@ def run_spiders(runner, spider_name, resource_queue):
                 logging.info(f'{spider_name} завершил работу с блоком, переключается на следующий.')
                 # Возвращаем блок в конец очереди для повторной обработки
                 resource_queue.append(resources)
+                reset_caches()
         else:
             logging.info(f'{spider_name} ожидает ресурсы...')
             yield task.deferLater(reactor, 10, lambda: None)
