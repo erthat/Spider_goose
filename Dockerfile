@@ -18,6 +18,8 @@ COPY . .
 RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt
 
+RUN pip install extractnet
+
 # Запуск Scrapy
 CMD ["python", "Spider.py"]
 
