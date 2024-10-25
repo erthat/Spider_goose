@@ -6,7 +6,7 @@ beautifulsoup4
 lxml
 emoji
 extractnet
-goose3==3.1.20
+goose3
 trafilatura==1.12.2
 numpy==1.26.4
 lxml_html_clean
