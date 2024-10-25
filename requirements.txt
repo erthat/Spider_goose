@@ -8,3 +8,4 @@ emoji
 extractnet
 goose3
 trafilatura
+numpy==1.26.4
