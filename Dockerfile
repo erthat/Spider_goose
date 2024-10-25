@@ -1,6 +1,6 @@
 # Используем официальный образ Python
 
-FROM python:3.10-slim
+FROM python:3.10
 
 # Устанавливаем зависимости для MySQL
 RUN apt-get update && apt-get install -y \
