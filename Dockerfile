@@ -1,6 +1,6 @@
 # Используем официальный образ Python
 
-FROM python:3.10
+FROM python:3.10-slim
 
 # Устанавливаем зависимости для MySQL
 RUN apt-get update && apt-get install -y \
@@ -17,9 +17,6 @@ COPY . .
 # Устанавливаем зависимости проекта
 RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt
-
-RUN pip install extractnet
-RUN apt-get update && apt-get install -y zlib1g zlib1g-dev
 
 
 # Запуск Scrapy

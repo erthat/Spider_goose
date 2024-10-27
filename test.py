@@ -3,9 +3,11 @@ from extractnet import Extractor
 
 
 from goose3 import Goose
+import trafilatura
+
 
 g = Goose()
-html_content = requests.get('https://regnum.ru/news/3923781').text
+html_content = requests.get('https://tvn24.pl/').text
 #
 #
 # # Настройки для парсинга основного контента
@@ -23,11 +25,13 @@ html_content = requests.get('https://regnum.ru/news/3923781').text
 # # print("title:", title)
 # print("Дата:", date)
 article = g.extract(raw_html=html_content)
-
-title = article.title
-text = article.cleaned_text
+#
+# title = article.title
+# text = article.cleaned_text
 publish_date = article.publish_date
-
+content = trafilatura.extract(html_content, include_formatting=False, favor_precision=True, include_comments=False)
+result = trafilatura.bare_extraction(html_content, with_metadata=True)
+publication_date = result['date']
 print(publish_date)
 
 

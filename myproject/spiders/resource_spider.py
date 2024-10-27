@@ -18,9 +18,8 @@ from scrapy import Request
 from urllib.parse import urlparse, urlunparse
 load_dotenv()
 import requests
-from extractnet import Extractor
-from goose3 import Goose
 import trafilatura
+from goose3 import Goose
 
 class ResourceSpider(CrawlSpider):
     name = 'resource_spider'
@@ -217,10 +216,9 @@ class ResourceSpider(CrawlSpider):
         date_cut = resource_info[6]
 
         g = Goose()
-        article = g.extract(raw_html=response.text)
         html_content = response.text
-        content_extractor = Extractor()
-        result = content_extractor.extract(html_content)
+        article = g.extract(raw_html=html_content)
+
 
         if current_depth < max_depth:
             link_extractor = LinkExtractor(restrict_xpaths=top_tags, deny=denys, deny_extensions=deny_extensions)
@@ -262,9 +260,12 @@ class ResourceSpider(CrawlSpider):
             # Парсинг даты
             date = article.publish_date
             if date is None:
-                date = result.get('date')
+                date_t = trafilatura.bare_extraction(html_content, with_metadata=True)
+                date = date_t['date']
+                date = date if date and not all(item.isspace() for item in date) else None
                 if date is None:
-                    date = result.get('rawDate')
+                    self.logger.info(f"Дата отсутствует для {current_url}")
+                    return
             date = self.parse_date(date, resource_info[7], resource_info[10])
             if date is None:
                 self.logger.info(f"Дата отсутствует для {current_url}")
