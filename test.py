@@ -7,7 +7,7 @@ import trafilatura
 
 
 g = Goose()
-html_content = requests.get('https://tvn24.pl/').text
+html_content = requests.get('https://stapravda.ru/20241026/dva_cheloveka_postradali_v_dtp_s_traktorom_v_kurskom_okruge_223637.html').text
 #
 #
 # # Настройки для парсинга основного контента
@@ -32,7 +32,7 @@ publish_date = article.publish_date
 content = trafilatura.extract(html_content, include_formatting=False, favor_precision=True, include_comments=False)
 result = trafilatura.bare_extraction(html_content, with_metadata=True)
 publication_date = result['date']
-print(publish_date)
+print(publication_date)
 
 
 
