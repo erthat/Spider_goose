@@ -239,7 +239,7 @@ class ResourceSpider(CrawlSpider):
         if title_cut:
             title = self.parse_title(response, resource_info)
             if not title:
-                self.logger.debug(f"Заголовок отсутствует для {current_url}")
+                self.logger.info(f"Заголовок отсутствует для {current_url}")
                 return
         else:
             # Парсинг заголовка
@@ -254,7 +254,7 @@ class ResourceSpider(CrawlSpider):
         if date_cut:
             n_date, nd_date, not_date, s_date = self.parse_news_date(response, resource_info)
             if not n_date:
-                self.logger.debug(f"Дата отсутствует для {current_url}")
+                self.logger.info(f"Дата отсутствует для {current_url}")
                 return
         else:
             # Парсинг даты
@@ -276,14 +276,14 @@ class ResourceSpider(CrawlSpider):
             s_date = int(time.time())
 
         if self.is_outdated(nd_date, s_date):
-            # self.logger.info(f"Дата {n_date} старее чем на год для {current_url}")
+            self.logger.info(f"Дата {n_date} старее чем на год для {current_url}")
             return
 
         if bottom_tag:
             content = self.parse_content(response, resource_info)
             content = content if content and not all(item.isspace() for item in content) else None
             if not content:
-                self.logger.debug(f"Контент отсутствует для {current_url}")
+                self.logger.info(f"Контент отсутствует для {current_url}")
                 return
 
         # Парсинг основного контента
