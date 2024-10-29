@@ -203,6 +203,8 @@ class ResourceSpider(CrawlSpider):
             if content is None:
                 self.logger.info(f"Сontent отсутствует для {response.url}")
                 return
+            content = emoji.demojize(content)
+            content = unicodedata.normalize('NFKD', content)
             return content
 
     def parse_start_url(self, response):
