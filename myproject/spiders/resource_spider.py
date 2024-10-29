@@ -142,6 +142,7 @@ class ResourceSpider(CrawlSpider):
             if title is None:
                 self.logger.info(f"Title отсутствует для {response.url}")
                 return
+            return title
 
 
     def parse_news_date(self, response, resource_info):
@@ -202,6 +203,7 @@ class ResourceSpider(CrawlSpider):
             if content is None:
                 self.logger.info(f"Сontent отсутствует для {response.url}")
                 return
+            return content
 
     def parse_start_url(self, response):
         """Функция для парсинга стартовой страницы и начала парсинга ссылок"""
