@@ -179,11 +179,11 @@ class ResourceSpider(CrawlSpider):
                 date = date if date and not all(item.isspace() for item in date) else None
                 if date is None:
                     self.logger.info(f"Дата отсутствует для {response.url}")
-                    return
+                    return None, None, None, None
             date = self.parse_date(date, resource_info[7], resource_info[10])
             if date is None:
                 self.logger.info(f"Дата отсутствует для {response.url}")
-                return
+                return None, None, None, None
             n_date = date
             nd_date = int(date.timestamp())
             not_date = date.strftime('%Y-%m-%d')
@@ -280,18 +280,14 @@ class ResourceSpider(CrawlSpider):
             self.logger.info(f"Заголовок отсутствует для {current_url}")
             return
 
-
-
         n_date, nd_date, not_date, s_date = self.parse_news_date(response, resource_info)
         if not n_date:
             self.logger.info(f"Дата отсутствует для {current_url}")
             return
 
-
         if self.is_outdated(nd_date, s_date):
             self.logger.info(f"Дата {n_date} старее чем на год для {current_url}")
             return
-
 
         content = self.parse_content(response, resource_info)
         content = content if content and not all(item.isspace() for item in content) else None
