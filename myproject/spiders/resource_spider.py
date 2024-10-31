@@ -373,7 +373,7 @@ class ResourceSpider(CrawlSpider):
         content = unicodedata.normalize('NFKD', content)
         return content
 
-    def parse_date(date_str, convert_date, lang):
+    def parse_date(self, date_str, convert_date, lang):
         date_str = str(date_str) if date_str else ''
         date_str = re.sub(r'-го|г\.|\bPublish\w*|\bжыл\w*|тому|\bавтор\w*|'
                           r'\bUTC\w*|\bпросмотр\w*|\bДата создания:\w*|\bДобавлено\w*|', '', date_str)
