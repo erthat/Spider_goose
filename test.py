@@ -1,91 +1,80 @@
+import pytz
+import mysql.connector
+import scrapy
+from scrapy.spiders import CrawlSpider
+from scrapy.linkextractors import LinkExtractor
+from dateparser import parse
+import time
+from dotenv import load_dotenv
+import emoji
+from datetime import datetime, timedelta
+import re
+from lxml.html import fromstring
+import bs4
+import os
+from mysql.connector import Error
+import unicodedata
+from scrapy import Request
+from urllib.parse import urlparse, urlunparse
+load_dotenv()
 import requests
-from extractnet import Extractor
-
-
-from goose3 import Goose
 import trafilatura
+from goose3 import Goose
+
+def parse_date(date_str, convert_date, lang):
+    date_str = str(date_str) if date_str else ''
+    date_str = re.sub(r'-го|г\.|\bPublish\w*|\bжыл\w*|тому|\bавтор\w*|'
+                      r'\bUTC\w*|\bпросмотр\w*|\bДата создания:\w*|\bДобавлено\w*|', '', date_str)
+    languages = ['ru', 'kk', 'en', 'uz', 'de']
+
+    if lang:
+        # Если lang строка, проверяем на наличие точки с запятой
+        if isinstance(lang, str):
+            # Разбиваем по точке с запятой, если присутствует
+            additional_langs = lang.split(';')
+        else:
+            additional_langs = lang
+        # Удаляем возможные лишние пробелы и добавляем новые языки в список
+        languages += [l.strip() for l in additional_langs if l.strip() not in languages]
+
+    if not convert_date:  # Присваиваем список по умолчанию
+        DATE_ORDERS = ["YMD", "DMY", "MYD"]
+    else:
+        if isinstance(convert_date, str): # Если переменная содержит строку (например, "YMD"), превращаем её в список
+            DATE_ORDERS = [convert_date]
+        else:
+            DATE_ORDERS = convert_date
+    kazakhstan_tz = pytz.timezone('Etc/GMT-5')
+    current_time_with_tz = datetime.now(kazakhstan_tz)
+    for date_order in DATE_ORDERS:
+        date = parse(date_str,
+                     languages=languages,
+                     settings={"DATE_ORDER": date_order},
+                     )
+        if date:
+            if date.hour == 0 and date.minute == 0 and date.second == 0:
+                date = date.replace(hour=0, minute=0, second=0)
+
+            if date.tzinfo is None:
+                # Присваиваем временную зону если она отсутствует
+                date = date.replace(tzinfo=kazakhstan_tz)
+
+            if date.tzinfo != kazakhstan_tz:
+                # Переводим дату в GMT+5 если временная зона отличается
+                date = date.astimezone(kazakhstan_tz)
+
+            date_with_utc = date
+            tolerance = timedelta(minutes=10)
+            # Проверка на актуальность даты
+            if date_with_utc <= current_time_with_tz + tolerance:
+                return date_with_utc
+
+    return None
 
 
-g = Goose()
-html_content = requests.get('https://stapravda.ru/20241026/dva_cheloveka_postradali_v_dtp_s_traktorom_v_kurskom_okruge_223637.html').text
-#
-#
-# # Настройки для парсинга основного контента
-# content_extractor = Extractor()
-#
-# # Настройки для парсинга даты (например, минимальная длина и метаданные)
-# date_extractor = Extractor()
-#
-# extracted_content = content_extractor.extract(html_content)
-# # content = content_extractor.extract(html_content)['content']
-# # title = content_extractor.extract(html_content)['title']
-# date = content_extractor.extract(html_content)['date']
-# #
-# print(extracted_content)
-# # print("title:", title)
-# print("Дата:", date)
-article = g.extract(raw_html=html_content)
-#
-# title = article.title
-# text = article.cleaned_text
-publish_date = article.publish_date
-content = trafilatura.extract(html_content, include_formatting=False, favor_precision=True, include_comments=False)
-result = trafilatura.bare_extraction(html_content, with_metadata=True)
-publication_date = result['date']
-print(publication_date)
-
-
-
-# import re
-# from furl import furl
-#
-# # Регулярные выражения для сегментов
-# ANYWORDWITHDEPHIS = r"[a-zA-Z0-9_\-]+"
-# ANYWORD = r"[a-zA-Z0-9_]+"
-# ANYINT = r"[0-9]+"
-#
-#
-# def get_regex_from_links(urls: list[str]):
-#     """Генерирует регулярное выражение для Scrapy LinkExtractor"""
-#     result = set()
-#     for url in urls:
-#         REGEX = r"https?://[^/]+/"  # Стартовая часть URL
-#         parsed_url = furl(url)
-#         path = parsed_url.path
-#
-#         # Обрабатываем сегменты пути
-#         for i, segment in enumerate(path.segments):
-#             if not segment:
-#                 continue
-#             words = segment.split("-")
-#
-#             # Проверяем, является ли это последний сегмент пути
-#             if i == len(path.segments) - 1:
-#                 # Если первое или последнее слово сегмента - число (ID новости)
-#                 if words[0].isdigit() or words[-1].isdigit():
-#                     if words[0].isdigit():  # ID в начале сегмента
-#                         REGEX += r"[0-9]+-"  # Начинается с числа
-#                         REGEX += r"[a-zA-Z0-9_\-]*"  # Остальные сегменты (если есть)
-#                     else:  # ID в конце сегмента
-#                         REGEX += r"[a-zA-Z0-9_\-]*-"  # Любые слова перед числом
-#                         REGEX += r"[0-9]+"
-#                 else:
-#                     REGEX += r"[a-zA-Z0-9_\-]+"
-#                 # Добавляем возможность наличия .html в конце
-#                 REGEX += r"(?:\.html)?/?"
-#             else:
-#                 # Для всех остальных сегментов
-#                 if len(words) == 1:
-#                     if words[0].isdigit():
-#                         REGEX += ANYINT + r"/"  # Число
-#                     else:
-#                         REGEX += ANYWORD + r"/"  # Слово
-#                 else:
-#                     REGEX += r"[a-zA-Z0-9_\-]+/"  # Общий случай: слово или число с дефисами и подчеркиванием
-#
-#         result.add(REGEX)
-#     return list(result)
-# links = ['https://regnum.ru/news/3923781']
-#
-# data = get_regex_from_links(links)
-# print(data)
+date_str = ' 31.10.2024'
+convert_date =''
+lang =''
+date = parse_date(date_str, convert_date, lang)
+nd_date = int(date.timestamp())
+print(nd_date)

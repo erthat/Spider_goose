@@ -373,7 +373,7 @@ class ResourceSpider(CrawlSpider):
         content = unicodedata.normalize('NFKD', content)
         return content
 
-    def parse_date(self, date_str, convert_date, lang):
+    def parse_date(date_str, convert_date, lang):
         date_str = str(date_str) if date_str else ''
         date_str = re.sub(r'-го|г\.|\bPublish\w*|\bжыл\w*|тому|\bавтор\w*|'
                           r'\bUTC\w*|\bпросмотр\w*|\bДата создания:\w*|\bДобавлено\w*|', '', date_str)
@@ -392,7 +392,8 @@ class ResourceSpider(CrawlSpider):
         if not convert_date:  # Присваиваем список по умолчанию
             DATE_ORDERS = ["YMD", "DMY", "MYD"]
         else:
-            if isinstance(convert_date, str): #Если переменная содержит строку (например, "YMD"), превращаем её в список
+            if isinstance(convert_date,
+                          str):  # Если переменная содержит строку (например, "YMD"), превращаем её в список
                 DATE_ORDERS = [convert_date]
             else:
                 DATE_ORDERS = convert_date
@@ -407,9 +408,16 @@ class ResourceSpider(CrawlSpider):
                 if date.hour == 0 and date.minute == 0 and date.second == 0:
                     date = date.replace(hour=0, minute=0, second=0)
 
-                date_with_utc = date.replace(tzinfo=kazakhstan_tz)
-                tolerance = timedelta(minutes=10)
+                if date.tzinfo is None:
+                    # Присваиваем временную зону если она отсутствует
+                    date = date.replace(tzinfo=kazakhstan_tz)
 
+                if date.tzinfo != kazakhstan_tz:
+                    # Переводим дату в GMT+5 если временная зона отличается
+                    date = date.astimezone(kazakhstan_tz)
+
+                date_with_utc = date
+                tolerance = timedelta(minutes=10)
                 # Проверка на актуальность даты
                 if date_with_utc <= current_time_with_tz + tolerance:
                     return date_with_utc
