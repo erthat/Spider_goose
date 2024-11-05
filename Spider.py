@@ -8,7 +8,7 @@ from scrapy.utils.project import get_project_settings
 import logging
 import time
 import os
-from dotenv import load_dotenv  # Импортируйте паука
+from dotenv import load_dotenv
 load_dotenv()
 from collections import deque
 import mysql.connector
