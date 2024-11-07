@@ -6,6 +6,5 @@ beautifulsoup4
 lxml
 emoji
 goose3
-trafilatura==1.12.2
-numpy==1.26.4
+trafilatura
 lxml_html_clean
