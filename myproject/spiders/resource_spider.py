@@ -134,8 +134,7 @@ class ResourceSpider(CrawlSpider):
             return self.replace_unsupported_characters(title) if title else None
         else:
             g = Goose()
-            html_content = response.text
-            article = g.extract(raw_html=html_content)
+            article = g.extract(raw_html=response.text)
             title = article.title
             self.replace_unsupported_characters(title) if title else None
             title = title if title and not all(item.isspace() for item in title) else None
@@ -170,11 +169,10 @@ class ResourceSpider(CrawlSpider):
             return n_date, nd_date, not_date, s_date
         else:
             g = Goose()
-            html_content = response.text
-            article = g.extract(raw_html=html_content)
+            article = g.extract(raw_html=response.text)
             date = article.publish_date
             if date is None:
-                date_t = trafilatura.bare_extraction(html_content, with_metadata=True)
+                date_t = trafilatura.bare_extraction(response.text, with_metadata=True)
                 date = date_t['date']
                 date = date if date and not all(item.isspace() for item in date) else None
                 if date is None:
@@ -196,8 +194,7 @@ class ResourceSpider(CrawlSpider):
             content = response.xpath(content_xpath).getall()
             return self.clean_text(content) if content and not all(item.isspace() for item in content) else None
         else:
-            html_content = response.text
-            content = trafilatura.extract(html_content, include_formatting=False, favor_precision=True,
+            content = trafilatura.extract(response.text, include_formatting=False, favor_precision=True,
                                           include_comments=False)
             content = content if content and not all(item.isspace() for item in content) else None
             if content is None:
